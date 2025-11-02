@@ -1,0 +1,139 @@
+.designs-section {
+  width: 100%;
+  background-color: #1e1e1e;
+  display: column;
+  justify-items: center;
+  align-items: center;
+  padding: 4rem 2rem; 
+  box-sizing: border-box;
+}
+
+h1 {
+  color: #fff;
+  font-family: "Georgia", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.designs-section .design-section__column {
+  display: flex;
+  gap: 20px;
+}
+
+.designs-section .design-section__row {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* ======== BLOQUES BASE ======== */
+.minimalist-design-section,
+.modern-design-section,
+.interior-design-section,
+.futurist-design-section {
+  width: 540px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4b2e1f;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* ======== TIPO 1: IMAGEN ARRIBA + TEXTO ABAJO ======== */
+.minimalist-design-section,
+.interior-design-section {
+  flex-direction: column;
+}
+
+.minimalist-design-section .designs-image,
+.interior-design-section .designs-image {
+  width: 100%;
+  height: 75%;
+  object-fit: cover;
+}
+
+.minimalist-design-section .designs-title,
+.interior-design-section .designs-title {
+  color: #fff;
+  font-family: "Georgia", serif;
+  font-size: 1.6rem; /* ligero ajuste para que el texto ocupe menos espacio */
+  font-weight: 600;
+  text-align: center;
+  height: 25%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4b2e1f;
+}
+
+/* ======== TIPO 2: IMAGEN IZQUIERDA + TEXTO DERECHA ======== */
+.modern-design-section,
+.futurist-design-section {
+  flex-direction: row;
+}
+
+.modern-design-section .designs-image,
+.futurist-design-section .designs-image {
+  width: 60%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modern-design-section .designs-title,
+.futurist-design-section .designs-title {
+  color: #fff;
+  font-family: "Georgia", serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.75rem; /* menos padding interno */
+  background-color: #4b2e1f;
+}
+
+/* ======== EFECTO HOVER ======== */
+.designs-image {
+  transition: transform 0.3s ease;
+}
+
+.designs-image:hover {
+  transform: scale(1.03);
+}
+
+/* ======== RESPONSIVIDAD ======== */
+@media (max-width: 1000px) {
+  .designs-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .minimalist-design-section,
+  .modern-design-section,
+  .interior-design-section,
+  .futurist-design-section {
+    max-width: 90%;
+    aspect-ratio: 16 / 10; /* un poco más ancho en móviles */
+    flex-direction: column;
+  }
+
+  .modern-design-section .designs-image,
+  .futurist-design-section .designs-image {
+    width: 100%;
+    height: 75%;
+  }
+
+  .modern-design-section .designs-title,
+  .futurist-design-section .designs-title {
+    width: 100%;
+    height: 25%;
+  }
+}

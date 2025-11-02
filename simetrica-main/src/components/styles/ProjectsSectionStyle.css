@@ -1,0 +1,57 @@
+.projects-section { 
+  padding: 8rem 2rem; 
+  background: linear-gradient(to right, #1a1a1a, #2c2c2c); 
+  color: #fff; 
+} 
+
+.projects-section__grid { 
+  display: grid; 
+  grid-template-columns: 1fr 2fr; /* texto 1 parte, imágenes 2 */ 
+  gap: 2rem; align-items: center; 
+}
+
+.projects-section__text { 
+  max-width: 400px; 
+} 
+
+.projects-section__title { 
+  font-size: 2.2rem; 
+  font-weight: 700; 
+  margin-bottom: 1rem; 
+} 
+
+.projects-section__description { 
+  margin-bottom: 1.5rem; 
+  line-height: 1.6; 
+  color: #ccc; 
+} 
+
+.projects-section__images { 
+  display: flex; 
+  gap: 1.5rem; 
+} 
+
+.projects-section__image-card { 
+  flex: 1; 
+  border: 2px solid #6b3e2e; 
+  overflow: hidden; 
+  border-radius: 8px; 
+  background: #000; 
+  transition: transform 0.3s ease; 
+} 
+
+.projects-section__image-card:hover { 
+  transform: translateY(-8px); 
+} 
+
+.projects-section__image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(70%); /* oscurece la imagen */
+  transition: filter 0.3s ease;
+}
+
+.projects-section__image-card:hover img {
+  filter: brightness(100%); /* vuelve clara al hacer hover */
+}

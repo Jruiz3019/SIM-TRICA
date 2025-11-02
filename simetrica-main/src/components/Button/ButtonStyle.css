@@ -1,0 +1,291 @@
+/* ButtonStyle.css - Estilos para componente Button reutilizable */
+/* ARCHIVO AÑADIDO: Sigue convenciones del proyecto (CSS regular, variables globales, BEM) */
+
+/* Clase base del botón */
+.button {
+  /* Estructura y layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  
+  /* Tipografía usando variables del sistema */
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: 1rem; /* Base fijo, los modificadores --sm/--md/--lg controlan tamaños específicos */
+  line-height: 1.2;
+  text-decoration: none;
+  
+  /* Estructura visual */
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* Mejor UX en móvil */
+  
+  /* Transiciones optimizadas para performance */
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow, background-color;
+  
+  /* Propiedades base de espaciado */
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: 36px; /* Mínimo para accesibilidad táctil */
+  
+  /* Estado inicial */
+  position: relative;
+  overflow: hidden;
+}
+
+/* VARIANTES DE ESTILO - Usan variables CSS del branding existente */
+
+/* Variante primaria - Color principal del branding */
+.button--primary {
+  background: var(--primary-color); /* #7E4A35 */
+  color: var(--text-color);         /* #FFFFFF */
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(126, 74, 53, 0.25);
+}
+
+.button--primary:hover:not(.button--disabled):not(.button--loading) {
+  background: #8B5A42; /* Ligeramente más claro para hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(126, 74, 53, 0.35);
+}
+
+.button--primary:active:not(.button--disabled):not(.button--loading) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(126, 74, 53, 0.3);
+}
+
+/* Variante secundaria - Outline con color secundario */
+.button--secondary {
+  background: transparent;
+  color: var(--text-color);
+  border-color: var(--secondary-color); /* #504641 */
+  box-shadow: 0 2px 8px rgba(80, 70, 65, 0.15);
+}
+
+.button--secondary:hover:not(.button--disabled):not(.button--loading) {
+  background: rgba(80, 70, 65, 0.1);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(80, 70, 65, 0.25);
+}
+
+/* Variante ghost - Transparente con efectos sutiles */
+.button--ghost {
+  background: transparent;
+  color: var(--text-color);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.button--ghost:hover:not(.button--disabled):not(.button--loading) {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* TAMAÑOS RESPONSIVE */
+/* ACTUALIZADO 2025-10-01: Ajuste de tamaños para mejor consistencia y usabilidad */
+
+/* Tamaño pequeño - Ideal para botones secundarios o espacios compactos */
+.button--sm {
+  padding: calc(var(--spacing-xs) + 0.15rem) calc(var(--spacing-sm) + 0.25rem); /* ~0.4rem 0.75rem (6.4px 12px) */
+  font-size: 0.875rem; /* 14px */
+  min-height: 36px;
+  gap: var(--spacing-xs);
+}
+
+/* Tamaño mediano (default) - Balance óptimo para la mayoría de casos */
+.button--md {
+  padding: calc(var(--spacing-sm) + 0.1rem) var(--spacing-md); /* ~0.6rem 1rem (9.6px 16px) */
+  font-size: 1rem; /* 16px */
+  min-height: 44px;
+  gap: var(--spacing-sm);
+}
+
+/* Tamaño grande - Ideal para CTAs principales y alta visibilidad */
+.button--lg {
+  padding: calc(var(--spacing-md) - 0.1rem) calc(var(--spacing-lg) + 0.25rem); /* ~0.9rem 1.75rem (14.4px 28px) */
+  font-size: 1.125rem; /* 18px */
+  min-height: 52px;
+  gap: calc(var(--spacing-sm) + 0.125rem); /* ~0.625rem (10px) */
+}
+
+/* MODIFICADORES */
+
+/* Ancho completo */
+.button--full-width {
+  width: 100%;
+}
+
+/* Estado deshabilitado */
+.button--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Estado de carga */
+.button--loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.button__loading {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* Spinner de carga */
+.button__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ESTADOS DE ACCESIBILIDAD */
+
+/* Focus visible para navegación por teclado */
+.button:focus-visible {
+  outline: 3px solid rgba(126, 74, 53, 0.5);
+  outline-offset: 2px;
+  z-index: 1; /* Asegurar visibilidad sobre otros elementos */
+}
+
+/* Efecto ripple sutil para feedback táctil */
+.button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  pointer-events: none;
+}
+
+.button:active:not(.button--disabled):not(.button--loading)::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* BREAKPOINTS RESPONSIVOS */
+/* ACTUALIZADO 2025-10-01: Ajustes para mantener consistencia de tamaños en diferentes dispositivos */
+
+/* Mobile devices (320px - 767px) */
+@media screen and (max-width: 767px) {
+  .button {
+    font-size: 0.9375rem; /* Ligeramente reducido para móviles */
+  }
+  
+  .button--sm {
+    padding: var(--spacing-xs) calc(var(--spacing-sm) + 0.125rem); /* ~0.25rem 0.625rem */
+    font-size: 0.8125rem; /* 13px */
+    min-height: 36px;
+  }
+  
+  .button--md {
+    padding: calc(var(--spacing-xs) + 0.25rem) calc(var(--spacing-sm) + 0.375rem); /* ~0.5rem 0.875rem */
+    font-size: 0.9375rem; /* 15px */
+    min-height: 42px;
+  }
+  
+  .button--lg {
+    padding: calc(var(--spacing-sm) + 0.125rem) calc(var(--spacing-md) + 0.125rem); /* ~0.625rem 1.125rem */
+    font-size: 1.0625rem; /* 17px */
+    min-height: 48px;
+  }
+}
+
+/* Tablet devices (768px - 1023px) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Los tamaños base son óptimos para tablets, sin cambios necesarios */
+}
+
+/* Desktop large (1440px+) */
+@media screen and (min-width: 1440px) {
+  .button--lg {
+    padding: calc(var(--spacing-md) + 0.125rem) calc(var(--spacing-xl) - 0.125rem); /* ~1.125rem 1.875rem */
+    font-size: 1.1875rem; /* 19px */
+    min-height: 56px;
+  }
+}
+
+/* TV and ultra-wide screens (1920px+) */
+@media screen and (min-width: 1920px) {
+  .button--md {
+    padding: calc(var(--spacing-sm) + 0.25rem) calc(var(--spacing-md) + 0.25rem); /* ~0.75rem 1.25rem */
+    font-size: 1.0625rem; /* 17px */
+    min-height: 48px;
+  }
+  
+  .button--lg {
+    padding: calc(var(--spacing-md) + 0.25rem) var(--spacing-xl); /* ~1.25rem 2rem */
+    font-size: 1.25rem; /* 20px */
+    min-height: 60px;
+  }
+}
+
+/* MEJORAS DE ACCESIBILIDAD */
+
+/* Reduced motion para usuarios con preferencias de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button::before,
+  .button__spinner {
+    transition: none;
+    animation: none;
+  }
+  
+  .button:hover:not(.button--disabled):not(.button--loading) {
+    transform: none;
+  }
+}
+
+/* High contrast mode para mejor accesibilidad */
+@media (prefers-contrast: high) {
+  .button {
+    border-width: 3px;
+  }
+  
+  .button--primary {
+    border-color: var(--text-color);
+  }
+  
+  .button--secondary {
+    border-color: var(--text-color);
+    background: var(--background-dark);
+  }
+  
+  .button:focus-visible {
+    outline: 4px solid var(--text-color);
+    outline-offset: 2px;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .button--ghost:hover:not(.button--disabled):not(.button--loading) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .button--secondary {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}

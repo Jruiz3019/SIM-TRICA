@@ -1,0 +1,100 @@
+/* Estilos para componente Tabs */
+
+.tabs {
+  width: 100%;
+}
+
+/* Navigation */
+.tabs__nav {
+  display: flex;
+  gap: var(--spacing-xs);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--spacing-xl);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabs__nav::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tabs__nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs__nav::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+.tabs__button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-normal);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  margin-bottom: -2px;
+}
+
+.tabs__button:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tabs__button--active {
+  color: var(--text-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+  background: rgba(126, 74, 53, 0.1);
+}
+
+.tabs__icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.tabs__label {
+  font-family: var(--font-family-primary);
+}
+
+/* Content */
+.tabs__content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .tabs__nav {
+    gap: 0;
+  }
+
+  .tabs__button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.85rem;
+  }
+
+  .tabs__icon {
+    font-size: 1rem;
+  }
+}

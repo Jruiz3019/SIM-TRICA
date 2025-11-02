@@ -1,0 +1,7 @@
+export { default as authRoutes } from './auth.route.js';
+export { default as commentRoutes } from './comment.route.js';
+export { default as contactRoutes } from './contact.route.js';
+export { default as designRoutes } from './design.route.js';
+export { default as imageRoutes } from './image.route.js';
+export { default as projectRoutes } from './project.route.js';
+export { default as workWithUsRoutes } from './work-with-us.route.js';

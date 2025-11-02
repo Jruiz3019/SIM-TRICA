@@ -1,0 +1,347 @@
+/* Página principal totalmente responsiva con mejores prácticas */
+
+/* MODIFICADO: Sección principal ajustada para layout con Footer */
+.home-section {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 60px); /* AJUSTADO: Resta altura aproximada del footer */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Previene scroll horizontal */
+}
+
+/* Imagen de fondo optimizada y responsiva */
+.home-section__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Efecto parallax en desktop */
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    z-index: 1;
+}
+
+/* Estado cuando la imagen está cargada */
+.home-section--loaded .home-section__background {
+    opacity: 1;
+}
+
+/* Overlay para mejorar legibilidad y contraste */
+.home-section__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(32, 32, 32, 0.4) 0%,
+        rgba(80, 70, 65, 0.3) 50%,
+        rgba(126, 74, 53, 0.2) 100%
+    );
+    z-index: 2;
+}
+
+/* Contenido principal */
+.home-section__content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding-top: 70px; /* Espacio para header fijo */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Placeholder para contenido hero futuro */
+.hero-placeholder {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Este espacio está reservado para contenido futuro */
+}
+
+/* Indicador de scroll para UX mejorada */
+.scroll-indicator {
+    position: absolute;
+    bottom: var(--spacing-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    opacity: 0.7;
+    animation: bounce 2s infinite;
+    cursor: pointer;
+}
+
+.scroll-indicator__arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid var(--text-color);
+    border-bottom: 2px solid var(--text-color);
+    transform: rotate(45deg);
+    background: transparent;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Breakpoints responsivos */
+
+/* Mobile devices */
+@media screen and (max-width: 768px) {
+    .home-section__background {
+        background-attachment: scroll; /* Mejor performance en móvil */
+        background-position: center 30%; /* Ajuste para móvil */
+    }
+    
+    .home-section__content {
+        padding-top: 60px; /* Ajuste para header móvil */
+    }
+    
+    .home-section__overlay {
+        background: linear-gradient(
+            135deg,
+            rgba(32, 32, 32, 0.5) 0%,
+            rgba(80, 70, 65, 0.4) 50%,
+            rgba(126, 74, 53, 0.3) 100%
+        );
+    }
+    
+    .scroll-indicator {
+        bottom: var(--spacing-md);
+    }
+}
+
+/* Mobile pequeño */
+@media screen and (max-width: 480px) {
+    .home-section__background {
+        background-position: center 40%;
+    }
+    
+    .scroll-indicator {
+        bottom: var(--spacing-sm);
+        opacity: 0.5;
+    }
+    
+    .scroll-indicator__arrow {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+    .home-section__background {
+        background-attachment: scroll; /* Mejor para tablets */
+    }
+}
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+    .home-section__content {
+        padding-top: 70px;
+    }
+    
+    .hero-placeholder {
+        min-height: 300px;
+    }
+}
+
+/* Desktop grande */
+@media screen and (min-width: 1440px) {
+    .hero-placeholder {
+        min-height: 400px;
+    }
+    
+    .scroll-indicator {
+        bottom: var(--spacing-xxl);
+    }
+    
+    .scroll-indicator__arrow {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* TV y pantallas muy grandes */
+@media screen and (min-width: 1920px) {
+    .home-section__content {
+        padding-top: 90px; /* Ajuste para header de TV */
+    }
+    
+    .hero-placeholder {
+        min-height: 500px;
+    }
+    
+    .scroll-indicator {
+        bottom: 4rem;
+    }
+    
+    .scroll-indicator__arrow {
+        width: 32px;
+        height: 32px;
+        border-width: 3px;
+    }
+}
+
+/* Orientación landscape para móviles */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .home-section__content {
+        padding-top: 50px;
+    }
+    
+    .scroll-indicator {
+        display: none; /* Ocultar en landscape de móvil por espacio */
+    }
+    
+    .hero-placeholder {
+        min-height: 100px;
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .home-section__background {
+        background-attachment: scroll;
+        transition: none;
+    }
+    
+    .scroll-indicator {
+        animation: none;
+    }
+    
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .home-section__overlay {
+        background: rgba(0, 0, 0, 0.6);
+    }
+    
+    .scroll-indicator__arrow {
+        border-color: #ffffff;
+        border-width: 3px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .home-section__overlay {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(32, 32, 32, 0.4) 50%,
+            rgba(80, 70, 65, 0.3) 100%
+        );
+    }
+}
+
+/* =================================
+   HERO CONTENT STYLES
+   ================================= */
+
+/* Contenedor principal del hero */
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: var(--text-color);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+}
+
+/* Título principal */
+.hero-content__title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtítulo */
+.hero-content__subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.4;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor de botones */
+.hero-content__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive para hero content */
+@media screen and (max-width: 767px) {
+    .hero-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .hero-content__title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content__subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .hero-content__actions {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .hero-content__title {
+        font-size: 3rem;
+    }
+    
+    .hero-content__subtitle {
+        font-size: 1.3rem;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .hero-content__title {
+        font-size: 4rem;
+    }
+    
+    .hero-content__subtitle {
+        font-size: 1.8rem;
+    }
+    
+    .hero-content {
+        max-width: 1000px;
+    }
+}

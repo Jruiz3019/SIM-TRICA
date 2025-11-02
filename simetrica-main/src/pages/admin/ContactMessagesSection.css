@@ -1,0 +1,288 @@
+/* Estilos para ContactMessagesSection */
+
+.contact-messages-section {
+  padding: var(--spacing-xl);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  font-family: var(--font-family-primary);
+}
+
+.btn-refresh {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: rgba(126, 74, 53, 0.2);
+  border: 1px solid var(--primary-color);
+  color: var(--text-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: var(--font-weight-bold);
+  transition: all 0.3s ease;
+}
+
+.btn-refresh:hover:not(:disabled) {
+  background: rgba(126, 74, 53, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  padding: var(--spacing-md);
+  background: rgba(255, 71, 87, 0.2);
+  border: 1px solid rgba(255, 71, 87, 0.4);
+  border-radius: 8px;
+  color: #ff4757;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  font-weight: var(--font-weight-bold);
+}
+
+/* Layout principal */
+.content-layout {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Tabs de Mensajes (Leídos/No Leídos) */
+.messages-tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.messages-tab {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: var(--font-weight-bold);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  position: relative;
+  bottom: -2px;
+}
+
+.messages-tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.messages-tab.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.messages-tab svg {
+  transition: all 0.3s ease;
+}
+
+.messages-tab:hover svg {
+  transform: scale(1.1);
+}
+
+/* Modal Content Styles */
+.contact-detail-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detail-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.btn-close:hover {
+  color: #ff4757;
+}
+
+.detail-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detail-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-field label {
+  font-weight: var(--font-weight-bold);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-field span {
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.message-content {
+  background: rgba(255, 255, 255, 0.05);
+  padding: var(--spacing-md);
+  border-radius: 8px;
+  color: var(--text-color);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.status-select {
+  padding: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.status-select:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-color);
+}
+
+.status-select option {
+  background: #1a1a1a;
+  color: var(--text-color);
+}
+
+.detail-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-lg);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-action {
+  flex: 1;
+  padding: var(--spacing-md);
+  border: none;
+  border-radius: 8px;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-mark-read {
+  background: rgba(46, 213, 115, 0.2);
+  border: 1px solid rgba(46, 213, 115, 0.3);
+  color: #2ed573;
+}
+
+.btn-mark-read:hover {
+  background: rgba(46, 213, 115, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-delete {
+  background: rgba(255, 71, 87, 0.2);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  color: #ff4757;
+}
+
+.btn-delete:hover {
+  background: rgba(255, 71, 87, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .contact-messages-section {
+    padding: var(--spacing-md);
+  }
+
+  .section-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .messages-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .messages-tab {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contact-messages-section {
+    padding: var(--spacing-sm);
+  }
+
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .btn-refresh {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .messages-tab {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+
+  .messages-tab svg {
+    width: 14px;
+    height: 14px;
+  }
+}

@@ -1,0 +1,7 @@
+export { default as authService } from './auth.service.js';
+export { default as commentService } from './comment.service.js';
+export { default as contactService } from './contact.service.js';
+export { default as designService } from './design.service.js';
+export { default as imageService } from './image.service.js';
+export { default as projectService } from './project.service.js';
+export { default as workWithUsService } from './work-with-us.service.js';

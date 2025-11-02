@@ -1,0 +1,91 @@
+/* Importar utilidades CSS al inicio */
+@import './styles/utilities.css';
+
+/* Reset CSS y variables globales para consistencia cross-browser */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Variables CSS para consistencia y mantenibilidad */
+  --primary-color: #7E4A35;
+  --secondary-color: #504641;
+  --text-color: #FFFFFF;
+  --background-overlay: rgba(80, 70, 65, 0.9);
+  --background-dark: #202020;
+  
+  /* Variables de tipografía */
+  --font-family-primary: 'Times New Roman', Times, serif;
+  --font-size-base: 16px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  
+  /* Variables de espaciado responsive */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  
+  /* Variables de breakpoints */
+  --mobile-max: 767px;
+  --tablet-min: 768px;
+  --tablet-max: 1023px;
+  --desktop-min: 1024px;
+  --desktop-large-min: 1440px;
+  --tv-min: 1920px;
+  
+  /* Variables de z-index para jerarquía */
+  --z-header: 1000;
+  --z-overlay: 900;
+  --z-modal: 1100;
+  
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  background: var(--background-dark);
+  
+  /* Mejoras de accesibilidad */
+  scroll-behavior: smooth;
+}
+
+/* Reset para elementos de formulario y botones */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Mejoras de accesibilidad para imágenes */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Mejoras para enlaces */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Focus visible para accesibilidad */
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Reduced motion para usuarios con preferencias de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

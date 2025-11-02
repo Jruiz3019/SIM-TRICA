@@ -1,0 +1,62 @@
+.simetrica-section {
+  padding: 4rem 2rem;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.simetrica-section__content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.simetrica-section__image {
+  position: relative;
+}
+
+.simetrica-section__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(70%); /* oscurece la imagen */
+  transition: filter 0.3s ease;
+}
+
+.simetrica-section__image:hover img {
+  filter: brightness(100%); /* vuelve clara al hacer hover */
+}
+
+.simetrica-section__caption {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: #ddd;
+  border-left: 4px solid #6b3e2e;
+  padding-left: 0.5rem;
+}
+
+/* Hexágono */
+.simetrica-section__hexagon {
+  position: relative;
+  padding: 2rem;
+  border: 2px solid #6b3e2e;
+  clip-path: polygon(
+    25% 0%, 75% 0%, 
+    100% 50%, 75% 100%, 
+    25% 100%, 0% 50%
+  );
+  background: #1a1a1a;
+  text-align: center;
+}
+
+.simetrica-section__title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.simetrica-section__description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #ccc;
+}

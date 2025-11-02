@@ -1,0 +1,380 @@
+/* Header responsivo con mejores prácticas de UX/UI */
+.header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* MODIFICADO: Transparente por defecto según requerimientos */
+    background: transparent;
+    color: var(--text-color);
+    z-index: var(--z-header);
+    /* MODIFICADO: Transición optimizada para transform y background */
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px); /* Efecto glassmorphism moderno */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    will-change: transform, background-color; /* Optimización de performance */
+}
+
+/* AÑADIDO: Estado visible del header (comportamiento dinámico) */
+.header--visible {
+    transform: translateY(0);
+}
+
+/* AÑADIDO: Estado oculto del header (comportamiento dinámico) */
+.header--hidden {
+    transform: translateY(-110%);
+}
+
+/* MODIFICADO: Estado del header cuando se hace scroll - usar color exacto requerido */
+.header--scrolled {
+    background: rgba(126, 74, 53, 0.502); /* Color exacto #7E4A3580 como rgba */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor del header con padding responsivo */
+.header__container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra todo el contenido */
+    padding: var(--spacing-md) var(--spacing-xxl);
+    min-height: 70px;
+    max-width: 1600px;
+    margin: 0 auto;
+    gap: 55.9px; /* Espacio entre logo y navegación */
+}
+
+/* Logo container con mejores prácticas de diseño */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0; /* Sin espacio - super pegados */
+    flex-shrink: 0; /* Previene que el logo se encoja */
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.logo-container:hover {
+    opacity: 0.85;
+}
+
+.logo-container__icon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain; /* Mantiene proporción de la imagen */
+    transition: transform 0.3s ease;
+    margin-right: -1.6rem;
+}
+
+.logo-container__text {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+    transition: transform 0.3s ease;
+}
+
+.logo-container:hover .logo-container__icon {
+    transform: scale(1.05); /* Micro-interacción en hover */
+}
+
+/* Navegación desktop */
+.nav-container--desktop {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: center;
+    flex-shrink: 0; /* Evita que se encoja */
+}
+
+/* AÑADIDO: Container para botones de autenticación */
+.nav-container__auth {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-left: var(--spacing-md);
+    padding-left: var(--spacing-md);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-container__username {
+    color: var(--text-color);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-normal);
+    opacity: 0.9;
+}
+
+.nav-container__username-mobile {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--spacing-sm);
+}
+
+.nav-container__link--logout {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-container__link--logout:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-container__link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-normal);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap; /* Previene salto de línea en enlaces largos */
+}
+
+/* Efecto hover para enlaces */
+.nav-container__link:hover,
+.nav-container__link:focus {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Enlace CTA (Call to Action) con estilo especial */
+.nav-container__link--cta {
+    background: var(--primary-color);
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--text-color);
+    border-radius: 25px;
+    /* font-weight: var(--font-weight-bold); */
+    box-shadow: 0 4px 15px rgba(126, 74, 53, 0.3);
+}
+
+.nav-container__link--cta:hover,
+.nav-container__link--cta:focus {
+    background: #8B5A42; /* Color ligeramente más claro en hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(126, 74, 53, 0.4);
+}
+
+/* Botón hamburguesa para móvil */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:focus {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-toggle__line {
+    width: 20px;
+    height: 2px;
+    background: var(--text-color);
+    border-radius: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.mobile-menu-toggle__line:not(:last-child) {
+    margin-bottom: 4px;
+}
+
+/* Animación del botón hamburguesa cuando está abierto */
+.mobile-menu-toggle--open .mobile-menu-toggle__line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle--open .mobile-menu-toggle__line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.mobile-menu-toggle--open .mobile-menu-toggle__line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Navegación móvil */
+.nav-container--mobile {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 280px;
+    height: calc(100vh - 70px);
+    background: var(--secondary-color);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-xl);
+    gap: var(--spacing-md);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+    z-index: var(--z-overlay);
+    overflow-y: auto; /* Scroll si el contenido es muy largo */
+}
+
+.nav-container--mobile-open {
+    right: 0;
+}
+
+/* Overlay para cerrar menú móvil */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--z-overlay);
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Enlaces en navegación móvil */
+.nav-container--mobile .nav-container__link {
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-container--mobile .nav-container__link:last-child {
+    border-bottom: none;
+    margin-top: var(--spacing-md);
+}
+
+/* Breakpoints responsivos */
+
+/* Tablet portrait y landscape */
+@media screen and (max-width: 1023px) {
+    .nav-container--desktop {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+}
+
+/* Mobile large */
+@media screen and (max-width: 768px) {
+    .header__container {
+        padding: var(--spacing-sm) var(--spacing-md);
+        min-height: 60px;
+    }
+    
+    .logo-container__image {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .nav-container--mobile {
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 100%;
+        right: -100%;
+    }
+}
+
+/* Mobile pequeño */
+@media screen and (max-width: 480px) {
+    .header__container {
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
+    
+    .logo-container__image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .nav-container--mobile {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Desktop grande */
+@media screen and (min-width: 1440px) {
+    .header__container {
+        padding: var(--spacing-lg) var(--spacing-xxl);
+    }
+    
+    .nav-container--desktop {
+        gap: var(--spacing-xxl);
+    }
+    
+    .nav-container__link {
+        font-size: 1rem;
+    }
+    
+    .logo-container__image {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+/* TV y pantallas muy grandes */
+@media screen and (min-width: 1920px) {
+    .header__container {
+        min-height: 90px;
+        padding: var(--spacing-xl) 4rem;
+    }
+    
+    .logo-container__image {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .nav-container__link {
+        font-size: 1.125rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .nav-container__link--cta {
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .header,
+    .nav-container__link,
+    .mobile-menu-toggle__line,
+    .nav-container--mobile {
+        transition: none;
+    }
+    
+    .mobile-menu-overlay {
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .header {
+        border-bottom: 2px solid var(--text-color);
+    }
+    
+    .nav-container__link--cta {
+        border: 2px solid var(--text-color);
+    }
+}

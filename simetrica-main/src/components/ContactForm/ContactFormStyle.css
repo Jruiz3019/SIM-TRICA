@@ -1,0 +1,353 @@
+/* ACTUALIZADO: ContactForm component styles - 2025-10-20 */
+/* ContactFormStyle.css - Diseño oscuro moderno según especificaciones */
+
+/* Clase base del formulario */
+.contact-form {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  border-radius: 0;
+  border: none;
+}
+
+/* Grid responsivo para campos del formulario */
+.contact-form__grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  
+  /* 2 columnas desde el inicio */
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Campo individual del formulario */
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Campo que ocupa toda la fila (mensaje) */
+.contact-form__field--full {
+  grid-column: 1 / -1;
+}
+
+/* Etiquetas de los campos - ocultas visualmente pero accesibles */
+.contact-form__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Estilos base para inputs */
+.contact-form__input,
+.contact-form__textarea {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid rgba(126, 74, 53, 0.5);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  
+  /* Transiciones para interacciones */
+  transition: all 0.3s ease;
+  
+  /* Remover estilos por defecto del navegador */
+  outline: none;
+  appearance: none;
+  
+  /* Forzar colores para prevenir estilos del navegador en modo oscuro */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color-scheme: dark;
+}
+
+/* Placeholders con mejor contraste */
+.contact-form__input::placeholder,
+.contact-form__textarea::placeholder {
+  color: rgba(255, 255, 255, 1);
+  opacity: 1; /* Firefox fix */
+  font-size: 0.9rem;
+}
+
+/* Estados de foco para accesibilidad */
+.contact-form__input:focus,
+.contact-form__textarea:focus {
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+/* Estados de hover */
+.contact-form__input:hover:not(:focus),
+.contact-form__textarea:hover:not(:focus) {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Estados de error */
+.contact-form__input--error,
+.contact-form__textarea--error {
+  border-color: #dc3545;
+  background: rgba(220, 53, 69, 0.05);
+}
+
+.contact-form__input--error:focus,
+.contact-form__textarea--error:focus {
+  border-color: #dc3545;
+  box-shadow: none;
+}
+
+/* Textarea específico */
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 180px;
+  font-family: inherit;
+}
+
+/* Mensajes de error */
+.contact-form__error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* Mensaje de éxito */
+.contact-form__success {
+  color: #2a9d8f;
+  font-size: 0.875rem;
+  margin-left: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* Sección de acciones */
+.contact-form__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* Botón de envío */
+.contact-form__submit {
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xxl);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: var(--font-weight-normal);
+  cursor: pointer;
+  min-width: 160px;
+  
+  /* Transiciones para interacciones */
+  transition: all 0.3s ease;
+  
+  /* Prevenir selección de texto */
+  user-select: none;
+}
+
+/* Estados del botón */
+.contact-form__submit:hover:not(:disabled) {
+  background: #8B5A42;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(126, 74, 53, 0.4);
+}
+
+.contact-form__submit:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.contact-form__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.contact-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Campo honeypot oculto (anti-spam) */
+.contact-form__honeypot {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Clase utility para screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* BREAKPOINTS RESPONSIVOS */
+
+/* Mobile devices (hasta 767px) */
+@media screen and (max-width: 767px) {
+  .contact-form__grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .contact-form__textarea {
+    min-height: 120px;
+  }
+}
+
+/* Tablet devices (768px - 1023px) */
+@media screen and (min-width: 768px) {
+  .contact-form {
+    padding: 0;
+  }
+  
+  .contact-form__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .contact-form__actions {
+    justify-content: flex-start;
+  }
+}
+
+/* Desktop devices (1024px - 1919px) */
+@media screen and (min-width: 1024px) {
+  .contact-form {
+    max-width: 900px;
+    padding: 0;
+  }
+  
+  .contact-form__grid {
+    gap: var(--spacing-xl);
+  }
+  
+  .contact-form__input,
+  .contact-form__textarea {
+    padding: var(--spacing-lg);
+  }
+  
+  .contact-form__submit {
+    padding: var(--spacing-lg) var(--spacing-xxl);
+    font-size: 1.1rem;
+  }
+}
+
+/* TV and ultra-wide screens (1920px+) */
+@media screen and (min-width: 1920px) {
+  .contact-form {
+    max-width: 1000px;
+    padding: 0;
+  }
+  
+  .contact-form__label {
+    font-size: 1rem;
+  }
+  
+  .contact-form__input,
+  .contact-form__textarea {
+    font-size: 1.1rem;
+    padding: 1.25rem;
+  }
+  
+  .contact-form__submit {
+    font-size: 1.2rem;
+    padding: 1.25rem 2.5rem;
+  }
+}
+
+/* MEJORAS DE ACCESIBILIDAD */
+
+/* High contrast mode para mejor accesibilidad */
+@media (prefers-contrast: high) {
+  .contact-form {
+    background: var(--background-dark);
+    border: 3px solid var(--text-color);
+  }
+  
+  .contact-form__input,
+  .contact-form__textarea {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--text-color);
+  }
+  
+  .contact-form__input:focus,
+  .contact-form__textarea:focus {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: var(--primary-color);
+  }
+  
+  .contact-form__submit {
+    border: 2px solid var(--text-color);
+  }
+}
+
+/* Reduced motion para usuarios con preferencias de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .contact-form,
+  .contact-form__input,
+  .contact-form__textarea,
+  .contact-form__submit {
+    transition: none;
+  }
+  
+  .contact-form__submit:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .contact-form {
+    background: transparent;
+    border-color: transparent;
+  }
+  
+  .contact-form__input,
+  .contact-form__textarea {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(126, 74, 53, 0.5) !important;
+    color: var(--text-color) !important;
+  }
+  
+  .contact-form__input:focus,
+  .contact-form__textarea:focus {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--primary-color) !important;
+  }
+  
+  .contact-form__input:hover:not(:focus),
+  .contact-form__textarea:hover:not(:focus) {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+}
