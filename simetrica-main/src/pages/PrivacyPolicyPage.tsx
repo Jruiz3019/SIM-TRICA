@@ -245,7 +245,7 @@ const PrivacyPolicyPage: React.FC = () => {
             <section className="privacy-policy__section">
               <h3 className="privacy-policy__heading">VIII. PUBLICACIÓN</h3>
               <p className="privacy-policy__text">
-                Esta política ha sido publicada y actualizada en el mes de agosto del año 2025.
+                Esta política ha sido publicada y actualizada en el mes de noviembre del año 2025.
               </p>
             </section>
           </div>
