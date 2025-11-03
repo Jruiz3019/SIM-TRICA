@@ -16,7 +16,7 @@ import {
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
 // Middlewares
 app.use(cors(corsOptions));
@@ -45,8 +45,11 @@ const startServer = async () => {
   try {
     await connectDB();
     await createDefaultAdmin();
-    app.listen(PORT, () => {
+    
+    // Railway requiere escuchar en 0.0.0.0, no en localhost
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
