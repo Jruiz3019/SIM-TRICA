@@ -35,12 +35,13 @@
 .header__container {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centra todo el contenido */
-    padding: var(--spacing-md) var(--spacing-xxl);
+    justify-content: space-between; /* Espacio entre logo y botón hamburguesa en móvil */
+    padding: var(--spacing-md) var(--spacing-xl);
     min-height: 70px;
     max-width: 1600px;
     margin: 0 auto;
-    gap: 55.9px; /* Espacio entre logo y navegación */
+    gap: var(--spacing-md);
+    width: 100%;
 }
 
 /* Logo container con mejores prácticas de diseño */
@@ -59,15 +60,15 @@
 }
 
 .logo-container__icon {
-    width: 100px;
-    height: 100px;
-    object-fit: contain; /* Mantiene proporción de la imagen */
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
     transition: transform 0.3s ease;
-    margin-right: -1.6rem;
+    margin-right: -0.8rem;
 }
 
 .logo-container__text {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: var(--font-weight-bold);
     color: var(--text-color);
     letter-spacing: 0.5px;
@@ -281,11 +282,17 @@
     .header__container {
         padding: var(--spacing-sm) var(--spacing-md);
         min-height: 60px;
+        gap: var(--spacing-sm);
     }
     
-    .logo-container__image {
-        width: 70px;
-        height: 70px;
+    .logo-container__icon {
+        width: 50px;
+        height: 50px;
+        margin-right: -0.5rem;
+    }
+    
+    .logo-container__text {
+        font-size: 1rem;
     }
     
     .nav-container--mobile {
@@ -299,16 +306,31 @@
 /* Mobile pequeño */
 @media screen and (max-width: 480px) {
     .header__container {
-        padding: var(--spacing-xs) var(--spacing-md);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        gap: var(--spacing-xs);
     }
     
-    .logo-container__image {
-        width: 60px;
-        height: 60px;
+    .logo-container__icon {
+        width: 40px;
+        height: 40px;
+        margin-right: -0.4rem;
+    }
+    
+    .logo-container__text {
+        font-size: 0.9rem;
     }
     
     .nav-container--mobile {
         padding: var(--spacing-md);
+    }
+    
+    .mobile-menu-toggle {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .mobile-menu-toggle__line {
+        width: 18px;
     }
 }
 
