@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { ProjectListResponse, ProjectResponse, ProjectFormData, Project } from '../types/project.types';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 class AdminProjectService {
   private getAuthHeaders() {

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB, corsOptions, createDefaultAdmin } from './config/index.js';
+import { errorHandler } from './middleware/error-handler.js';
 import {
   authRoutes,
   projectRoutes,
@@ -35,6 +36,9 @@ app.use('/api/work-with-us', workWithUsRoutes);
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
+
+// Error handler (debe ir después de todas las rutas)
+app.use(errorHandler);
 
 // Start server
 const startServer = async () => {

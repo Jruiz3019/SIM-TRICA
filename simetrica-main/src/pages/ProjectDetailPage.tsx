@@ -55,7 +55,7 @@ const ProjectDetailPage = () => {
 
   useEffect(() => {
     if (project && user) {
-      const reaction = project.reactions.find(r => r.userId === user.id);
+      const reaction = project.reactions.find((r) => r.userId === user.id);
       setUserReaction(reaction?.type || null);
     }
   }, [project, user]);

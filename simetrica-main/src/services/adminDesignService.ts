@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { DesignListResponse, DesignResponse, DesignFormData, Design } from '../types/design.types';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 class AdminDesignService {
   private getAuthHeaders() {

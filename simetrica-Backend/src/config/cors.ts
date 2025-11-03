@@ -15,10 +15,23 @@ const allowedOrigins = [
   'http://localhost:5173',      // Vite default port
   'http://localhost:5174',      // Vite alternate port
   'http://localhost:4200',      // Angular default port
-  // Agregar aquí los dominios de producción cuando estén disponibles
-  // 'https://tu-dominio.com',
-  // 'https://www.tu-dominio.com'
 ];
+
+// Agregar dominios de producción desde variables de entorno
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+// Permitir dominios de Railway automáticamente
+if (process.env.RAILWAY_STATIC_URL) {
+  allowedOrigins.push(`https://${process.env.RAILWAY_STATIC_URL}`);
+}
+
+// Variable de entorno adicional para múltiples dominios (separados por coma)
+if (process.env.ALLOWED_ORIGINS) {
+  const additionalOrigins = process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
+  allowedOrigins.push(...additionalOrigins);
+}
 
 /**
  * Opciones de configuración de CORS

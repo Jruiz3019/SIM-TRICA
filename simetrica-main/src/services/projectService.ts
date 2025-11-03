@@ -1,49 +1,10 @@
 import axios from 'axios';
+import type { Project, ProjectListResponse } from '../types/project.types.js';
 
-const API_URL = 'http://localhost:3000/api';
+// Re-exportar el tipo Project para facilitar su uso en componentes
+export type { Project } from '../types/project.types.js';
 
-export interface Project {
-  _id: string;
-  nombre: string;
-  cliente: string;
-  descripcion: string;
-  ubicacion: string;
-  duracion: string;
-  personasInvolucradas: number;
-  imagenes: Array<{
-    _id: string;
-    url: string;
-    filename: string;
-    altText?: string;
-    description?: string;
-  }>;
-  likes: number;
-  dislikes: number;
-  reactions: Array<{
-    userId: string;
-    type: 'like' | 'dislike';
-  }>;
-  createdBy: {
-    _id: string;
-    username: string;
-    email: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ProjectListResponse {
-  success: boolean;
-  projects: Project[];
-  total: number;
-  page: number;
-  totalPages: number;
-}
-
-interface ProjectResponse {
-  success: boolean;
-  data: Project;
-}
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 class ProjectService {
   private getAuthHeaders() {
@@ -56,7 +17,7 @@ class ProjectService {
     return response.data;
   }
 
-  async getById(id: string): Promise<ProjectResponse> {
+  async getById(id: string): Promise<{ success: boolean; data: Project }> {
     const response = await axios.get(`${API_URL}/projects/${id}`);
     return response.data;
   }
@@ -66,7 +27,7 @@ class ProjectService {
     return response.data;
   }
 
-  async react(projectId: string, type: 'like' | 'dislike'): Promise<ProjectResponse> {
+  async react(projectId: string, type: 'like' | 'dislike'): Promise<{ success: boolean; data: Project }> {
     const response = await axios.post(
       `${API_URL}/projects/${projectId}/react`,
       { type },
