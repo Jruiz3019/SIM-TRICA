@@ -125,12 +125,12 @@ const PrivacyPolicyPage: React.FC = () => {
             <section className="privacy-policy__section">
               <h3 className="privacy-policy__heading">III. PRINCIPIOS RECTORES</h3>
               <p className="privacy-policy__text">
-                En el marco de nuestras actividades profesionales y administrativas, la Firma adelantará la recolección, 
+                En el marco de nuestras actividades profesionales y administrativas, SIMÉTRICA adelantará la recolección, 
                 uso, almacenamiento, transmisión, transferencia y, en general, el tratamiento de los datos personales de 
                 los titulares, de conformidad con las finalidades previstas en la presente Política.
               </p>
               <p className="privacy-policy__text">
-                Todo tratamiento de datos personales efectuado por la Firma, sus responsables, encargados o por terceros 
+                Todo tratamiento de datos personales efectuado por SIMÉTRICA, sus responsables, encargados o por terceros 
                 a quienes se transfiera la información, deberá ajustarse estrictamente a los principios y reglas establecidos 
                 en la Ley 1581 de 2012, sus decretos reglamentarios y en este instrumento, con el fin de garantizar el 
                 derecho fundamental al hábeas data y asegurar el cumplimiento de los lineamientos internos de la organización 
@@ -146,7 +146,7 @@ const PrivacyPolicyPage: React.FC = () => {
                   <strong>Libertad y consentimiento informado:</strong> El tratamiento de datos personales solo podrá 
                   realizarse con la autorización previa, expresa e informada del titular, salvo las excepciones previstas 
                   en la ley. En los casos en que la información haya sido recolectada antes de la entrada en vigor del 
-                  Decreto 1377 de 2013, la Firma implementará mecanismos idóneos para obtener dicha autorización retroactiva.
+                  Decreto 1377 de 2013, SIMÉTRICA implementará mecanismos idóneos para obtener dicha autorización retroactiva.
                 </li>
                 <li>
                   <strong>Finalidad autorizada:</strong> Todo tratamiento deberá responder a las finalidades previstas en 
@@ -155,7 +155,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 </li>
                 <li>
                   <strong>Veracidad y actualización:</strong> Los datos personales deberán ser veraces, completos, exactos, 
-                  actualizados, comprobables y comprensibles. La Firma se abstendrá de tratar información parcial, 
+                  actualizados, comprobables y comprensibles. SIMÉTRICA se abstendrá de tratar información parcial, 
                   fraccionada o que induzca a error, salvo que el titular la complemente o corrija.
                 </li>
                 <li>
@@ -164,13 +164,13 @@ const PrivacyPolicyPage: React.FC = () => {
                 </li>
                 <li>
                   <strong>Acceso y circulación restringida:</strong> El acceso y tratamiento de los datos personales estará 
-                  limitado exclusivamente al personal autorizado de la Firma y a quienes, por la naturaleza de sus funciones, 
+                  limitado exclusivamente al personal autorizado de SIMÉTRICA y a quienes, por la naturaleza de sus funciones, 
                   deban manejar dicha información. No podrán hacerse disponibles en medios masivos, salvo que se cuente con 
                   protocolos de seguridad que garanticen su restricción a usuarios autorizados.
                 </li>
                 <li>
                   <strong>Acceso del titular:</strong> Cuando lo solicite, el titular tendrá derecho a conocer la existencia 
-                  de los datos que le conciernen. La dependencia designada para la protección de datos en la Firma será la 
+                  de los datos que le conciernen. La dependencia designada para la protección de datos en SIMÉTRICA será la 
                   encargada de responder tales solicitudes.
                 </li>
                 <li>
@@ -178,7 +178,7 @@ const PrivacyPolicyPage: React.FC = () => {
                   estrictamente necesario para cumplir con la finalidad informada al titular.
                 </li>
                 <li>
-                  <strong>Seguridad informática y confidencialidad profesional:</strong> La Firma adoptará medidas técnicas, 
+                  <strong>Seguridad informática y confidencialidad profesional:</strong> SIMÉTRICA adoptará medidas técnicas, 
                   humanas y administrativas para proteger los datos personales contra accesos no autorizados, pérdidas, 
                   alteraciones o usos indebidos, preservando en todo momento la confidencialidad de la información, conforme 
                   al deber de secreto profesional.
@@ -194,7 +194,7 @@ const PrivacyPolicyPage: React.FC = () => {
                   el titular.
                 </li>
                 <li>
-                  <strong>Separación de bases de datos:</strong> La Firma garantizará la individualidad de las bases de 
+                  <strong>Separación de bases de datos:</strong> SIMÉTRICA garantizará la individualidad de las bases de 
                   datos en las que actúe como responsable respecto de aquellas en las que tenga la calidad de encargado.
                 </li>
                 <li>
@@ -237,7 +237,7 @@ const PrivacyPolicyPage: React.FC = () => {
               </p>
               <p className="privacy-policy__text">
                 La actualización de la Políticas de Protección de Datos Personales dependerá de las instrucciones y 
-                lineamientos de la Dirección Ejecutiva de la Firma, así como de las extensiones reglamentarias del ente 
+                lineamientos de la Dirección Ejecutiva de SIMÉTRICA, así como de las extensiones reglamentarias del ente 
                 de vigilancia y control, la Superintendencia de Industria y Comercio.
               </p>
             </section>
