@@ -214,7 +214,8 @@
     position: fixed;
     top: 70px;
     right: -100%;
-    width: 280px;
+    width: 100%;
+    max-width: 320px;
     height: calc(100vh - 70px);
     background: var(--secondary-color);
     backdrop-filter: blur(20px);
@@ -225,7 +226,7 @@
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
     z-index: var(--z-overlay);
-    overflow-y: auto; /* Scroll si el contenido es muy largo */
+    overflow-y: auto;
 }
 
 .nav-container--mobile-open {
@@ -298,8 +299,8 @@
     .nav-container--mobile {
         top: 60px;
         height: calc(100vh - 60px);
-        width: 100%;
-        right: -100%;
+        max-width: 280px;
+        padding: var(--spacing-lg);
     }
 }
 
@@ -321,6 +322,7 @@
     }
     
     .nav-container--mobile {
+        max-width: 260px;
         padding: var(--spacing-md);
     }
     
