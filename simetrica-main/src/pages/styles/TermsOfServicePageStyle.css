@@ -1,0 +1,257 @@
+/* Terms of Service Page Styles */
+.terms-of-service {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+  padding-top: 90px;
+  padding-bottom: var(--spacing-xxl);
+}
+
+.terms-of-service__container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.terms-of-service__header {
+  text-align: center;
+  margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-xxl) 0;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.terms-of-service__title {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-md) 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.terms-of-service__subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-style: italic;
+}
+
+.terms-of-service__content {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: var(--spacing-xxl);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.terms-of-service__section {
+  margin-bottom: var(--spacing-xxl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.terms-of-service__section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.terms-of-service__company-info {
+  background: rgba(126, 74, 53, 0.2);
+  padding: var(--spacing-md);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+  text-align: center;
+}
+
+.terms-of-service__company-info p {
+  margin: var(--spacing-xs) 0;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.terms-of-service__heading {
+  font-size: 1.3rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin: 0 0 var(--spacing-lg) 0;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid rgba(126, 74, 53, 0.3);
+}
+
+.terms-of-service__text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 var(--spacing-lg) 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.terms-of-service__text--final {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-style: italic;
+}
+
+.terms-of-service__list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-lg) 0;
+}
+
+.terms-of-service__list li {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 var(--spacing-lg) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.terms-of-service__list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+}
+
+.terms-of-service__list li strong {
+  color: var(--primary-color);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.terms-of-service__contact {
+  background: rgba(126, 74, 53, 0.15);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  margin-top: var(--spacing-lg);
+  border: 1px solid rgba(126, 74, 53, 0.3);
+}
+
+.terms-of-service__contact-title {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.terms-of-service__contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.terms-of-service__contact-list li {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin: var(--spacing-sm) 0;
+  padding-left: 0;
+}
+
+.terms-of-service__contact-list li::before {
+  content: none;
+}
+
+.terms-of-service__contact-list a {
+  color: var(--text-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.terms-of-service__contact-list a:hover {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .terms-of-service {
+    padding-top: 70px;
+  }
+
+  .terms-of-service__container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .terms-of-service__title {
+    font-size: 1.8rem;
+  }
+
+  .terms-of-service__subtitle {
+    font-size: 1rem;
+  }
+
+  .terms-of-service__content {
+    padding: var(--spacing-lg);
+  }
+
+  .terms-of-service__heading {
+    font-size: 1.1rem;
+  }
+
+  .terms-of-service__text,
+  .terms-of-service__list li {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .terms-of-service__list li {
+    padding-left: var(--spacing-md);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .terms-of-service__container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .terms-of-service__title {
+    font-size: 1.5rem;
+  }
+
+  .terms-of-service__subtitle {
+    font-size: 0.9rem;
+  }
+
+  .terms-of-service__content {
+    padding: var(--spacing-md);
+    border-radius: 8px;
+  }
+
+  .terms-of-service__header {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .terms-of-service__section {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .terms-of-service__contact-list a {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .terms-of-service__content {
+    border: 2px solid var(--text-color);
+  }
+
+  .terms-of-service__text,
+  .terms-of-service__list li {
+    color: var(--text-color);
+  }
+}

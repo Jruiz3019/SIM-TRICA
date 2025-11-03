@@ -76,9 +76,10 @@ const DesignPage = () => {
       title: "Legal",
       links: [
         { label: "Política de Privacidad", href: "/privacidad" },
-        { label: "Términos de Servicio", href: "/terminos" },
-      ],
-    },
+        { label: "Política de Cookies", href: "/cookies" },
+        { label: "Términos de Servicio", href: "/terminos" }
+      ]
+    }
   ];
 
   const socialLinks = [

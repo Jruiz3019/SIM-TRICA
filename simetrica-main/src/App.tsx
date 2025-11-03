@@ -18,6 +18,7 @@ const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
 const AsociadosPage = lazy(() => import("./pages/AsociadosPage"));
 const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
 const CookiesPolicyPage = lazy(() => import("./pages/CookiesPolicyPage"));
+const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
 
 // Componente de loading para Suspense
 const LoadingSpinner = () => (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/contacto" element={<ContactPage />} />
           <Route path="/privacidad" element={<PrivacyPolicyPage />} />
           <Route path="/cookies" element={<CookiesPolicyPage />} />
+          <Route path="/terminos" element={<TermsOfServicePage />} />
           {/* Rutas de autenticación */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -44,6 +44,7 @@ const Home = () => {
       title: "Legal",
       links: [
         { label: "Política de Privacidad", href: "/privacidad" },
+        { label: "Política de Cookies", href: "/cookies" },
         { label: "Términos de Servicio", href: "/terminos" }
       ]
     }
