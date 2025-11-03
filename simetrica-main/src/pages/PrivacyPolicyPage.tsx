@@ -58,7 +58,7 @@ const PrivacyPolicyPage: React.FC = () => {
               </h2>
               <div className="privacy-policy__company-info">
                 <p><strong>SIMÉTRICA S.A.S</strong></p>
-                <p>Nit 901.850.566-8</p>
+                <p>Nit 1005098256-9</p>
               </div>
             </section>
 

@@ -55,7 +55,7 @@ const TermsOfServicePage: React.FC = () => {
             <section className="terms-of-service__section">
               <div className="terms-of-service__company-info">
                 <p><strong>SIMÉTRICA S.A.S</strong></p>
-                <p>Nit 901.850.566-8</p>
+                <p>Nit 1005098256-9</p>
               </div>
             </section>
 
