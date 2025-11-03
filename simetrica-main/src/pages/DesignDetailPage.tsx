@@ -203,9 +203,8 @@ const DesignDetailPage = () => {
       title: "Servicios",
       links: [
         { label: "Proyectos", href: "/proyectos" },
-        { label: "Diseños", href: "/diseños" },
-        { label: "Construcción", href: "/construccion" },
-      ],
+        { label: "Diseños", href: "/diseños" }
+      ]
     },
     {
       title: "Empresa",
