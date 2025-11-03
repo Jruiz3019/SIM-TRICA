@@ -320,18 +320,30 @@
   .footer__main {
     flex-direction: row;
     align-items: flex-start;
+    justify-content: space-between;
     gap: var(--spacing-xxl);
+  }
+  
+  .footer__brand {
+    justify-content: flex-start;
+    flex: 0 0 auto;
+  }
+  
+  .footer__navigation {
+    flex: 1;
+    padding: 0;
   }
   
   .footer__columns {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: flex-start;
     gap: var(--spacing-xl);
   }
   
   .footer__column {
     text-align: left;
+    flex: 1;
   }
   
   .footer__links {
@@ -340,6 +352,19 @@
   
   .footer__links li {
     text-align: left;
+  }
+  
+  .footer__social {
+    margin-top: 0;
+    align-items: flex-start;
+  }
+  
+  .footer__social-title {
+    text-align: left;
+  }
+  
+  .footer__social-links {
+    justify-content: flex-start;
   }
   
   .footer__bottom {
@@ -366,8 +391,12 @@
     padding: 0 var(--spacing-xxl);
   }
   
+  .footer__main {
+    gap: 3rem;
+  }
+  
   .footer__columns {
-    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
   }
   
   .footer__logo {
