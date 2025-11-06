@@ -38,7 +38,7 @@
 /* Hexágono */
 .simetrica-section__hexagon {
   position: relative;
-  padding: 2rem;
+  padding: 3rem 2.5rem;
   border: 2px solid #6b3e2e;
   clip-path: polygon(
     25% 0%, 75% 0%, 
@@ -47,16 +47,88 @@
   );
   background: #1a1a1a;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .simetrica-section__title {
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  padding: 0 1rem;
 }
 
 .simetrica-section__description {
   font-size: 1rem;
   line-height: 1.6;
   color: #ccc;
+  padding: 0 1.5rem;
+  max-width: 90%;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .simetrica-section__content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .simetrica-section__hexagon {
+    padding: 3rem 2rem;
+  }
+
+  .simetrica-section__title {
+    font-size: 1.6rem;
+  }
+
+  .simetrica-section__description {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .simetrica-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .simetrica-section__hexagon {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .simetrica-section__title {
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .simetrica-section__description {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .simetrica-section {
+    padding: 2rem 1rem;
+  }
+
+  .simetrica-section__hexagon {
+    padding: 2rem 1rem;
+  }
+
+  .simetrica-section__title {
+    font-size: 1.3rem;
+    padding: 0;
+  }
+
+  .simetrica-section__description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 0 0.5rem;
+  }
+
+  .simetrica-section__caption {
+    font-size: 0.85rem;
+  }
 }

@@ -8,7 +8,7 @@ const SimetricaSection = () => {
                 {/* Imagen */}
                 <div className="simetrica-section__image">
                     <img src={Img} alt="Proyecto Simétrica" />
-                    <p className="simetrica-section__caption">Etiam vitae bibendum elit.</p>
+                    <p className="simetrica-section__caption">SIMÉTRICA</p>
                 </div>
 
                 {/* Hexágono con texto */}

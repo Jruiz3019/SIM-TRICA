@@ -25,7 +25,7 @@ const NosotrosSection = () => {
 
             {/* Pie decorativo */}
             <div className="whyus-section__footer">
-                <span>Etiam vitae bibendum elit.</span>
+                <span>SIMÉTRICA</span>
                 <div className="whyus-section__line"></div>
             </div>
         </section>
