@@ -63,6 +63,110 @@
   filter: brightness(100%); /* vuelve clara al hacer hover */
 }
 
+/* Carrusel móvil - Oculto en desktop */
+.projects-section__carousel {
+  display: none;
+}
+
+.projects-section__carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(107, 62, 46, 0.9);
+  border: none;
+  color: #fff;
+  font-size: 2.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.projects-section__carousel-btn:hover {
+  background: rgba(107, 62, 46, 1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.projects-section__carousel-btn--prev {
+  left: 10px;
+}
+
+.projects-section__carousel-btn--next {
+  right: 10px;
+}
+
+.projects-section__carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.projects-section__carousel-slide {
+  display: none;
+  width: 100%;
+  border: 2px solid #6b3e2e;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.projects-section__carousel-slide--active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+.projects-section__carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(70%);
+  transition: filter 0.3s ease;
+}
+
+.projects-section__carousel-slide:active img {
+  filter: brightness(100%);
+}
+
+.projects-section__carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+.projects-section__carousel-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #6b3e2e;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.projects-section__carousel-indicator--active {
+  background: #6b3e2e;
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Responsive Design */
 
 /* Tablets (max-width: 1024px) */
@@ -104,18 +208,18 @@
     font-size: 0.95rem;
   }
 
+  /* Ocultar grid de imágenes en móvil */
   .projects-section__images {
-    flex-direction: column;
-    gap: 1.5rem;
+    display: none;
   }
 
-  .projects-section__image-card {
+  /* Mostrar carrusel en móvil */
+  .projects-section__carousel {
+    display: block;
+    position: relative;
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-  }
-}
-
 /* Mobile portrait (max-width: 480px) */
 @media screen and (max-width: 480px) {
   .projects-section {
@@ -132,10 +236,25 @@
     margin-bottom: 1.25rem;
   }
 
-  .projects-section__images {
-    gap: 1rem;
+  .projects-section__carousel {
+    max-width: 100%;
+    height: 350px;
   }
 
+  .projects-section__carousel-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+  }
+
+  .projects-section__carousel-btn--prev {
+    left: 5px;
+  }
+
+  .projects-section__carousel-btn--next {
+    right: 5px;
+  }
+}
   .projects-section__image-card {
     max-width: 100%;
   }
