@@ -1,5 +1,5 @@
 import "./styles/SimetricaSectionStyles.css"
-import Img from '../assets/simetrica1.png'
+import Img from '../assets/DSCN6869.jpg'
 
 const SimetricaSection = () => {
     return (

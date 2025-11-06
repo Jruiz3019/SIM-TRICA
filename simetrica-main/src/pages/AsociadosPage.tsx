@@ -1,7 +1,7 @@
 import HeaderLayout from '../layouts/HeaderLayout';
 import Footer from '../layouts/Footer/Footer';
 import LogoSimetrica from '../assets/logo-simetrica-blanco.png';
-import HeroBackground from '../assets/Diseno.png';  // Asumiendo que la imagen está en assets, ajusta la ruta si es necesario
+import HeroBackground from '../assets/asociados.png';
 import './styles/AsociadosPageStyle.css';
 
 const AsociadosPage = () => {

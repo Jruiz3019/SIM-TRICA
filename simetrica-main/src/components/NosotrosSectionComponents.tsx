@@ -1,5 +1,5 @@
 import "./styles/NosotrosSectionStyles.css";
-import ImagenConstruccion from "../assets/Nosotros.png";
+import ImagenConstruccion from "../assets/PARED.jpg";
 
 const NosotrosSection = () => {
     return (
