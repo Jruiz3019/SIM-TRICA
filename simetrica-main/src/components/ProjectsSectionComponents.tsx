@@ -75,9 +75,9 @@ const ProjectsSectionComponents = () => {
                 <div className="projects-section__text">
                     <h2 className="projects-section__title">Nuestros proyectos</h2>
                     <p className="projects-section__description">
-                        Descubre nuestro portafolio de proyectos arquitectónicos y de construcción. 
-                        Cada obra refleja nuestro compromiso con la excelencia, la innovación y el 
-                        detalle en cada fase del proceso constructivo.
+                        Descubre nuestro portafolio de proyectos especializados en insonorización acústica. 
+                        Cada obra refleja nuestro compromiso con el control de ruido y la optimización 
+                        acústica de espacios, garantizando ambientes confortables y libres de contaminación sonora.
                     </p>
                     <Button 
                         variant='primary'

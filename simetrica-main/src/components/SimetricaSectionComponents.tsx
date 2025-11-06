@@ -15,9 +15,10 @@ const SimetricaSection = () => {
                 <div className="simetrica-section__hexagon">
                     <h2 className="simetrica-section__title">SIMÉTRICA</h2>
                     <p className="simetrica-section__description">
-                        Somos una empresa especializada en diseño arquitectónico y construcción integral. 
-                        Transformamos ideas en espacios funcionales y estéticamente impecables, 
-                        combinando innovación técnica con calidad en cada proyecto que desarrollamos.
+                        Somos expertos en insonorización de espacios. Diseñamos e implementamos soluciones 
+                        acústicas integrales para controlar el ruido y mejorar el confort sonoro en proyectos 
+                        residenciales, comerciales e industriales, con tecnología de vanguardia y materiales 
+                        de alta calidad.
                     </p>
                 </div>
 
