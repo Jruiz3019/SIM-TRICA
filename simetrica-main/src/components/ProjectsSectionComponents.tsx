@@ -75,9 +75,9 @@ const ProjectsSectionComponents = () => {
                 <div className="projects-section__text">
                     <h2 className="projects-section__title">Nuestros proyectos</h2>
                     <p className="projects-section__description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur 
-                        euismod tellus sed lacus tincidunt lacinia sed sit amet odio. Etiam 
-                        vitae bibendum elit.
+                        Descubre nuestro portafolio de proyectos arquitectónicos y de construcción. 
+                        Cada obra refleja nuestro compromiso con la excelencia, la innovación y el 
+                        detalle en cada fase del proceso constructivo.
                     </p>
                     <Button 
                         variant='primary'

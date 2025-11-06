@@ -7,13 +7,13 @@ const NosotrosSection = () => {
             <div className="whyus-section__content">
             {/* Bloque marrón con texto */}
                 <div className="whyus-section__text-block">
-                    <h2 className="whyus-section__title">Porque nosotros</h2>
+                    <h2 className="whyus-section__title">Por qué nosotros</h2>
                     <p className="whyus-section__description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Curabitur euismod tellus sed lacus tincidunt lacinia sed sit amet odio. 
-                        Etiam vitae bibendum elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Curabitur euismod tellus sed lacus tincidunt lacinia sed sit amet odio. 
-                        Etiam vitae bibendum elit.
+                        Contamos con un equipo multidisciplinario de profesionales altamente calificados 
+                        que garantizan la excelencia en cada fase del proyecto. Nuestra experiencia en 
+                        diseño arquitectónico, ingeniería estructural y gestión de obra nos permite 
+                        entregar resultados que superan las expectativas, siempre con enfoque en calidad, 
+                        puntualidad y cumplimiento normativo.
                     </p>
                 </div>
 

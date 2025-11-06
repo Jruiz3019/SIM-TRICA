@@ -1,27 +1,33 @@
 // src/pages/HomePage.tsx
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HeaderLayout from "../layouts/HeaderLayout.tsx";
-import Footer from "../layouts/Footer/Footer.tsx"; // ACTUALIZADO: Import actualizado después de reorganización Footer -> layouts - 2025-10-01
-import Button from "../components/Button"; // AÑADIDO: Import del componente Button
-// import ContactForm from "../components/ContactForm"; // DISPONIBLE: Formulario de contacto listo para usar - 2025-10-01
+import Footer from "../layouts/Footer/Footer.tsx";
+import Button from "../components/Button";
 import "./styles/HomeStyle.css"
 import Fondo from "../assets/imagenInicio.jpg"
-import LogoSimetrica from "../assets/logo-simetrica-blanco.png" // AÑADIDO: Import del logo para Footer
+import LogoSimetrica from "../assets/logo-simetrica-blanco.png"
 import ProjectsSectionComponents from "../components/ProjectsSectionComponents.tsx";
 import SimetricaSectionComponents from "../components/SimetricaSectionComponents.tsx";
 import NosotrosSection from "../components/NosotrosSectionComponents.tsx";
 import DisenosSection from "../components/DiseñosSectionComponents.tsx";
 
 const Home = () => {
-  // Estado para manejar la carga de la imagen de fondo
+  const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Precargar imagen de fondo para mejor performance
   useEffect(() => {
     const img = new Image();
     img.onload = () => setIsImageLoaded(true);
     img.src = Fondo;
   }, []);
+
+  const scrollToSection = () => {
+    const projectsSection = document.getElementById('sections-projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   // AÑADIDO: Configuración de datos para Footer (manteniendo colores y branding existentes)
   const footerColumns = [
@@ -78,24 +84,21 @@ const Home = () => {
           <div className="home-section__overlay"></div>
         </div>
 
-        {/* Contenido principal de la página */}
         <div className="home-section__content">
           <div className="container">
-            {/* Hero section con botones demostrativos */}
             <div className="hero-content">
               <h1 className="hero-content__title">
-                Bienvenido a Simétrica
+                Bienvenido a SIMÉTRICA
               </h1>
               <p className="hero-content__subtitle">
                 Diseños únicos y construcción profesional
               </p>
               
-              {/* Demostración de componentes Button */}
               <div className="hero-content__actions">
                 <Button 
                   variant="primary" 
                   size="lg"
-                  onClick={() => console.log('Ver proyectos clicked!')}
+                  onClick={() => navigate('/proyectos')}
                 >
                   Ver Proyectos
                 </Button>
@@ -103,7 +106,7 @@ const Home = () => {
                 <Button 
                   variant="secondary" 
                   size="lg"
-                  onClick={() => console.log('Contactar clicked!')}
+                  onClick={() => navigate('/contacto')}
                 >
                   Contactar
                 </Button>
@@ -111,7 +114,7 @@ const Home = () => {
                 <Button 
                   variant="ghost" 
                   size="md"
-                  onClick={() => console.log('Más info clicked!')}
+                  onClick={scrollToSection}
                 >
                   Más Información
                 </Button>
