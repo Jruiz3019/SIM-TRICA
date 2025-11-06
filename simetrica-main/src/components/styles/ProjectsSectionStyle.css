@@ -37,12 +37,19 @@
   overflow: hidden; 
   border-radius: 8px; 
   background: #000; 
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  cursor: pointer;
 } 
 
 .projects-section__image-card:hover { 
   transform: translateY(-8px); 
+  box-shadow: 0 8px 24px rgba(107, 62, 46, 0.4);
 } 
+
+.projects-section__image-card:focus {
+  outline: 2px solid #6b3e2e;
+  outline-offset: 2px;
+}
 
 .projects-section__image-card img {
   width: 100%;
@@ -54,4 +61,94 @@
 
 .projects-section__image-card:hover img {
   filter: brightness(100%); /* vuelve clara al hacer hover */
+}
+
+/* Responsive Design */
+
+/* Tablets (max-width: 1024px) */
+@media screen and (max-width: 1024px) {
+  .projects-section {
+    padding: 6rem 1.5rem;
+  }
+
+  .projects-section__grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .projects-section__text {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .projects-section__title {
+    font-size: 2rem;
+  }
+
+  .projects-section__images {
+    justify-content: center;
+  }
+}
+
+/* Mobile landscape y tablets pequeñas (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .projects-section {
+    padding: 4rem 1rem;
+  }
+
+  .projects-section__title {
+    font-size: 1.8rem;
+  }
+
+  .projects-section__description {
+    font-size: 0.95rem;
+  }
+
+  .projects-section__images {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .projects-section__image-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+/* Mobile portrait (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .projects-section {
+    padding: 3rem 1rem;
+  }
+
+  .projects-section__title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .projects-section__description {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .projects-section__images {
+    gap: 1rem;
+  }
+
+  .projects-section__image-card {
+    max-width: 100%;
+  }
+}
+
+/* Animaciones de entrada */
+.projects-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.projects-section--visible {
+  opacity: 1;
+  transform: translateY(0);
 }
