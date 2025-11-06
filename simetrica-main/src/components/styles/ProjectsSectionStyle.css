@@ -220,6 +220,10 @@
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
+    height: 400px;
+  }
+}
+
 /* Mobile portrait (max-width: 480px) */
 @media screen and (max-width: 480px) {
   .projects-section {
@@ -253,10 +257,6 @@
 
   .projects-section__carousel-btn--next {
     right: 5px;
-  }
-}
-  .projects-section__image-card {
-    max-width: 100%;
   }
 }
 
