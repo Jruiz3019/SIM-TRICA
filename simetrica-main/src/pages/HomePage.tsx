@@ -5,7 +5,7 @@ import Footer from "../layouts/Footer/Footer.tsx"; // ACTUALIZADO: Import actual
 import Button from "../components/Button"; // AÑADIDO: Import del componente Button
 // import ContactForm from "../components/ContactForm"; // DISPONIBLE: Formulario de contacto listo para usar - 2025-10-01
 import "./styles/HomeStyle.css"
-import Fondo from "../assets/image-inicio.png"
+import Fondo from "../assets/imagenInicio.jpg"
 import LogoSimetrica from "../assets/logo-simetrica-blanco.png" // AÑADIDO: Import del logo para Footer
 import ProjectsSectionComponents from "../components/ProjectsSectionComponents.tsx";
 import SimetricaSectionComponents from "../components/SimetricaSectionComponents.tsx";
