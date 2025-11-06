@@ -18,6 +18,7 @@ const ProjectsSectionComponents = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     // Obtener los últimos 3 proyectos
     useEffect(() => {
