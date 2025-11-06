@@ -18,7 +18,6 @@ const ProjectsSectionComponents = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
-    const [currentSlide, setCurrentSlide] = useState(0);
 
     // Obtener los últimos 3 proyectos
     useEffect(() => {
@@ -79,17 +78,41 @@ const ProjectsSectionComponents = () => {
         setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
     };
 
-    const displayProjects = loading ? FALLBACK_IMAGES.map((img, index) => ({
-        _id: `fallback-${index}`,
-        imagenes: [{ url: img }],
-        nombre: `Proyecto ${index + 1}`
-    })) : projects.length > 0 ? projects : FALLBACK_IMAGES.map((img, index) => ({
-        _id: `fallback-${index}`,
-        imagenes: [{ url: img }],
-        nombre: `Proyecto de ejemplo ${index + 1}`
-    }));
+    const displayProjects = loading 
+        ? FALLBACK_IMAGES.map((img, index) => ({
+            _id: `fallback-${index}`,
+            imagenes: [{ url: img }],
+            nombre: `Proyecto ${index + 1}`
+          }))
+        : projects.length > 0 
+        ? projects 
+        : FALLBACK_IMAGES.map((img, index) => ({
+            _id: `fallback-${index}`,
+            imagenes: [{ url: img }],
+            nombre: `Proyecto de ejemplo ${index + 1}`
+          }));
 
-                {/* Imagenes a la derecha */}
+    return (
+        <section className={`projects-section ${isVisible ? 'projects-section--visible' : ''}`}>
+            <div className="container projects-section__grid">
+                {/* Texto a la izquierda */}
+                <div className="projects-section__text">
+                    <h2 className="projects-section__title">Nuestros proyectos</h2>
+                    <p className="projects-section__description">
+                        Descubre nuestro portafolio de proyectos especializados en insonorización acústica. 
+                        Cada obra refleja nuestro compromiso con el control de ruido y la optimización 
+                        acústica de espacios, garantizando ambientes confortables y libres de contaminación sonora.
+                    </p>
+                    <Button 
+                        variant='primary'
+                        size="lg"
+                        onClick={handleViewMore}
+                    >
+                        Ver más
+                    </Button>
+                </div>
+
+                {/* Imagenes a la derecha - Desktop */}
                 <div className="projects-section__images">
                     {displayProjects.map((project, index) => (
                         <div 
@@ -151,7 +174,6 @@ const ProjectsSectionComponents = () => {
                         ›
                     </button>
 
-                    {/* Indicadores de slide */}
                     <div className="projects-section__carousel-indicators">
                         {displayProjects.map((_, index) => (
                             <button
@@ -162,26 +184,6 @@ const ProjectsSectionComponents = () => {
                             />
                         ))}
                     </div>
-                </div>
-            </div>
-        </section>
-    )
-}                           >
-                                <img 
-                                    src={project.imagenes[0]?.url || FALLBACK_IMAGES[0]} 
-                                    alt={project.nombre}
-                                    loading="lazy"
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        // Fallback si no hay proyectos
-                        FALLBACK_IMAGES.map((img, index) => (
-                            <div key={index} className="projects-section__image-card">
-                                <img src={img} alt={`Proyecto de ejemplo ${index + 1}`} />
-                            </div>
-                        ))
-                    )}
                 </div>
             </div>
         </section>
