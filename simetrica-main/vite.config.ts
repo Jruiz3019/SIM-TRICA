@@ -9,6 +9,20 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     define: {
       'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'http://localhost:3000/api')
+    },
+    build: {
+      // Genera archivos con hash para evitar problemas de caché
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/[name].[hash].js',
+          chunkFileNames: 'assets/[name].[hash].js',
+          assetFileNames: 'assets/[name].[hash].[ext]'
+        }
+      },
+      // Limpia la carpeta dist antes de cada build
+      emptyOutDir: true,
+      // Genera sourcemaps para debugging (opcional, puedes quitarlo en producción)
+      sourcemap: false
     }
   }
 })
