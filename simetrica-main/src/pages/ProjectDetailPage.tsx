@@ -35,7 +35,7 @@ const ProjectDetailPage = () => {
     try {
       setLoading(true);
       const response = await projectService.getById(id);
-      setProject(response.data);
+      setProject(response.project);
       setError('');
       
       // Cargar comentarios
@@ -71,9 +71,9 @@ const ProjectDetailPage = () => {
 
     try {
       const response = await projectService.react(id, type);
-      setProject(response.data);
+      setProject(response.project);
       
-      const reaction = response.data.reactions.find(r => r.userId === user.id);
+      const reaction = response.project.reactions.find(r => r.userId === user.id);
       setUserReaction(reaction?.type || null);
     } catch (err) {
       console.error('Error al reaccionar:', err);

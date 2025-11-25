@@ -17,7 +17,7 @@ class ProjectService {
     return response.data;
   }
 
-  async getById(id: string): Promise<{ success: boolean; data: Project }> {
+  async getById(id: string): Promise<{ success: boolean; project: Project }> {
     const response = await axios.get(`${API_URL}/projects/${id}`);
     return response.data;
   }
@@ -27,7 +27,7 @@ class ProjectService {
     return response.data;
   }
 
-  async react(projectId: string, type: 'like' | 'dislike'): Promise<{ success: boolean; data: Project }> {
+  async react(projectId: string, type: 'like' | 'dislike'): Promise<{ success: boolean; project: Project }> {
     const response = await axios.post(
       `${API_URL}/projects/${projectId}/react`,
       { type },
