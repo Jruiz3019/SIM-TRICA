@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   color: var(--text-color);
-  padding-top: 80px;
+  padding-top: 120px;
 }
 
 .projects-hero {
@@ -68,10 +68,19 @@
   padding: 4rem 2rem;
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.6);
+  min-height: calc(100vh - 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .error-container {
   color: #ff4757;
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 8px;
+  margin: 2rem;
+  font-weight: 500;
 }
 
 .projects-grid {
@@ -250,7 +259,7 @@
 
 @media (max-width: 480px) {
   .projects-page {
-    padding-top: 60px;
+    padding-top: 90px;
   }
 
   .projects-hero {
@@ -263,6 +272,13 @@
 
   .projects-content {
     padding: 1rem;
+  }
+  
+  .loading-container,
+  .error-container,
+  .empty-state {
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 200px);
   }
 
   .projects-grid {

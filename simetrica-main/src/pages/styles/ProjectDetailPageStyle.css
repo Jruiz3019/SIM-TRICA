@@ -1,10 +1,20 @@
-.design-detail {
+.project-detail {
   position: relative;
   width: 100%;
   min-height: calc(100vh - 100px);
-  margin-top: 100px;
-  padding: 8rem 4rem;
+  margin-top: 0;
+  padding: 10rem 4rem 4rem 4rem;
   color: var(--text-color);
+}
+
+.loading-container,
+.error-container {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rem 2rem 4rem 2rem;
+  font-size: 1.2rem;
 }
 
 .back-button {
@@ -394,9 +404,14 @@
 }
 
 @media (max-width: 480px) {
-  .design-detail {
-    padding: 1rem;
-    margin-top: 80px;
+  .project-detail {
+    padding: 6rem 1rem 1rem 1rem;
+    margin-top: 0;
+  }
+  
+  .loading-container,
+  .error-container {
+    padding: 6rem 1rem 2rem 1rem;
   }
 
   .back-button {
