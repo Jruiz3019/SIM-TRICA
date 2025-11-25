@@ -28,6 +28,9 @@ const ProjectDetailPage = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
 
   const loadProject = useCallback(async () => {
     if (!id) return;
@@ -59,6 +62,38 @@ const ProjectDetailPage = () => {
       setUserReaction(reaction?.type || null);
     }
   }, [project, user]);
+
+  // Carrusel automático de imágenes
+  useEffect(() => {
+    if (!project || project.imagenes.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        (prevIndex + 1) % project.imagenes.length
+      );
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [project]);
+
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setIsImageModalOpen(true);
+  };
+
+  const handleNextImage = () => {
+    if (!project) return;
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex + 1) % project.imagenes.length
+    );
+  };
+
+  const handlePrevImage = () => {
+    if (!project) return;
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === 0 ? project.imagenes.length - 1 : prevIndex - 1
+    );
+  };
 
   const handleReaction = async (type: 'like' | 'dislike') => {
     if (!user) {
@@ -227,54 +262,136 @@ const ProjectDetailPage = () => {
       <HeaderLayout />
       <main className="project-detail">
         <button className="back-button" onClick={() => window.history.back()}>
-          ← Volver
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Volver
         </button>
 
-        <div className="project-detail__content">
-          <div className="project-detail__gallery">
-            <div className="main-image">
-              <img 
-                src={project.imagenes[0]?.url || PlaceholderImage} 
-                alt={project.nombre} 
-              />
+        <div className="project-detail__container">
+          {/* Carrusel de imágenes */}
+          <div className="project-gallery">
+            <div className="gallery-main">
+              <button className="gallery-nav gallery-nav--prev" onClick={handlePrevImage}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              
+              <div className="gallery-image-container" onClick={() => handleImageClick(project.imagenes[currentImageIndex]?.url || PlaceholderImage)}>
+                <img 
+                  src={project.imagenes[currentImageIndex]?.url || PlaceholderImage} 
+                  alt={`${project.nombre} - Imagen ${currentImageIndex + 1}`}
+                  className="gallery-main-image"
+                />
+                <div className="gallery-zoom-hint">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M11 8V14M8 11H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                  <span>Click para ampliar</span>
+                </div>
+              </div>
+              
+              <button className="gallery-nav gallery-nav--next" onClick={handleNextImage}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
             </div>
-            <div className="thumbnail-images">
-              {project.imagenes.slice(1, 4).map((img, idx) => (
-                <img key={idx} src={img.url} alt={`${project.nombre} - ${idx + 2}`} />
+            
+            <div className="gallery-thumbnails">
+              {project.imagenes.map((img, idx) => (
+                <button
+                  key={idx}
+                  className={`gallery-thumbnail ${idx === currentImageIndex ? 'active' : ''}`}
+                  onClick={() => setCurrentImageIndex(idx)}
+                >
+                  <img src={img.url} alt={`Miniatura ${idx + 1}`} />
+                </button>
               ))}
+            </div>
+            
+            <div className="gallery-counter">
+              {currentImageIndex + 1} / {project.imagenes.length}
             </div>
           </div>
 
-          <div className="project-detail__info">
-            <div className="project-detail__header">
-              <div className="project-detail__title-section">
-                <h1>{project.nombre}</h1>
-                <p className="project-client">Cliente: {project.cliente}</p>
-                <div className="project-metadata">
-                  <span>📍 {project.ubicacion}</span>
-                  <span>⏱️ {project.duracion}</span>
-                  <span>👥 {project.personasInvolucradas} personas</span>
-                </div>
-              </div>
-              <div className="project-detail__stats">
+          {/* Información del proyecto */}
+          <div className="project-info">
+            <div className="project-header">
+              <h1 className="project-title">{project.nombre}</h1>
+              
+              <div className="project-stats">
                 <button 
-                  className={`likes ${userReaction === 'like' ? 'active' : ''}`}
+                  className={`stat-button stat-button--like ${userReaction === 'like' ? 'active' : ''}`}
                   onClick={() => handleReaction('like')}
                   disabled={!user}
+                  title={user ? 'Me gusta' : 'Inicia sesión para reaccionar'}
                 >
-                  <span className="icon">♥</span> {formatNumber(project.likes)}
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 17.5L8.825 16.45C4.4 12.475 1.5 9.87 1.5 6.75C1.5 4.35 3.35 2.5 5.75 2.5C7.1 2.5 8.4 3.1 9.25 4.05C10.1 3.1 11.4 2.5 12.75 2.5C15.15 2.5 17 4.35 17 6.75C17 9.87 14.1 12.475 9.675 16.45L10 17.5Z" fill="currentColor"/>
+                  </svg>
+                  <span>{formatNumber(project.likes)}</span>
                 </button>
                 <button 
-                  className={`dislikes ${userReaction === 'dislike' ? 'active' : ''}`}
+                  className={`stat-button stat-button--dislike ${userReaction === 'dislike' ? 'active' : ''}`}
                   onClick={() => handleReaction('dislike')}
                   disabled={!user}
+                  title={user ? 'No me gusta' : 'Inicia sesión para reaccionar'}
                 >
-                  <span className="icon">×</span> {formatNumber(project.dislikes)}
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2.5L11.175 3.55C15.6 7.525 18.5 10.13 18.5 13.25C18.5 15.65 16.65 17.5 14.25 17.5C12.9 17.5 11.6 16.9 10.75 15.95C9.9 16.9 8.6 17.5 7.25 17.5C4.85 17.5 3 15.65 3 13.25C3 10.13 5.9 7.525 10.325 3.55L10 2.5Z" fill="currentColor"/>
+                  </svg>
+                  <span>{formatNumber(project.dislikes)}</span>
                 </button>
               </div>
             </div>
 
-            <div className="project-detail__description">
+            <div className="project-meta">
+              <div className="meta-item">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M15.5 7.5C15.5 12.75 9 17.25 9 17.25C9 17.25 2.5 12.75 2.5 7.5C2.5 5.77609 3.18482 4.12279 4.40381 2.90381C5.62279 1.68482 7.27609 1 9 1C10.7239 1 12.3772 1.68482 13.5962 2.90381C14.8152 4.12279 15.5 5.77609 15.5 7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="9" cy="7.5" r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+                </svg>
+                <div>
+                  <span className="meta-label">Ubicación</span>
+                  <span className="meta-value">{project.ubicacion}</span>
+                </div>
+              </div>
+              
+              <div className="meta-item">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="7.5" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M9 4.5V9L12 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+                <div>
+                  <span className="meta-label">Duración</span>
+                  <span className="meta-value">{project.duracion}</span>
+                </div>
+              </div>
+              
+              <div className="meta-item">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M12 15.75V14.25C12 13.4544 11.6839 12.6913 11.1213 12.1287C10.5587 11.5661 9.79565 11.25 9 11.25H4.5C3.70435 11.25 2.94129 11.5661 2.37868 12.1287C1.81607 12.6913 1.5 13.4544 1.5 14.25V15.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="6.75" cy="5.25" r="3" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M16.5 15.75V14.25C16.4996 13.5853 16.2822 12.9395 15.8802 12.4088C15.4782 11.8782 14.913 11.4908 14.27 11.3025" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M11.52 2.5525C12.1643 2.74031 12.7308 3.12766 13.1337 3.65897C13.5365 4.19028 13.7544 4.83722 13.7544 5.5025C13.7544 6.16778 13.5365 6.81472 13.1337 7.34603C12.7308 7.87734 12.1643 8.26469 11.52 8.4525" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div>
+                  <span className="meta-label">Equipo</span>
+                  <span className="meta-value">{project.personasInvolucradas} personas</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="project-client">
+              <span className="client-label">Cliente:</span>
+              <span className="client-name">{project.cliente}</span>
+            </div>
+
+            <div className="project-description">
               <h3>Descripción del Proyecto</h3>
               <p>{project.descripcion}</p>
             </div>
@@ -389,6 +506,20 @@ const ProjectDetailPage = () => {
           </div>
         </div>
       </main>
+
+      {/* Modal para ver imagen en grande */}
+      {isImageModalOpen && (
+        <div className="image-modal" onClick={() => setIsImageModalOpen(false)}>
+          <button className="image-modal__close" onClick={() => setIsImageModalOpen(false)}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <div className="image-modal__content" onClick={(e) => e.stopPropagation()}>
+            <img src={selectedImage} alt="Vista ampliada" />
+          </div>
+        </div>
+      )}
 
       <Footer
         logoSrc={LogoSimetrica}
