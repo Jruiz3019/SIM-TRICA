@@ -35,13 +35,14 @@
 .header__container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Espacio entre logo y botón hamburguesa en móvil */
-    padding: var(--spacing-md) var(--spacing-xl);
+    justify-content: center; /* Centrado en la mitad */
+    padding: 0.75rem 1.5rem;
     min-height: 70px;
-    max-width: 1600px;
+    max-width: 100%;
     margin: 0 auto;
-    gap: var(--spacing-md);
+    gap: 2rem;
     width: 100%;
+    flex-wrap: nowrap;
 }
 
 /* Logo container con mejores prácticas de diseño */
@@ -60,15 +61,15 @@
 }
 
 .logo-container__icon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
     transition: transform 0.3s ease;
-    margin-right: -0.8rem;
+    margin-right: -0.7rem;
 }
 
 .logo-container__text {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: var(--font-weight-bold);
     color: var(--text-color);
     letter-spacing: 0.5px;
@@ -82,19 +83,22 @@
 /* Navegación desktop */
 .nav-container--desktop {
     display: flex;
-    gap: var(--spacing-lg);
+    gap: 1.5rem;
     align-items: center;
-    flex-shrink: 0; /* Evita que se encoja */
+    flex-shrink: 1; /* Permite que se encoja cuando sea necesario */
+    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 /* AÑADIDO: Container para botones de autenticación */
 .nav-container__auth {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: 1rem;
     align-items: center;
-    margin-left: var(--spacing-md);
-    padding-left: var(--spacing-md);
+    margin-left: 1rem;
+    padding-left: 1rem;
     border-left: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
 }
 
 .nav-container__username {
@@ -128,13 +132,14 @@
 .nav-container__link {
     color: var(--text-color);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: var(--font-weight-normal);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: 0.5rem 0.75rem;
     border-radius: 6px;
     transition: all 0.3s ease;
     position: relative;
-    white-space: nowrap; /* Previene salto de línea en enlaces largos */
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* Efecto hover para enlaces */
@@ -147,11 +152,12 @@
 /* Enlace CTA (Call to Action) con estilo especial */
 .nav-container__link--cta {
     background: var(--primary-color);
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: 0.6rem 1rem;
     color: var(--text-color);
     border-radius: 25px;
     /* font-weight: var(--font-weight-bold); */
     box-shadow: 0 4px 15px rgba(126, 74, 53, 0.3);
+    font-size: 0.8rem;
 }
 
 .nav-container__link--cta:hover,
@@ -266,6 +272,44 @@
 }
 
 /* Breakpoints responsivos */
+
+/* Pantallas medianas y zoom (1200px - 1024px) */
+@media screen and (max-width: 1200px) {
+    .header__container {
+        padding: 0.5rem 1rem;
+        gap: 1.5rem;
+    }
+    
+    .nav-container--desktop {
+        gap: 1rem;
+    }
+    
+    .nav-container__link {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .nav-container__link--cta {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .logo-container__icon {
+        width: 60px;
+        height: 60px;
+        margin-right: -0.6rem;
+    }
+    
+    .logo-container__text {
+        font-size: 1rem;
+    }
+    
+    .nav-container__auth {
+        gap: 0.75rem;
+        margin-left: 0.75rem;
+        padding-left: 0.75rem;
+    }
+}
 
 /* Tablet portrait y landscape */
 @media screen and (max-width: 1023px) {
