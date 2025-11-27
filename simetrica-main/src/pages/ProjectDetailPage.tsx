@@ -95,10 +95,32 @@ const ProjectDetailPage = () => {
     );
   };
 
+  /*
   const handleReaction = async (type: 'like' | 'dislike') => {
     if (!user) {
       alert('Debes iniciar sesión para reaccionar');
       navigate('/login');
+      return;
+    }
+
+    if (!id) return;
+
+    try {
+      const response = await projectService.react(id, type);
+      setProject(response.project);
+      
+      const reaction = response.project.reactions.find(r => r.userId === user.id);
+      setUserReaction(reaction?.type || null);
+    } catch (err) {
+      console.error('Error al reaccionar:', err);
+      alert('Error al procesar la reacción');
+    }
+  };
+ */
+
+  const handleReaction = async (type: 'like' | 'dislike') => {
+    if (!user) {
+      navigate('/register');
       return;
     }
 
