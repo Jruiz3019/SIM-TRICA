@@ -18,7 +18,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB (base64 aumenta ~33%)
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB (base64 aumenta ~33%)
   const ALLOWED_TYPES = ['image/png', 'image/svg+xml'];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
 
     // Validar tamaño
     if (selectedFile.size > MAX_FILE_SIZE) {
-      setError('El archivo excede el tamaño máximo de 5MB');
+      setError('El archivo excede el tamaño máximo de 10MB');
       return;
     }
 
@@ -190,7 +190,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
                     <p>Click para seleccionar imagen</p>
                     <p className="upload-hint">
                       Formatos: PNG, SVG<br />
-                      Tamaño máximo: 5MB
+                      Tamaño máximo: 10MB
                     </p>
                   </div>
                 )}
