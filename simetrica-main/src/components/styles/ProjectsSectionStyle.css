@@ -39,6 +39,8 @@
   background: #000; 
   transition: transform 0.3s ease, box-shadow 0.3s ease; 
   cursor: pointer;
+  position: relative;
+  height: 350px;
 } 
 
 .projects-section__image-card:hover { 
@@ -55,12 +57,43 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(70%); /* oscurece la imagen */
+  filter: brightness(70%);
   transition: filter 0.3s ease;
 }
 
 .projects-section__image-card:hover img {
-  filter: brightness(100%); /* vuelve clara al hacer hover */
+  filter: brightness(50%);
+}
+
+.projects-section__card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.projects-section__image-card:hover .projects-section__card-overlay {
+  transform: translateY(0);
+}
+
+.projects-section__card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.projects-section__card-client {
+  font-size: 0.9rem;
+  color: #6b3e2e;
+  margin: 0;
+  font-weight: 500;
 }
 
 /* Carrusel móvil - Oculto en desktop */
@@ -117,6 +150,8 @@
   background: #000;
   cursor: pointer;
   transition: transform 0.3s ease;
+  position: relative;
+  height: 100%;
 }
 
 .projects-section__carousel-slide--active {
@@ -133,7 +168,17 @@
 }
 
 .projects-section__carousel-slide:active img {
-  filter: brightness(100%);
+  filter: brightness(50%);
+}
+
+.projects-section__carousel-slide .projects-section__card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+  transform: translateY(0);
 }
 
 .projects-section__carousel-indicators {

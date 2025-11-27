@@ -62,7 +62,7 @@ const ProjectsSectionComponents = () => {
     }, []);
 
     const handleProjectClick = (projectId: string) => {
-        navigate(`/proyectos/${projectId}`);
+        navigate(`/proyecto/${projectId}`);
     };
 
     const handleViewMore = () => {
@@ -82,15 +82,17 @@ const ProjectsSectionComponents = () => {
     const displayProjects = loading 
         ? FALLBACK_IMAGES.map((img, index) => ({
             _id: `fallback-${index}`,
-            imagenes: [{ url: img }],
-            nombre: `Proyecto ${index + 1}`
+            imagenes: [{ url: img }] as { url: string }[],
+            nombre: `Proyecto ${index + 1}`,
+            cliente: ''
           }))
         : projects.length > 0 
         ? projects 
         : FALLBACK_IMAGES.map((img, index) => ({
             _id: `fallback-${index}`,
-            imagenes: [{ url: img }],
-            nombre: `Proyecto de ejemplo ${index + 1}`
+            imagenes: [{ url: img }] as { url: string }[],
+            nombre: `Proyecto de ejemplo ${index + 1}`,
+            cliente: ''
           }));
 
     return (
@@ -134,6 +136,14 @@ const ProjectsSectionComponents = () => {
                                 alt={project.nombre}
                                 loading="lazy"
                             />
+                            {!loading && projects.length > 0 && (
+                                <div className="projects-section__card-overlay">
+                                    <h3 className="projects-section__card-title">{project.nombre}</h3>
+                                    {project.cliente && (
+                                        <p className="projects-section__card-client">{project.cliente}</p>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -163,6 +173,14 @@ const ProjectsSectionComponents = () => {
                                     alt={project.nombre}
                                     loading="lazy"
                                 />
+                                {!loading && projects.length > 0 && (
+                                    <div className="projects-section__card-overlay">
+                                        <h3 className="projects-section__card-title">{project.nombre}</h3>
+                                        {project.cliente && (
+                                            <p className="projects-section__card-client">{project.cliente}</p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
