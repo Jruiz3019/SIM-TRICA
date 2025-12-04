@@ -38,7 +38,8 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
     for (const pattern of patterns) {
       const match = url.match(pattern);
       if (match && match[1]) {
-        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        // Usar thumbnail URL que funciona mejor para mostrar imágenes
+        return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w2000`;
       }
     }
 
