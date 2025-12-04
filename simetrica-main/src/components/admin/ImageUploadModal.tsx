@@ -19,7 +19,30 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
   const [error, setError] = useState('');
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB (base64 aumenta ~33%)
-  const ALLOWED_TYPES = ['image/png', 'image/svg+xml'];
+  const ALLOWED_TYPES = ['image/png', 'image/svg+xml', 'image/jpeg', 'image/jpg', 'image/webp'];
+
+  // Convertir URL de Google Drive a formato directo
+  const convertGoogleDriveUrl = (url: string): string => {
+    // Formatos de Google Drive:
+    // https://drive.google.com/file/d/FILE_ID/view
+    // https://drive.google.com/open?id=FILE_ID
+    // https://drive.google.com/uc?id=FILE_ID
+    
+    const patterns = [
+      /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
+      /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
+      /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
+    ];
+
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) {
+        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    }
+
+    return url;
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -27,7 +50,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
 
     // Validar tipo
     if (!ALLOWED_TYPES.includes(selectedFile.type)) {
-      setError('Solo se permiten archivos PNG y SVG');
+      setError('Solo se permiten archivos PNG, JPG, WEBP y SVG');
       return;
     }
 
@@ -52,16 +75,31 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
   const handleUrlChange = (url: string) => {
     setUrlInput(url);
     if (url.trim()) {
-      // Validar extensión
       const lowerUrl = url.toLowerCase();
-      if (!lowerUrl.endsWith('.png') && !lowerUrl.endsWith('.svg')) {
-        setError('La URL debe terminar en .png o .svg');
+      
+      // Verificar si es Google Drive
+      const isGoogleDrive = lowerUrl.includes('drive.google.com');
+      
+      // Verificar si es una URL directa de imagen
+      const isDirectImageUrl = lowerUrl.endsWith('.png') || 
+                               lowerUrl.endsWith('.svg') || 
+                               lowerUrl.endsWith('.jpg') || 
+                               lowerUrl.endsWith('.jpeg') || 
+                               lowerUrl.endsWith('.webp');
+      
+      // Aceptar Google Drive o URLs directas de imagen
+      if (!isGoogleDrive && !isDirectImageUrl) {
+        setError('La URL debe terminar en .png, .svg, .jpg o ser un enlace de Google Drive');
         return;
       }
+      
       setError('');
       setFile(null);
       setUploadMode('url');
-      setPreview(url);
+      
+      // Convertir URL de Google Drive si es necesario
+      const finalUrl = isGoogleDrive ? convertGoogleDriveUrl(url) : url;
+      setPreview(finalUrl);
     } else {
       setPreview('');
     }
@@ -79,11 +117,32 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
     setError('');
 
     try {
-      const source = uploadMode === 'url' ? urlInput : file!;
+      let source: string | File;
+      let filename: string | undefined;
+      
+      if (uploadMode === 'url') {
+        // Convertir URL de Google Drive si es necesario
+        const finalUrl = urlInput.toLowerCase().includes('drive.google.com') 
+          ? convertGoogleDriveUrl(urlInput)
+          : urlInput;
+        source = finalUrl;
+        
+        // Generar nombre de archivo apropiado
+        if (urlInput.toLowerCase().includes('drive.google.com')) {
+          const fileId = finalUrl.match(/id=([a-zA-Z0-9_-]+)/)?.[1];
+          filename = fileId ? `google-drive-${fileId}.jpg` : 'google-drive-image.jpg';
+        } else {
+          filename = urlInput.split('/').pop()?.split('?')[0];
+        }
+      } else {
+        source = file!;
+        filename = undefined;
+      }
+      
       await adminImageService.upload(source, {
         description: description.trim() || undefined,
         altText: altText.trim() || undefined,
-        filename: uploadMode === 'url' ? urlInput.split('/').pop() : undefined,
+        filename,
       });
 
       // Limpiar formulario
@@ -171,7 +230,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
                 className="url-input"
               />
               <p className="upload-hint">
-                Soporta: Google Drive, Imgur, enlaces directos (.png, .svg)
+                Soporta: Google Drive, Imgur, enlaces directos (.png, .svg, .jpg)
               </p>
               {preview && (
                 <div className="url-preview">
@@ -189,7 +248,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
                     <span className="upload-icon">+</span>
                     <p>Click para seleccionar imagen</p>
                     <p className="upload-hint">
-                      Formatos: PNG, SVG<br />
+                      Formatos: PNG, JPG, WEBP, SVG<br />
                       Tamaño máximo: 10MB
                     </p>
                   </div>
@@ -198,7 +257,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
               <input
                 id="file-input"
                 type="file"
-                accept=".png,.svg,image/png,image/svg+xml"
+                accept=".png,.svg,.jpg,.jpeg,.webp,image/png,image/svg+xml,image/jpeg,image/webp"
                 onChange={handleFileChange}
                 disabled={loading}
                 style={{ display: 'none' }}

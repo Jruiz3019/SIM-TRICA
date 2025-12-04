@@ -93,11 +93,25 @@ class AdminImageService {
 
     if (typeof fileOrUrl === 'string') {
       // Es una URL externa (Drive, imgur, etc.)
+      const lowerUrl = fileOrUrl.toLowerCase();
+      
+      // Determinar el tipo MIME basado en la URL
+      let mimeType = 'image/jpeg'; // Por defecto
+      if (lowerUrl.includes('.png') || metadata.filename?.endsWith('.png')) {
+        mimeType = 'image/png';
+      } else if (lowerUrl.includes('.svg') || metadata.filename?.endsWith('.svg')) {
+        mimeType = 'image/svg+xml';
+      } else if (lowerUrl.includes('.webp') || metadata.filename?.endsWith('.webp')) {
+        mimeType = 'image/webp';
+      } else if (lowerUrl.includes('.gif') || metadata.filename?.endsWith('.gif')) {
+        mimeType = 'image/gif';
+      }
+      
       imageData = {
         url: fileOrUrl,
-        filename: metadata.filename || fileOrUrl.split('/').pop() || 'external-image',
+        filename: metadata.filename || fileOrUrl.split('/').pop()?.split('?')[0] || 'external-image',
         size: 0, // URL externa, tamaño desconocido
-        mimeType: fileOrUrl.endsWith('.svg') ? 'image/svg+xml' : 'image/png',
+        mimeType,
         description: metadata.description,
         altText: metadata.altText,
       };
