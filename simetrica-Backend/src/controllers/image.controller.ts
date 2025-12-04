@@ -10,14 +10,17 @@ class ImageController {
     try {
       const { url, filename, description, altText, size, mimeType } = req.body;
 
-      if (!url || !filename || !size || !mimeType) {
+      if (!url || !filename || !mimeType) {
         return res.status(400).json({ 
-          message: 'URL, nombre de archivo, tamaño y tipo MIME son requeridos' 
+          message: 'URL, nombre de archivo y tipo MIME son requeridos' 
         });
       }
 
+      // Para URLs externas, size puede ser 0
+      const finalSize = size || 0;
+
       const image = await imageService.createImage(
-        { url, filename, description, altText, size, mimeType },
+        { url, filename, description, altText, size: finalSize, mimeType },
         req.user!.id
       );
 
