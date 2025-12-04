@@ -160,6 +160,24 @@
   object-fit: contain;
 }
 
+.preview-placeholder {
+  padding: 2rem;
+  text-align: center;
+  background: rgba(126, 74, 53, 0.1);
+  border-radius: 8px;
+}
+
+.preview-placeholder p {
+  margin: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.preview-placeholder p:first-child {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #7e4a35;
+}
+
 .file-input-label {
   cursor: pointer;
   border: 2px dashed rgba(126, 74, 53, 0.4);
