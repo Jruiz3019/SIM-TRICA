@@ -5,13 +5,13 @@ import HeaderLayout from "../layouts/HeaderLayout.tsx";
 import Footer from "../layouts/Footer/Footer.tsx";
 import Button from "../components/Button";
 import "./styles/HomeStyle.css"
-import Fondo from "../assets/imagenInicio.jpg"
+import Fondo from "../assets/DSCN7066.png"
 import LogoSimetrica from "../assets/logo-simetrica-blanco.png"
 import ProjectsSectionComponents from "../components/ProjectsSectionComponents.tsx";
 import SimetricaSectionComponents from "../components/SimetricaSectionComponents.tsx";
 import NosotrosSection from "../components/NosotrosSectionComponents.tsx";
 import DisenosSection from "../components/DiseñosSectionComponents.tsx";
-
+ 
 const Home = () => {
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
