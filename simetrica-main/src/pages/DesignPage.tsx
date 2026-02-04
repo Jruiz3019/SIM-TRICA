@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./styles/DesignPageStyle.css";
 import HeaderLayout from "../layouts/HeaderLayout";
@@ -11,19 +11,20 @@ import type { Design } from '../types/design.types';
 const DesignPage = () => {
   const navigate = useNavigate();
   const [designs, setDesigns] = useState<Design[]>([]);
+  const [filteredDesigns, setFilteredDesigns] = useState<Design[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    loadDesigns();
-  }, []);
-
-  const loadDesigns = async () => {
+  const loadDesigns = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await designService.getAll(1, 100);
+      const response = await designService.getAll(currentPage, 12);
       setDesigns(response.designs);
+      setFilteredDesigns(response.designs);
+      setTotalPages(response.totalPages);
       setError('');
     } catch (err) {
       console.error('Error cargando diseños:', err);
@@ -31,27 +32,23 @@ const DesignPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
-      loadDesigns();
-      return;
-    }
+  useEffect(() => {
+    loadDesigns();
+  }, [loadDesigns]);
 
-    try {
-      setLoading(true);
-      const results = await designService.search(searchQuery);
-      setDesigns(results);
-      setError('');
-    } catch (err) {
-      console.error('Error en búsqueda:', err);
-      setError('Error al buscar diseños');
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const filtered = designs.filter((design) =>
+        design.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        design.descripcion.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredDesigns(filtered);
+    } else {
+      setFilteredDesigns(designs);
     }
-  };
+  }, [searchQuery, designs]);
 
   const handleDesignClick = (designId: string) => {
     navigate(`/diseno/${designId}`);
@@ -95,54 +92,88 @@ const DesignPage = () => {
   return (
     <>
       <HeaderLayout />
-      <main className="design-section">
-        <div className="design-section__content">
+      <main className="designs-page">
+        <section className="designs-hero">
           <h1>Diseño de Interiores</h1>
           <p>Transformamos tus espacios en lugares únicos y funcionales.</p>
+        </section>
 
-          <div className="design-section__filters">
-            <form onSubmit={handleSearch}>
-              <input 
-                type="text" 
-                placeholder="Buscar diseños..."
-                className="filter-input"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </form>
+        <section className="designs-content">
+          <div className="search-container">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Buscar diseños..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
 
           {loading ? (
-            <div className="loading-state">Cargando diseños...</div>
+            <div className="loading-container">Cargando diseños...</div>
           ) : error ? (
-            <div className="error-state">{error}</div>
-          ) : designs.length === 0 ? (
-            <div className="empty-state">No se encontraron diseños</div>
+            <div className="error-container">{error}</div>
+          ) : filteredDesigns.length === 0 ? (
+            <div className="empty-state">
+              <p>No se encontraron diseños</p>
+            </div>
           ) : (
-            <section className="design-gallery">
-              {designs.map((design) => (
-                <div 
-                  className="design-card" 
-                  key={design._id}
-                  onClick={() => handleDesignClick(design._id)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <img
-                    src={design.imagenes[0]?.url || PlaceholderImage}
-                    alt={design.nombre}
-                    className="design-card__img"
-                  />
-                  <div className="design-card__overlay">
-                    <div className="design-card__content">
-                      <h3 className="design-card__title">{design.nombre}</h3>
-                      <span className="design-card__button">Ver más</span>
+            <>
+              <div className="designs-grid">
+                {filteredDesigns.map((design) => (
+                  <div
+                    key={design._id}
+                    className="design-card"
+                    onClick={() => handleDesignClick(design._id)}
+                  >
+                    <div className="design-image">
+                      <img
+                        src={design.imagenes[0]?.url || PlaceholderImage}
+                        alt={design.nombre}
+                      />
+                      <div className="design-overlay">
+                        <button className="view-more-btn">Ver más</button>
+                      </div>
+                    </div>
+                    <div className="design-info">
+                      <h3>{design.nombre}</h3>
+                      <p className="design-description">
+                        {design.descripcion.substring(0, 100)}
+                        {design.descripcion.length > 100 ? '...' : ''}
+                      </p>
+                      <div className="design-stats">
+                        <span>♥ {design.likes}</span>
+                        <span>× {design.dislikes}</span>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    className="pagination-btn"
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    ← Anterior
+                  </button>
+                  <span className="pagination-info">
+                    Página {currentPage} de {totalPages}
+                  </span>
+                  <button
+                    className="pagination-btn"
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Siguiente →
+                  </button>
                 </div>
-              ))}
-            </section>
+              )}
+            </>
           )}
-        </div>
+        </section>
       </main>
 
       <Footer
