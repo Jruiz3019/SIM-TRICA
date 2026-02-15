@@ -51,8 +51,9 @@ const AsociadosPage = () => {
           <div className="hex-box">
             <h2>Nuestros Asociados</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod
-              tellus sed lacus tincidunt lacinia sed sit amet odio. Etiam vitae bibendum elit.
+              Contamos con una red de asociados estratégicos que fortalecen nuestra capacidad
+              técnica y operativa. Gracias a estas alianzas, garantizamos soluciones eficientes,
+              confiables y alineadas con las necesidades de nuestros clientes.
             </p>
           </div>
         </section>
@@ -61,7 +62,7 @@ const AsociadosPage = () => {
           <div className="asociados-grid">
             {/* ejemplo: 3 tarjetas */}
             {[
-              { id: 1, name: 'Nombre Asociado 1', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' },
+              { id: 1, name: 'Se Carpinteria', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' },
               { id: 2, name: 'Nombre Asociado 2', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' },
               { id: 3, name: 'Nombre Asociado 3', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' }
             ].map(a => (
