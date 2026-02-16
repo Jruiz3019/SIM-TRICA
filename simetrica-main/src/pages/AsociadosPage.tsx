@@ -2,6 +2,7 @@ import HeaderLayout from '../layouts/HeaderLayout';
 import Footer from '../layouts/Footer/Footer';
 import LogoSimetrica from '../assets/logo-simetrica-blanco.png';
 import HeroBackground from '../assets/asociados.png';
+import LogoCarpinteria from '../assets/SeCarpinteria.png';
 import './styles/AsociadosPageStyle.css';
 
 const AsociadosPage = () => {
@@ -62,7 +63,7 @@ const AsociadosPage = () => {
           <div className="asociados-grid">
             {/* ejemplo: 3 tarjetas */}
             {[
-              { id: 1, name: 'Se Carpinteria', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' },
+              { id: 1, name: 'Se Carpinteria', logo: LogoCarpinteria, text: 'SeCarpintería desarrolla soluciones en carpintería a medida, combinando diseño, precisión y funcionalidad para proyectos arquitectónicos y comerciales, con acabados de alta calidad' },
               { id: 2, name: 'Nombre Asociado 2', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' },
               { id: 3, name: 'Nombre Asociado 3', logo: LogoSimetrica, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod tellus sed lacus tincidunt.' }
             ].map(a => (
