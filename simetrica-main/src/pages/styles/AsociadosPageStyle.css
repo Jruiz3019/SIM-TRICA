@@ -1,23 +1,33 @@
-/* Styles for Asociados page (hero with hex-box + asociados grid) */
+/* AsociadosPageStyle.css — Estilos para página de Asociados (Bolsa de Empleo + Red de Proveedores) */
+
+/* ==========================================================================
+   BASE PAGE
+   ========================================================================== */
+
 .asociados-page {
   color: var(--text-color);
 }
 
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
 .asociados-hero {
   position: relative;
-  height: 100vh;
+  height: 75vh;
+  min-height: 500px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding: 0 4rem;
-  margin-top: -100px; /* Para compensar el header */
-  padding-bottom: 15vh; /* Espacio desde abajo */
+  margin-top: -100px;
+  overflow: hidden;
 }
 
 .hero-image {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  z-index: 0;
 }
 
 .hero-image img {
@@ -25,161 +35,1065 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.35);
-  transition: transform 0.3s ease;
+  transition: transform 8s ease;
 }
 
-.hex-box {
-  position: relative;
-  width: 420px;
-  max-width: calc(100% - 4rem);
-  padding: 4.2rem 2rem;
-  background: rgba(0,0,0,0.0);
-  color: var(--text-color);
-  text-align: center;
-  border-radius: 6px;
-  z-index: 2;
-  display: inline-block;
-}
-
-/* Hexagon outline using clip-path */
-.hex-box {
-  clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
-  border: 3px solid rgba(126,74,53,1);
-  box-shadow: 0 0 30px rgba(126,74,53,0.5);
-  animation: hexGlow 3s ease-in-out infinite;
-}
-
-@keyframes hexGlow {
-  0%, 100% { box-shadow: 0 0 30px rgba(126,74,53,0.5); }
-  50% { box-shadow: 0 0 50px rgba(126,74,53,0.7); }
-}
-
-.hex-box::before {
-  content: '';
+.asociados-hero__overlay {
   position: absolute;
-  inset: -3px;
-  background: linear-gradient(45deg, rgba(126,74,53,0.6), rgba(126,74,53,0.3));
-  clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
-  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(32, 32, 32, 0.65) 0%,
+    rgba(32, 32, 32, 0.4) 40%,
+    rgba(32, 32, 32, 0.9) 100%
+  );
+  z-index: 1;
 }
 
-.hex-box h2 {
-  margin: 0 0 0.6rem 0;
-  font-size: 1.8rem;
-  font-weight: 700;
-}
-
-.hex-box p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  color: rgba(255,255,255,0.85);
-}
-
-.asociados-list {
-  max-width: 1200px;
-  margin: 6rem auto;
-  padding: 0 4rem;
-}
-
-.asociados-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  align-items: start;
-}
-
-.asociado-card {
-  padding: 2rem 1.2rem 1.6rem 1.2rem;
-  background: rgba(0,0,0,0.05);
-  border-radius: 6px;
+.asociados-hero__content {
   position: relative;
-  border: 1px solid rgba(126,74,53,0.1);
-  transition: all 0.4s ease;
-  backdrop-filter: blur(5px);
+  z-index: 2;
+  text-align: center;
+  max-width: 720px;
+  padding: 0 var(--spacing-xl);
+  padding-top: 70px;
 }
 
-.asociado-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(126,74,53,0.3);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  background: rgba(126,74,53,0.05);
+.asociados-hero__label {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 3px;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
 }
 
-.asociado-logo {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.03);
+.asociados-hero__title {
+  font-family: var(--font-family-primary);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-md) 0;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.asociados-hero__divider {
+  width: 60px;
+  height: 3px;
+  background: var(--primary-color);
+  margin: 0 auto var(--spacing-xl) auto;
+}
+
+.asociados-hero__desc {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 auto;
+  max-width: 560px;
+}
+
+/* ==========================================================================
+   CONTENT CONTAINER
+   ========================================================================== */
+
+.asociados-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 4rem 6rem 4rem;
+}
+
+.asociados-content__container {
+  width: 100%;
+}
+
+/* ==========================================================================
+   TAB BAR
+   ========================================================================== */
+
+.asociados-tabs {
+  display: flex;
+  width: 100%;
+  background: var(--background-dark);
+  border-radius: 14px 14px 0 0;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.asociados-tabs__btn {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 2rem auto;  /* Aumentado de 1rem a 2rem */
-  overflow: hidden;
-  border: 2px solid rgba(255,255,255,0.06);
-}
-
-.asociado-logo img {
-  width: 46px;
-  height: 46px;
-  object-fit: contain;
-  filter: grayscale(100%) brightness(0.9);
-  transition: all 0.4s ease;
-}
-
-.asociado-card:hover .asociado-logo img {
-  filter: grayscale(0%) brightness(1);
-  transform: scale(1.1);
-}
-
-.asociado-name {
-  background: rgba(126,74,53,0.9);
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
   color: var(--text-color);
-  padding: 0.45rem 0.8rem;
-  display: inline-block;
-  margin: 0 auto 1rem auto;
-  border-radius: 2px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.4s ease;
+  font-family: var(--font-family-primary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-normal);
+  cursor: pointer;
+  transition: all 0.3s ease;
   position: relative;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  white-space: nowrap;
+  opacity: 0.7;
 }
 
-.asociado-card:hover .asociado-name {
-  background: rgba(126,74,53,1);
-  box-shadow: 0 4px 15px rgba(126,74,53,0.3);
+.asociados-tabs__btn:hover {
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.asociados-tabs__btn--active {
+  opacity: 1;
+  border-bottom-color: var(--primary-color);
+  background: rgba(126, 74, 53, 0.08);
+  font-weight: var(--font-weight-bold);
+}
+
+.asociados-tabs__num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.asociados-tabs__btn--active .asociados-tabs__num {
+  background: var(--primary-color);
+  color: var(--text-color);
+}
+
+.asociados-tabs__label {
+  font-family: var(--font-family-primary);
+  font-size: 1.05rem;
+  letter-spacing: -0.2px;
+}
+
+/* ==========================================================================
+   TAB CONTENT
+   ========================================================================== */
+
+.asociados-tabs__content {
+  animation: asociadosFadeIn 0.35s ease;
+}
+
+@keyframes asociadosFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.asociados-panel {
+  padding-top: var(--spacing-xxl);
+}
+
+/* ==========================================================================
+   SECTION HEADER
+   ========================================================================== */
+
+.asociados-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-xxl);
+  margin-bottom: var(--spacing-xxl);
+  flex-wrap: wrap;
+}
+
+.asociados-section-header__left {
+  flex: 1;
+  min-width: 280px;
+}
+
+.asociados-section-header__label {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 2px;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.asociados-section-header__title {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-md) 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.asociados-section-header__desc {
+  font-family: var(--font-family-primary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  max-width: 540px;
+}
+
+.asociados-section-header__badge {
+  flex-shrink: 0;
+  background: rgba(32, 32, 32, 0.8);
+  border: 1px solid rgba(126, 74, 53, 0.3);
+  border-radius: 14px;
+  padding: var(--spacing-xl) var(--spacing-xxl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.asociados-section-header__badge-num {
+  font-family: var(--font-family-primary);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.asociados-section-header__badge-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 100px;
+}
+
+/* ==========================================================================
+   STATS ROW
+   ========================================================================== */
+
+.asociados-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.asociados-stats__card {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid var(--primary-color);
+  border-radius: 8px;
+  padding: var(--spacing-xl);
+  transition: all 0.3s ease;
+}
+
+.asociados-stats__card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
 
-.asociado-desc {
-  color: rgba(255,255,255,0.75);
+.asociados-stats__value {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  line-height: 1.2;
+  margin-bottom: var(--spacing-xs);
+}
+
+.asociados-stats__super {
+  font-size: 0.6em;
+  color: var(--primary-color);
+  vertical-align: super;
+}
+
+.asociados-stats__label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ==========================================================================
+   SEARCH BAR
+   ========================================================================== */
+
+.asociados-search {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: var(--spacing-xxl);
+}
+
+.asociados-search__row {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.asociados-search__input-wrap {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0 var(--spacing-md);
+  transition: border-color 0.3s ease;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.asociados-search__input-wrap:focus-within {
+  border-color: var(--primary-color);
+}
+
+.asociados-search__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-family: var(--font-family-primary);
+  font-size: 0.95rem;
+  padding: var(--spacing-md) 0;
+  outline: none;
+  min-width: 0;
+}
+
+.asociados-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.asociados-search__btn {
+  flex-shrink: 0;
+}
+
+.asociados-search__chips {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.asociados-search__chip {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-family-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.asociados-search__chip:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-color);
+}
+
+.asociados-search__chip--active {
+  background: var(--background-dark);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* ==========================================================================
+   EMPLEO GRID
+   ========================================================================== */
+
+.asociados-empleo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.asociados-empleo-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  border: 1.5px solid transparent;
+  padding: var(--spacing-xl);
+  overflow: hidden;
+  transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.asociados-empleo-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+.asociados-empleo-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary-color);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.asociados-empleo-card:hover .asociados-empleo-card__accent {
+  opacity: 1;
+}
+
+.asociados-empleo-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.asociados-empleo-card__icon {
+  width: 44px;
+  height: 44px;
+  background: var(--background-dark);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.asociados-empleo-card__tag {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.asociados-empleo-card__tag--priority {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.asociados-empleo-card__tag--open {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+}
+
+.asociados-empleo-card__tag--closed {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+}
+
+.asociados-empleo-card__title {
+  font-family: var(--font-family-primary);
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.asociados-empleo-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.asociados-empleo-card__meta-sep {
+  opacity: 0.3;
+}
+
+.asociados-empleo-card__desc {
+  font-family: var(--font-family-primary);
   font-size: 0.95rem;
   line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  flex: 1;
 }
 
-/* vertical separators between cards (subtle) */
-.asociados-grid .asociado-card:not(:first-child) {
-  border-left: 1px solid rgba(255,255,255,0.03);
-  padding-left: 2rem;
+.asociados-empleo-card__skills {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
 }
 
-@media (max-width: 900px) {
-  .asociados-grid {
+.asociados-empleo-card__skill {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ==========================================================================
+   CTA BANNER
+   ========================================================================== */
+
+.asociados-cta {
+  background: linear-gradient(135deg, rgba(32, 32, 32, 0.95) 0%, rgba(80, 70, 65, 0.8) 100%);
+  border: 1px solid rgba(126, 74, 53, 0.3);
+  border-radius: 16px;
+  padding: var(--spacing-xxl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xxl);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.asociados-cta__text {
+  flex: 1;
+  min-width: 260px;
+}
+
+.asociados-cta__title {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.asociados-cta__desc {
+  font-family: var(--font-family-primary);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.asociados-cta__actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   CATEGORÍAS GRID
+   ========================================================================== */
+
+.asociados-categorias {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.asociados-categorias__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  color: var(--text-color);
+  font-family: var(--font-family-primary);
+}
+
+.asociados-categorias__item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px);
+}
+
+.asociados-categorias__icon {
+  width: 64px;
+  height: 64px;
+  background: var(--background-dark);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.asociados-categorias__nombre {
+  font-weight: var(--font-weight-bold);
+  font-size: 0.95rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.asociados-categorias__contador {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   PROVEEDOR GRID
+   ========================================================================== */
+
+.asociados-proveedor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.asociados-proveedor-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  transition: all 0.35s ease;
+}
+
+.asociados-proveedor-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+.asociados-proveedor-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.asociados-proveedor-card__logo {
+  width: 52px;
+  height: 52px;
+  background: var(--background-dark);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.asociados-proveedor-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.asociados-proveedor-card__nombre {
+  font-family: var(--font-family-primary);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-xs) 0;
+  line-height: 1.3;
+}
+
+.asociados-proveedor-card__cat {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.asociados-proveedor-card__verificado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--primary-color);
+  color: var(--background-dark);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.asociados-proveedor-card__desc {
+  font-family: var(--font-family-primary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  flex: 1;
+}
+
+.asociados-proveedor-card__meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.asociados-proveedor-card__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.asociados-proveedor-card__meta-val {
+  font-weight: var(--font-weight-bold);
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.asociados-proveedor-card__meta-sub {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.asociados-proveedor-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.asociados-proveedor-card__rating-num {
+  margin-left: var(--spacing-sm);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+}
+
+.asociados-proveedor-card__btn {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: transparent;
+  color: var(--text-color);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  font-family: var(--font-family-primary);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.asociados-proveedor-card__btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+/* ==========================================================================
+   FORMULARIO REGISTRO PROVEEDOR
+   ========================================================================== */
+
+.asociados-form {
+  background: rgba(32, 32, 32, 0.6);
+  border: 1px solid rgba(126, 74, 53, 0.25);
+  border-radius: 16px;
+  padding: var(--spacing-xxl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.asociados-form__title {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.asociados-form__desc {
+  font-family: var(--font-family-primary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 var(--spacing-xl) 0;
+}
+
+.asociados-form__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.asociados-form__field {
+  display: flex;
+  flex-direction: column;
+}
+
+.asociados-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.asociados-form__input {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-family: var(--font-family-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.asociados-form__input:focus {
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.asociados-form__input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.asociados-form__select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff66' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-md) center;
+  padding-right: 2.5rem;
+}
+
+.asociados-form__select option {
+  background: var(--background-dark);
+  color: var(--text-color);
+}
+
+.asociados-form__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.asociados-form__checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.asociados-form__checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   EMPTY STATE
+   ========================================================================== */
+
+.asociados-empty {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+/* Mobile ≤ 767px */
+@media screen and (max-width: 767px) {
+  .asociados-content {
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg) 4rem var(--spacing-lg);
+  }
+
+  .asociados-tabs__btn {
+    padding: var(--spacing-md);
+    font-size: 0.85rem;
+  }
+
+  .asociados-tabs__num {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .asociados-tabs__label {
+    font-size: 0.9rem;
+  }
+
+  .asociados-section-header {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .asociados-section-header__badge {
+    align-self: flex-start;
+  }
+
+  .asociados-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .asociados-empleo-grid {
     grid-template-columns: 1fr;
   }
 
-  .asociado-card:not(:first-child) {
-    border-left: none;
-    padding-left: 1.2rem;
+  .asociados-proveedor-grid {
+    grid-template-columns: 1fr;
   }
 
-  .hex-box {
-    width: 320px;
-    padding: 1.6rem 1.2rem;
+  .asociados-categorias {
+    grid-template-columns: repeat(2, 1fr);
   }
+
+  .asociados-search__row {
+    flex-direction: column;
+  }
+
+  .asociados-search__input-wrap {
+    min-width: 0;
+  }
+
+  .asociados-cta {
+    flex-direction: column;
+    text-align: center;
+    align-items: stretch;
+  }
+
+  .asociados-cta__actions {
+    justify-content: center;
+  }
+
+  .asociados-form__fields {
+    grid-template-columns: 1fr;
+  }
+
+  .asociados-form {
+    padding: var(--spacing-lg);
+  }
+
+  .asociados-hero {
+    height: 60vh;
+    min-height: 400px;
+    margin-top: -60px;
+    padding: 0 var(--spacing-md);
+  }
+
+  .asociados-hero__title {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+  }
+
+  .asociados-hero__desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+/* Tablet 768px – 1023px */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .asociados-content {
+    margin: 0 auto;
+    padding: 0 var(--spacing-xxl) 5rem var(--spacing-xxl);
+  }
+
+  .asociados-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .asociados-empleo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .asociados-proveedor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .asociados-categorias {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .asociados-form__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop large 1440px+ */
+@media screen and (min-width: 1440px) {
+  .asociados-content {
+    max-width: 1400px;
+  }
+
+  .asociados-empleo-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .asociados-proveedor-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* TV 1920px+ */
+@media screen and (min-width: 1920px) {
+  .asociados-content {
+    max-width: 1800px;
+    padding: 0 4rem;
+  }
+
+  .asociados-section-header__title {
+    font-size: 3rem;
+  }
+
+  .asociados-section-header__badge-num {
+    font-size: 4rem;
+  }
+}
+
+/* ==========================================================================
+   ACCESIBILIDAD
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .asociados-tabs__content {
+    animation: none;
+  }
+
+  .asociados-empleo-card,
+  .asociados-proveedor-card,
+  .asociados-categorias__item,
+  .asociados-stats__card {
+    transition: none;
+  }
+
+  .asociados-empleo-card:hover,
+  .asociados-proveedor-card:hover,
+  .asociados-categorias__item:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .asociados-tabs__btn--active {
+    border-bottom-width: 4px;
+  }
+
+  .asociados-stats__card {
+    border-left-width: 5px;
+  }
+
+  .asociados-form__input {
+    border-width: 2px;
+  }
+}
+
+.asociados-tabs__btn:focus-visible,
+.asociados-search__chip:focus-visible,
+.asociados-categorias__item:focus-visible,
+.asociados-form__input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }

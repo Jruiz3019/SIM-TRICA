@@ -1,25 +1,24 @@
 // src/layouts/HeaderLayout.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Logo from '../assets/logoSi-blanco.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { useNavVisibility } from '../hooks/useNavVisibility'; // AÑADIDO: Hook para comportamiento dinámico
+import { useNavVisibility } from '../hooks/useNavVisibility';
 import { useAuth } from '../context/useAuth';
 import * as authService from '../services/authService';
 import "./styles/HeaderStyle.css"
 
 const HeaderLayout = () => {
-    // Estado para controlar el menú móvil
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    
-    // AÑADIDO: Hook para controlar visibilidad dinámica del navbar
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
     const isNavVisible = useNavVisibility({ offset: 120, threshold: 8 });
-    
-    // AÑADIDO: Auth context y navegación
     const { isAuthenticated, user, logout } = useAuth();
     const navigate = useNavigate();
 
-    // Efecto para detectar scroll y cambiar estilo del header
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -30,25 +29,34 @@ const HeaderLayout = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Función para alternar el menú móvil
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        if (isDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isDropdownOpen]);
+
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
-    // Función para cerrar el menú móvil al hacer click en un enlace
     const closeMobileMenu = () => {
         setIsMobileMenuOpen(false);
+        setIsMobileDropdownOpen(false);
     };
 
-    // Función para manejar el click fuera del menú
     const handleOverlayClick = () => {
         setIsMobileMenuOpen(false);
+        setIsMobileDropdownOpen(false);
     };
-    
-    // AÑADIDO: Función para manejar logout
+
     const handleLogout = async () => {
         try {
-            // Llamar al backend para invalidar el token
             const token = localStorage.getItem('token');
             if (token) {
                 await authService.logout(token);
@@ -56,22 +64,23 @@ const HeaderLayout = () => {
         } catch (error) {
             console.error('Error al cerrar sesión:', error);
         } finally {
-            // Limpiar estado local
             logout();
             closeMobileMenu();
             navigate('/');
         }
     };
 
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    };
+
     return (
         <>
-            {/* MODIFICADO: Header principal con clases dinámicas para scroll y visibilidad */}
             <header 
                 className={`header ${isScrolled ? 'header--scrolled' : ''} ${isNavVisible ? 'header--visible' : 'header--hidden'}`}
                 aria-hidden={!isNavVisible}
             >
                 <div className='container header__container'>
-                    {/* Logo de la empresa */}
                     <Link to="/" className='logo-container' aria-label="Volver al inicio">
                         <img 
                             src={Logo} 
@@ -81,16 +90,31 @@ const HeaderLayout = () => {
                         <span className="logo-container__text">SIMÉTRICA</span>
                     </Link>
 
-                    {/* Navegación desktop */}
                     <nav className='nav-container nav-container--desktop' aria-label="Navegación principal">
                         <Link to="/" className="nav-container__link">Inicio</Link>
-                        <Link to="/asociados" className="nav-container__link">Asociados</Link>
+                        
+                        <div className="nav-container__dropdown" ref={dropdownRef}>
+                            <button 
+                                className={`nav-container__link nav-container__dropdown-trigger${isDropdownOpen ? ' nav-container__dropdown-trigger--open' : ''}`}
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                aria-expanded={isDropdownOpen}
+                                aria-haspopup="true"
+                            >
+                                Alianzas
+                                <span className="nav-container__dropdown-arrow" aria-hidden="true" />
+                            </button> 
+                            {isDropdownOpen && (
+                                <div className="nav-container__dropdown-menu">
+                                    <Link to="/asociados" className="nav-container__dropdown-item" onClick={closeDropdown}>IPUC</Link>
+                                </div>
+                            )}
+                        </div>
+
                         <Link to="/proyectos" className="nav-container__link">Proyectos</Link>
                         <Link to="/diseños" className="nav-container__link">Diseños</Link>
                         <Link to="/trabaja-con-nosotros" className="nav-container__link">Trabaja con nosotros</Link>
                         <Link className='nav-container__link nav-container__link--cta' to="/contacto">Contacto</Link>
                         
-                        {/* Botones de autenticación */}
                         {isAuthenticated ? (
                             <div className="nav-container__auth">
                                 <span className="nav-container__username">Hola, {user?.username}</span>
@@ -109,7 +133,6 @@ const HeaderLayout = () => {
                         )}
                     </nav>
 
-                    {/* Botón hamburguesa para móvil */}
                     <button 
                         className={`mobile-menu-toggle ${isMobileMenuOpen ? 'mobile-menu-toggle--open' : ''}`}
                         onClick={toggleMobileMenu}
@@ -124,7 +147,6 @@ const HeaderLayout = () => {
                 </div>
             </header>
 
-            {/* Overlay para cerrar menú móvil */}
             {isMobileMenuOpen && (
                 <div 
                     className="mobile-menu-overlay" 
@@ -133,20 +155,32 @@ const HeaderLayout = () => {
                 ></div>
             )}
 
-            {/* Navegación móvil */}
             <nav 
                 id="mobile-nav"
                 className={`nav-container nav-container--mobile ${isMobileMenuOpen ? 'nav-container--mobile-open' : ''}`}
                 aria-label="Navegación móvil"
             >
                 <Link to="/" className="nav-container__link" onClick={closeMobileMenu}>Inicio</Link>
-                <Link to="/asociados" className="nav-container__link" onClick={closeMobileMenu}>Asociados</Link>
+                
+                <button 
+                    className={`nav-container__link nav-container__dropdown-trigger nav-container__dropdown-trigger--mobile${isMobileDropdownOpen ? ' nav-container__dropdown-trigger--open' : ''}`}
+                    onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
+                    aria-expanded={isMobileDropdownOpen}
+                >
+                    Asociados
+                    <span className="nav-container__dropdown-arrow" aria-hidden="true" />
+                </button>
+                {isMobileDropdownOpen && (
+                    <div className="nav-container__dropdown-menu nav-container__dropdown-menu--mobile">
+                        <Link to="/asociados" className="nav-container__dropdown-item" onClick={closeMobileMenu}>IPUC</Link>
+                    </div>
+                )}
+                
                 <Link to="/proyectos" className="nav-container__link" onClick={closeMobileMenu}>Proyectos</Link>
                 <Link to="/diseños" className="nav-container__link" onClick={closeMobileMenu}>Diseños</Link>
                 <Link to="/trabaja-con-nosotros" className="nav-container__link" onClick={closeMobileMenu}>Trabaja con nosotros</Link>
                 <Link className='nav-container__link nav-container__link--cta' to="/contacto" onClick={closeMobileMenu}>Contacto</Link>
                 
-                {/* Botones de autenticación móvil */}
                 {isAuthenticated ? (
                     <>
                         <div className="nav-container__username-mobile">Hola, {user?.username}</div>
