@@ -52,7 +52,7 @@
 .contact-form__input,
 .contact-form__textarea {
   padding: var(--spacing-md) var(--spacing-lg);
-  border: 1px solid rgba(126, 74, 53, 0.5);
+  border: 1px solid rgba(92, 61, 46, 0.5);
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-color);
@@ -99,13 +99,13 @@
 /* Estados de error */
 .contact-form__input--error,
 .contact-form__textarea--error {
-  border-color: #dc3545;
+  border-color: var(--error-color);
   background: rgba(220, 53, 69, 0.05);
 }
 
 .contact-form__input--error:focus,
 .contact-form__textarea--error:focus {
-  border-color: #dc3545;
+  border-color: var(--error-color);
   box-shadow: none;
 }
 
@@ -118,7 +118,7 @@
 
 /* Mensajes de error */
 .contact-form__error {
-  color: #dc3545;
+  color: var(--error-color);
   font-size: 0.85rem;
   margin-top: var(--spacing-xs);
   display: flex;
@@ -128,7 +128,7 @@
 
 /* Mensaje de éxito */
 .contact-form__success {
-  color: #2a9d8f;
+  color: var(--success-color);
   font-size: 0.875rem;
   margin-left: var(--spacing-md);
   display: flex;
@@ -165,9 +165,9 @@
 
 /* Estados del botón */
 .contact-form__submit:hover:not(:disabled) {
-  background: #8B5A42;
+  background: var(--primary-light);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(126, 74, 53, 0.4);
+  box-shadow: 0 4px 12px rgba(92, 61, 46, 0.4);
 }
 
 .contact-form__submit:focus {
@@ -335,7 +335,7 @@
   .contact-form__input,
   .contact-form__textarea {
     background: rgba(255, 255, 255, 0.05) !important;
-    border-color: rgba(126, 74, 53, 0.5) !important;
+    border-color: rgba(92, 61, 46, 0.5) !important;
     color: var(--text-color) !important;
   }
   

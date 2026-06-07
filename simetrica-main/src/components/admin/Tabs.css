@@ -54,7 +54,7 @@
   color: var(--text-color);
   border-bottom-color: var(--primary-color);
   font-weight: var(--font-weight-bold);
-  background: rgba(126, 74, 53, 0.1);
+  background: rgba(92, 61, 46, 0.1);
 }
 
 .tabs__icon {

@@ -1,7 +1,7 @@
 /* ProjectsPage Styles */
 .projects-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background: linear-gradient(135deg, #141414 0%, var(--bg-section) 100%);
   color: var(--text-color);
   padding-top: 140px;
 }
@@ -9,7 +9,7 @@
 .projects-hero {
   text-align: center;
   padding: 4rem 2rem 2rem;
-  background: linear-gradient(180deg, rgba(126, 74, 53, 0.1) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(92, 61, 46, 0.1) 0%, transparent 100%);
 }
 
 .projects-hero h1 {
@@ -54,7 +54,7 @@
   outline: none;
   background: rgba(255, 255, 255, 0.08);
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(126, 74, 53, 0.2);
+  box-shadow: 0 0 0 3px rgba(92, 61, 46, 0.2);
 }
 
 .search-input::placeholder {
@@ -75,7 +75,7 @@
 }
 
 .error-container {
-  color: #ff4757;
+  color: var(--error-color);
   background: rgba(255, 71, 87, 0.1);
   border: 1px solid rgba(255, 71, 87, 0.3);
   border-radius: 8px;
@@ -102,8 +102,8 @@
 
 .project-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(126, 74, 53, 0.5);
-  box-shadow: 0 12px 40px rgba(126, 74, 53, 0.3);
+  border-color: rgba(92, 61, 46, 0.5);
+  box-shadow: 0 12px 40px rgba(92, 61, 46, 0.3);
 }
 
 .project-image {
@@ -153,7 +153,7 @@
 }
 
 .view-more-btn:hover {
-  background: rgba(126, 74, 53, 0.9);
+  background: rgba(92, 61, 46, 0.9);
   transform: scale(1.05);
 }
 
@@ -215,7 +215,7 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: rgba(126, 74, 53, 0.3);
+  background: rgba(92, 61, 46, 0.3);
   border-color: var(--primary-color);
   transform: translateY(-2px);
 }

@@ -20,7 +20,7 @@
 
 .btn-refresh {
   padding: var(--spacing-sm) var(--spacing-lg);
-  background: rgba(126, 74, 53, 0.2);
+  background: rgba(92, 61, 46, 0.2);
   border: 1px solid var(--primary-color);
   color: var(--text-color);
   border-radius: 8px;
@@ -30,7 +30,7 @@
 }
 
 .btn-refresh:hover:not(:disabled) {
-  background: rgba(126, 74, 53, 0.4);
+  background: rgba(92, 61, 46, 0.4);
   transform: translateY(-2px);
 }
 
@@ -44,7 +44,7 @@
   background: rgba(255, 71, 87, 0.2);
   border: 1px solid rgba(255, 71, 87, 0.4);
   border-radius: 8px;
-  color: #ff4757;
+  color: var(--error-color);
   margin-bottom: var(--spacing-lg);
   text-align: center;
   font-weight: var(--font-weight-bold);
@@ -122,7 +122,7 @@
 }
 
 .btn-close:hover {
-  color: #ff4757;
+  color: var(--error-color);
 }
 
 .detail-content {
@@ -182,7 +182,7 @@
 }
 
 .status-select option {
-  background: #1a1a1a;
+  background: var(--bg-section);
   color: var(--text-color);
 }
 
@@ -207,7 +207,7 @@
 .btn-mark-read {
   background: rgba(46, 213, 115, 0.2);
   border: 1px solid rgba(46, 213, 115, 0.3);
-  color: #2ed573;
+  color: var(--success-color);
 }
 
 .btn-mark-read:hover {
@@ -218,7 +218,7 @@
 .btn-delete {
   background: rgba(255, 71, 87, 0.2);
   border: 1px solid rgba(255, 71, 87, 0.3);
-  color: #ff4757;
+  color: var(--error-color);
 }
 
 .btn-delete:hover {

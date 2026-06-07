@@ -1,168 +1,174 @@
 /* MOVED: src/components/Footer -> src/layouts/Footer — motivo: reorganización de layout - Fecha: 2025-10-01 */
 // src/layouts/Footer/Footer.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
 import './FooterStyle.css';
 
-/* Interfaces TypeScript para props tipadas y reutilización */
+import InstagramIcon from '../../assets/instagram.png';
+import FacebookIcon from '../../assets/facebook.png';
+import TikTokIcon from '../../assets/tiktok.png';
+import PinterestIcon from '../../assets/pinterest.png';
+import WhatsAppIcon from '../../assets/whatsapp.png';
+
+const SOCIAL_ICONS: Record<string, string> = {
+    Instagram: InstagramIcon,
+    Facebook: FacebookIcon,
+    TikTok: TikTokIcon,
+    Pinterest: PinterestIcon,
+    WhatsApp: WhatsAppIcon,
+};
+
 export interface LinkItem {
-  label: string;
-  href: string;
-  external?: boolean; // Para enlaces externos que abren en nueva pestaña
+    label: string;
+    href: string;
+    external?: boolean;
 }
 
 export interface Column {
-  title: string;
-  links: LinkItem[];
+    title: string;
+    links: LinkItem[];
 }
 
 export interface FooterProps {
-  logoSrc?: string; // Logo opcional para branding
-  logoAlt?: string; // Alt text para accesibilidad
-  columns?: Column[]; // Columnas de navegación configurables
-  copyright?: string; // Texto de copyright personalizable
-  className?: string; // Clase CSS adicional para personalización
-  ariaLabel?: string; // Label ARIA para accesibilidad
-  socialLinks?: LinkItem[]; // Enlaces de redes sociales opcionales
+    logoSrc?: string;
+    logoAlt?: string;
+    columns?: Column[];
+    copyright?: string;
+    className?: string;
+    ariaLabel?: string;
+    socialLinks?: LinkItem[];
 }
 
-/**
- * Componente Footer reutilizable y accesible
- * Sigue patrones de diseño del sistema existente manteniendo variables CSS globales
- * Implementa WCAG 2.1 AA y responsividad completa (mobile, tablet, desktop, TV)
- */
 const Footer: React.FC<FooterProps> = ({
-  logoSrc,
-  logoAlt = "Logo",
-  columns = [],
-  copyright,
-  className = '',
-  ariaLabel = 'Pie de página',
-  socialLinks = []
+    logoSrc,
+    logoAlt = "Logo",
+    columns = [],
+    copyright,
+    className = '',
+    ariaLabel = 'Pie de página',
+    socialLinks = []
 }) => {
-  
-  // Hook para verificar si el usuario es admin
-  const { isAdmin } = useAuth();
-  
-  // Función para manejar click en enlaces externos con analytics tracking
-  const handleExternalLinkClick = (href: string, label: string) => {
-    // Aquí se podría agregar tracking de analytics si fuera necesario en el futuro
-    console.debug(`External link clicked: ${label} -> ${href}`);
-  };
 
-  return (
-    <footer 
-      className={`footer ${className}`} 
-      role="contentinfo" 
-      aria-label={ariaLabel}
-    >
-      {/* Container principal con grid responsivo */}
-      <div className="footer__container container">
-        
-        {/* Sección superior con logo y columnas de navegación */}
-        <div className="footer__main">
-          
-          {/* Navegación por columnas con logo incluido - Estructura semántica para SEO */}
-          {columns.length > 0 && (
-            <nav className="footer__navigation" aria-label="Enlaces del pie de página">
-              <div className="footer__columns">
-                {/* Logo de la empresa como primera columna */}
-                {logoSrc && (
-                  <div className="footer__brand">
-                    <Link to="/" aria-label="Volver al inicio">
-                      <img 
-                        src={logoSrc} 
-                        alt={logoAlt}
-                        className="footer__logo"
-                        loading="lazy" // Optimización de performance
-                      />
-                    </Link>
-                  </div>
+    const { isAdmin } = useAuth();
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) setIsVisible(true);
+                });
+            },
+            { threshold: 0.15 }
+        );
+
+        const element = document.querySelector('.footer');
+        if (element) observer.observe(element);
+        return () => { if (element) observer.unobserve(element); };
+    }, []);
+
+    return (
+        <footer
+            className={`footer ${className} ${isVisible ? 'footer--visible' : ''}`}
+            role="contentinfo"
+            aria-label={ariaLabel}
+        >
+            <div className="footer__container">
+
+                <div className="footer__main">
+
+                    {/* Columna 1 — Marca */}
+                    <div className="footer__brand">
+                        {logoSrc && (
+                            <Link to="/" aria-label="Volver al inicio" className="footer__brand-logo">
+                                <img
+                                    src={logoSrc}
+                                    alt={logoAlt}
+                                    className="footer__logo"
+                                    loading="lazy"
+                                />
+                            </Link>
+                        )}
+                        <p className="footer__tagline">Aislamiento acústico de precisión</p>
+                        <p className="footer__description">
+                            Especialistas en insonorización y acondicionamiento acústico
+                            para espacios residenciales, comerciales e industriales.
+                        </p>
+
+                        {socialLinks.length > 0 && (
+                            <div className="footer__social-icons" aria-label="Redes sociales">
+                                {socialLinks.map((social, index) => (
+                                    <a
+                                        key={index}
+                                        href={social.href}
+                                        className="footer__social-icon"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={social.label}
+                                    >
+                                        <img
+                                            src={SOCIAL_ICONS[social.label]}
+                                            alt={social.label}
+                                            loading="lazy"
+                                        />
+                                    </a>
+                                ))}
+                                {isAdmin && (
+                                    <Link
+                                        to="/admin"
+                                        className="footer__social-icon"
+                                        aria-label="Panel administrativo"
+                                    >
+                                        <span className="footer__admin-icon">⚙</span>
+                                    </Link>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Columnas de links */}
+                    {columns.map((column, columnIndex) => (
+                        <div key={columnIndex} className="footer__column">
+                            <h4 className="footer__column-title">
+                                <span>{column.title}</span>
+                                <span className="footer__column-line"></span>
+                            </h4>
+                            <ul className="footer__links" role="list">
+                                {column.links.map((link, linkIndex) => (
+                                    <li key={linkIndex} role="listitem">
+                                        <a
+                                            href={link.href}
+                                            className="footer__link"
+                                            target={link.external ? '_blank' : '_self'}
+                                            rel={link.external ? 'noopener noreferrer' : undefined}
+                                            aria-label={link.external ? `${link.label} (abre en nueva pestaña)` : link.label}
+                                        >
+                                            {link.label}
+                                            {link.external && (
+                                                <span className="footer__external-icon" aria-hidden="true">↗</span>
+                                            )}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+
+                </div>
+
+                {copyright && (
+                    <>
+                        <div className="footer__separator"></div>
+                        <div className="footer__bottom">
+                            <span className="footer__copyright-text">{copyright}</span>
+                        </div>
+                    </>
                 )}
-                
-                {/* Columnas de navegación */}
-                {columns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="footer__column">
-                    <h4 className="footer__column-title">
-                      {column.title}
-                    </h4>
-                    <ul className="footer__links" role="list">
-                      {column.links.map((link, linkIndex) => (
-                        <li key={linkIndex} role="listitem">
-                          <a
-                            href={link.href}
-                            className="footer__link"
-                            target={link.external ? '_blank' : '_self'}
-                            rel={link.external ? 'noopener noreferrer' : undefined}
-                            onClick={link.external ? () => handleExternalLinkClick(link.href, link.label) : undefined}
-                            aria-label={link.external ? `${link.label} (abre en nueva pestaña)` : link.label}
-                          >
-                            {link.label}
-                            {/* Indicador visual para enlaces externos */}
-                            {link.external && (
-                              <span className="footer__external-icon" aria-hidden="true">
-                                ↗
-                              </span>
-                            )}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </nav>
-          )}
 
-          {/* Redes sociales - Si se proporcionan */}
-          {socialLinks.length > 0 && (
-            <div className="footer__social">
-              <h4 className="footer__social-title">Síguenos</h4>
-              <nav className="footer__social-links" aria-label="Enlaces de redes sociales">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.href}
-                    className="footer__social-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${social.label} (abre en nueva pestaña)`}
-                    onClick={() => handleExternalLinkClick(social.href, social.label)}
-                  >
-                    {social.label}
-                  </a>
-                ))}
-                
-                {/* Botón de Panel Admin - Solo visible para usuarios ADMIN */}
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    className="footer__social-link"
-                    aria-label="Panel administrativo"
-                  >
-                    Panel Admin
-                  </Link>
-                )}
-              </nav>
             </div>
-          )}
-        </div>
-
-        {/* Sección inferior con copyright y información legal */}
-        {copyright && (
-          <div className="footer__bottom">
-            <div className="footer__copyright">
-              <p>{copyright}</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Separador visual sutil */}
-      <div className="footer__divider" aria-hidden="true"></div>
-    </footer>
-  );
+        </footer>
+    );
 };
 
 export default Footer;

@@ -1,134 +1,361 @@
+/* Simetrica section — fullscreen, split layout */
+
 .simetrica-section {
-  padding: 4rem 2rem;
-  background: #1a1a1a;
-  color: #fff;
+    height: 100vh;
+    background: var(--bg-section);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.97);
+    transition:
+        opacity 800ms ease-out,
+        transform 800ms ease-out;
+}
+
+.simetrica-section--visible {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .simetrica-section__content {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 2rem;
-  align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
 }
 
-.simetrica-section__image {
-  position: relative;
+/* ==========================================================================
+   IMAGE PANEL
+   ========================================================================== */
+
+.simetrica-section__image-panel {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
 }
 
-.simetrica-section__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(70%); /* oscurece la imagen */
-  transition: filter 0.3s ease;
+.simetrica-section__image-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.simetrica-section__image:hover img {
-  filter: brightness(100%); /* vuelve clara al hacer hover */
+.simetrica-section__image-gradient {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--bg-section));
+    pointer-events: none;
+    z-index: 1;
 }
 
 .simetrica-section__caption {
-  margin-top: 0.8rem;
-  font-size: 0.9rem;
-  color: #ddd;
-  border-left: 4px solid #6b3e2e;
-  padding-left: 0.5rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.5);
+    padding-left: 1rem;
+    border-left: 2px solid var(--primary-color);
+    z-index: 2;
 }
 
-/* Hexágono */
-.simetrica-section__hexagon {
-  position: relative;
-  padding: 3rem 2.5rem;
-  border: 2px solid #6b3e2e;
-  clip-path: polygon(
-    25% 0%, 75% 0%, 
-    100% 50%, 75% 100%, 
-    25% 100%, 0% 50%
-  );
-  background: #1a1a1a;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* ==========================================================================
+   TEXT PANEL
+   ========================================================================== */
+
+.simetrica-section__text-panel {
+    position: relative;
+    padding: 0 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg-section);
+    overflow: hidden;
+}
+
+.simetrica-section__text-panel::after {
+    content: 'S';
+    position: absolute;
+    right: -10%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32rem;
+    font-weight: 800;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: rgba(255, 255, 255, 1);
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+    user-select: none;
+}
+
+.simetrica-section__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary-color);
+    margin: 0 0 0.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+.simetrica-section__divider {
+    width: 48px;
+    height: 2px;
+    background: var(--primary-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .simetrica-section__title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  padding: 0 1rem;
+    font-size: clamp(3rem, 5vw, 4rem);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.05;
+    margin: 0 0 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .simetrica-section__description {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #ccc;
-  padding: 0 1.5rem;
-  max-width: 90%;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 460px;
+    margin: 0;
+    position: relative;
+    z-index: 1;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 1024px) {
-  .simetrica-section__content {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
+.simetrica-section__separator {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+    position: relative;
+    z-index: 1;
+}
 
-  .simetrica-section__hexagon {
-    padding: 3rem 2rem;
-  }
+/* ==========================================================================
+   FEATURES
+   ========================================================================== */
 
-  .simetrica-section__title {
-    font-size: 1.6rem;
-  }
+.simetrica-section__features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
 
-  .simetrica-section__description {
+.simetrica-section__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+.simetrica-section__feature-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    margin-top: 0.55rem;
+    flex-shrink: 0;
+}
+
+.simetrica-section__feature-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.simetrica-section__feature-title {
     font-size: 0.95rem;
-  }
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.simetrica-section__feature-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   CTA
+   ========================================================================== */
+
+.simetrica-section__cta {
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.simetrica-section__cta .button--secondary {
+    transition: background 250ms ease, color 250ms ease;
+}
+
+.simetrica-section__cta .button--secondary:hover:not(.button--disabled):not(.button--loading) {
+    background: var(--primary-color);
+}
+
+.simetrica-section__cta .button__arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.simetrica-section__cta .button:hover .button__arrow {
+    transform: translateX(4px);
+}
+
+/* ==========================================================================
+   ENTRANCE ANIMATION
+   ========================================================================== */
+
+.simetrica-stagger {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) var(--s, 0ms),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1) var(--s, 0ms);
+}
+
+.simetrica-section--visible .simetrica-stagger {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media screen and (max-width: 1024px) {
+    .simetrica-section__text-panel {
+        padding: 0 2.5rem;
+    }
+
+    .simetrica-section__title {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+    }
+
+    .simetrica-section__caption {
+        bottom: 1.5rem;
+        left: 1.5rem;
+    }
 }
 
 @media screen and (max-width: 768px) {
-  .simetrica-section {
-    padding: 3rem 1.5rem;
-  }
+    .simetrica-section {
+        height: auto;
+        min-height: 100dvh;
+    }
 
-  .simetrica-section__hexagon {
-    padding: 2.5rem 1.5rem;
-  }
+    .simetrica-section__content {
+        grid-template-columns: 1fr;
+    }
 
-  .simetrica-section__title {
-    font-size: 1.5rem;
-    padding: 0 0.5rem;
-  }
+    .simetrica-section__image-panel {
+        height: 45vh;
+    }
 
-  .simetrica-section__description {
-    font-size: 0.9rem;
-    padding: 0 1rem;
-  }
+    .simetrica-section__image-gradient {
+        width: 100%;
+        height: 30%;
+        top: auto;
+        bottom: 0;
+        background: linear-gradient(to top, var(--bg-section), transparent);
+    }
+
+    .simetrica-section__text-panel {
+        padding: 2rem;
+        min-height: auto;
+    }
+
+    .simetrica-section__text-panel::after {
+        display: none;
+    }
+
+    .simetrica-section__title {
+        font-size: 2.2rem;
+    }
+
+    .simetrica-section__description {
+        font-size: 0.95rem;
+        max-width: 100%;
+    }
+
+    .simetrica-section__caption {
+        bottom: 1.5rem;
+        left: 1.5rem;
+    }
 }
 
 @media screen and (max-width: 480px) {
-  .simetrica-section {
-    padding: 2rem 1rem;
-  }
+    .simetrica-section__image-panel {
+        height: 40vh;
+    }
 
-  .simetrica-section__hexagon {
-    padding: 2rem 1rem;
-  }
+    .simetrica-section__text-panel {
+        padding: 1.5rem;
+    }
 
-  .simetrica-section__title {
-    font-size: 1.3rem;
-    padding: 0;
-  }
+    .simetrica-section__title {
+        font-size: 1.8rem;
+    }
 
-  .simetrica-section__description {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    padding: 0 0.5rem;
-  }
+    .simetrica-section__description {
+        font-size: 0.9rem;
+    }
 
-  .simetrica-section__caption {
-    font-size: 0.85rem;
-  }
+    .simetrica-section__separator {
+        margin: 1.5rem 0;
+    }
+
+    .simetrica-section__feature-title {
+        font-size: 0.9rem;
+    }
+
+    .simetrica-section__feature-desc {
+        font-size: 0.78rem;
+    }
+
+    .simetrica-section__caption {
+        bottom: 1rem;
+        left: 1rem;
+        font-size: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .simetrica-section__image-panel {
+        height: 35vh;
+    }
+
+    .simetrica-section__text-panel {
+        padding: 1.25rem;
+    }
+
+    .simetrica-section__title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .simetrica-stagger {
+        transition: opacity 400ms ease var(--s, 0ms);
+        transform: none;
+    }
+
+    .simetrica-section__cta .button__arrow {
+        transition: none;
+    }
 }

@@ -87,60 +87,58 @@ const Home = () => {
         <div className="home-section__content">
           <div className="container">
             <div className="hero-content">
+              <p className="hero-content__eyebrow hero-animate" style={{ '--d' : '0ms' } as React.CSSProperties}>
+                SIMÉTRICA
+              </p>
               <h1 className="hero-content__title">
-                Bienvenido a SIMÉTRICA
+                <span className="hero-animate" style={{ '--d': '150ms', '--y': '40px' } as React.CSSProperties}>
+                  Bienvenido a{' '}
+                </span>
+                <span className="hero-animate hero-content__title-word" style={{ '--d': '230ms', '--y': '40px', '--dur': '800ms' } as React.CSSProperties}>
+                  SIMÉTRICA
+                </span>
               </h1>
-              <p className="hero-content__subtitle">
+              <p className="hero-content__subtitle hero-animate" style={{ '--d': '350ms', '--y': '20px', '--dur': '700ms' } as React.CSSProperties}>
                 Diseños únicos y construcción profesional
               </p>
               
               <div className="hero-content__actions">
-                <Button 
-                  variant="primary" 
-                  size="lg"
-                  onClick={() => navigate('/proyectos')}
-                >
-                  Ver Proyectos
-                </Button>
+                <span className="hero-animate" style={{ '--d': '550ms', '--y': '16px', '--dur': '600ms' } as React.CSSProperties}>
+                  <Button 
+                    variant="primary" 
+                    size="lg"
+                    onClick={() => navigate('/proyectos')}
+                  >
+                    Ver Proyectos
+                  </Button>
+                </span>
                 
-                <Button 
-                  variant="secondary" 
-                  size="lg"
-                  onClick={() => navigate('/contacto')}
-                >
-                  Contactar
-                </Button>
-                
-                <Button 
-                  variant="ghost" 
-                  size="md"
-                  onClick={scrollToSection}
-                >
-                  Más Información
-                </Button>
+                <span className="hero-animate" style={{ '--d': '630ms', '--y': '16px', '--dur': '600ms' } as React.CSSProperties}>
+                  <Button 
+                    variant="secondary" 
+                    size="lg"
+                    onClick={() => navigate('/contacto')}
+                  >
+                    Contactar
+                  </Button>
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Indicador de scroll para UX mejorada */}
+        {/* Indicador de scroll */}
         <div 
-          className="scroll-indicator" 
+          className="scroll-indicator hero-animate" 
           aria-hidden="true"
-          onClick={() => {
-            const projectsSection = document.getElementById('sections-projects');
-            if (projectsSection) {
-              projectsSection.scrollIntoView({ behavior: "smooth" });
-            }
-          }}>
+          style={{ '--d': '900ms' } as React.CSSProperties}
+          onClick={scrollToSection}
+        >
           <div className="scroll-indicator__arrow"></div>
-
         </div>
       </main>
       <main className="home-sections-projects" id="sections-projects">
-        <div>
-          <ProjectsSectionComponents />
-        </div>
+        <ProjectsSectionComponents />
       </main>
       <main className="home-section-simetrica">
         <SimetricaSectionComponents />

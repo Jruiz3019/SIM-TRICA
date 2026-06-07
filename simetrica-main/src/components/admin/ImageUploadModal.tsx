@@ -252,7 +252,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, onClose, on
                   ) : (
                     <div className="preview-placeholder">
                       <p>✓ URL de Google Drive detectada</p>
-                      <p style={{ fontSize: '0.85rem', color: '#999' }}>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                         La imagen se guardará y mostrará correctamente
                       </p>
                     </div>

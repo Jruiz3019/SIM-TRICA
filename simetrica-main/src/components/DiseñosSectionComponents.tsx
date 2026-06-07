@@ -6,7 +6,6 @@ import Button from './Button';
 import designService from '../services/designService';
 import type { Design } from '../types/design.types';
 
-// Imágenes de fallback
 import Img1 from "../assets/Diseños.png";
 
 const FALLBACK_IMAGES = [Img1, Img1, Img1];
@@ -18,7 +17,6 @@ const DisenosSection = () => {
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // Obtener los últimos 3 diseños
     useEffect(() => {
         const fetchLatestDesigns = async () => {
             try {
@@ -30,33 +28,22 @@ const DisenosSection = () => {
                 setLoading(false);
             }
         };
-
         fetchLatestDesigns();
     }, []);
 
-    // Observer para animaciones al hacer scroll
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(true);
-                    }
+                    if (entry.isIntersecting) setIsVisible(true);
                 });
             },
-            { threshold: 0.3 }
+            { threshold: 0.25 }
         );
 
         const element = document.querySelector('.designs-section');
-        if (element) {
-            observer.observe(element);
-        }
-
-        return () => {
-            if (element) {
-                observer.unobserve(element);
-            }
-        };
+        if (element) observer.observe(element);
+        return () => { if (element) observer.unobserve(element); };
     }, []);
 
     const handleDesignClick = (designId: string) => {
@@ -93,33 +80,65 @@ const DisenosSection = () => {
             descripcion: ''
           }));
 
+    const CATEGORIES = ['Interiores', 'Acústica', 'Comercial'];
+
     return (
         <section className={`designs-section ${isVisible ? 'designs-section--visible' : ''}`}>
-            <div className="container designs-section__grid">
+            <div className="designs-section__grid">
+
                 {/* Texto a la izquierda */}
                 <div className="designs-section__text">
-                    <h2 className="designs-section__title">Nuestros diseños</h2>
-                    <p className="designs-section__description">
-                        Descubre nuestro portafolio de diseños de interiores especializados en crear 
-                        espacios únicos y funcionales. Cada diseño refleja nuestro compromiso con la 
-                        innovación, estética y optimización de espacios, garantizando ambientes que 
-                        combinan belleza y funcionalidad.
+                    <div className="designs-section__eyebrow designs-stagger" style={{ '--s': '0ms' } as React.CSSProperties}>
+                        <span className="designs-section__eyebrow-line"></span>
+                        <span className="designs-section__eyebrow-text">PORTAFOLIO DE DISEÑO</span>
+                    </div>
+
+                    <h2 className="designs-section__title designs-stagger" style={{ '--s': '100ms' } as React.CSSProperties}>
+                        <span>Nuestros</span>{' '}
+                        <span className="designs-section__title-accent">diseños</span>
+                    </h2>
+
+                    <p className="designs-section__description designs-stagger" style={{ '--s': '200ms' } as React.CSSProperties}>
+                        Descubre nuestro portafolio de diseños de interiores especializados en crear
+                        espacios únicos y funcionales con innovación, estética y optimización.
                     </p>
-                    <Button 
-                        variant='primary'
-                        size="lg"
-                        onClick={handleViewMore}
-                    >
-                        Ver más
-                    </Button>
+
+                    <div className="designs-section__separator designs-stagger" style={{ '--s': '300ms' } as React.CSSProperties}></div>
+
+                    <div className="designs-section__categories designs-stagger" style={{ '--s': '300ms' } as React.CSSProperties}>
+                        {CATEGORIES.map((cat, i) => (
+                            <button
+                                key={cat}
+                                className="designs-section__category"
+                                style={{ '--si': `${i * 100}ms` } as React.CSSProperties}
+                                onClick={handleViewMore}
+                            >
+                                <span className="designs-section__category-num">
+                                    {String(i + 1).padStart(2, '0')}
+                                </span>
+                                <span className="designs-section__category-name">{cat}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="designs-section__cta designs-stagger" style={{ '--s': '500ms' } as React.CSSProperties}>
+                        <Button
+                            variant="secondary"
+                            size="lg"
+                            onClick={handleViewMore}
+                        >
+                            Ver todos los diseños <span className="button__arrow">→</span>
+                        </Button>
+                    </div>
                 </div>
 
-                {/* Imagenes a la derecha - Desktop */}
+                {/* Editorial grid — Desktop */}
                 <div className="designs-section__images">
                     {displayDesigns.map((design, index) => (
                         <div 
                             key={design._id} 
-                            className="designs-section__image-card"
+                            className={`designs-section__image-card ${index === 0 ? 'designs-section__image-card--large' : 'designs-section__image-card--small'}`}
+                            style={{ '--si': `${200 + index * 150}ms` } as React.CSSProperties}
                             onClick={() => !loading && designs.length > 0 && handleDesignClick(design._id)}
                             role="button"
                             tabIndex={0}
@@ -135,17 +154,12 @@ const DisenosSection = () => {
                                 alt={design.nombre}
                                 loading="lazy"
                             />
-                            {!loading && designs.length > 0 && (
-                                <div className="designs-section__card-overlay">
-                                    <h3 className="designs-section__card-title">{design.nombre}</h3>
-                                    {design.descripcion && (
-                                        <p className="designs-section__card-description">
-                                            {design.descripcion.substring(0, 60)}
-                                            {design.descripcion.length > 60 ? '...' : ''}
-                                        </p>
-                                    )}
-                                </div>
-                            )}
+                            <div className="designs-section__card-overlay">
+                                <span className="designs-section__card-num">
+                                    {String(index + 1).padStart(2, '0')}
+                                </span>
+                                <span className="designs-section__card-name">{design.nombre}</span>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -175,17 +189,12 @@ const DisenosSection = () => {
                                     alt={design.nombre}
                                     loading="lazy"
                                 />
-                                {!loading && designs.length > 0 && (
-                                    <div className="designs-section__card-overlay">
-                                        <h3 className="designs-section__card-title">{design.nombre}</h3>
-                                        {design.descripcion && (
-                                            <p className="designs-section__card-description">
-                                                {design.descripcion.substring(0, 60)}
-                                                {design.descripcion.length > 60 ? '...' : ''}
-                                            </p>
-                                        )}
-                                    </div>
-                                )}
+                                <div className="designs-section__card-overlay">
+                                    <span className="designs-section__card-num">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </span>
+                                    <span className="designs-section__card-name">{design.nombre}</span>
+                                </div>
                             </div>
                         ))}
                     </div>

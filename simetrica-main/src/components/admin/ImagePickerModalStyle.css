@@ -14,7 +14,7 @@
 
 .image-picker-content {
   background: linear-gradient(135deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
-  border: 1px solid rgba(126, 74, 53, 0.3);
+  border: 1px solid rgba(92, 61, 46, 0.3);
   border-radius: 12px;
   padding: 2rem;
   max-width: 1000px;
@@ -60,7 +60,7 @@
 
 .error-message {
   background: rgba(255, 71, 87, 0.15);
-  color: #ff4757;
+  color: var(--error-color);
   padding: 0.75rem;
   border-radius: 6px;
   border: 1px solid rgba(255, 71, 87, 0.3);
@@ -69,11 +69,11 @@
 }
 
 .image-picker-info {
-  background: rgba(126, 74, 53, 0.15);
+  background: rgba(92, 61, 46, 0.15);
   padding: 0.75rem 1rem;
   border-radius: 6px;
   margin-bottom: 1rem;
-  border: 1px solid rgba(126, 74, 53, 0.3);
+  border: 1px solid rgba(92, 61, 46, 0.3);
 }
 
 .image-picker-info p {
@@ -108,13 +108,13 @@
 }
 
 .picker-image-card:hover {
-  border-color: rgba(126, 74, 53, 0.6);
-  box-shadow: 0 4px 16px rgba(126, 74, 53, 0.3);
+  border-color: rgba(92, 61, 46, 0.6);
+  box-shadow: 0 4px 16px rgba(92, 61, 46, 0.3);
 }
 
 .picker-image-card.selected {
-  border-color: #7e4a35;
-  box-shadow: 0 0 0 2px rgba(126, 74, 53, 0.5);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(92, 61, 46, 0.5);
 }
 
 .picker-image-wrapper {
@@ -135,7 +135,7 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background-color: #7e4a35;
+  background-color: var(--primary-color);
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -167,7 +167,7 @@
   color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.02);
   border-radius: 8px;
-  border: 1px dashed rgba(126, 74, 53, 0.3);
+  border: 1px dashed rgba(92, 61, 46, 0.3);
   min-height: 300px;
   display: flex;
   align-items: center;
@@ -198,8 +198,8 @@
 }
 
 .btn-page:hover:not(:disabled) {
-  background: rgba(126, 74, 53, 0.2);
-  border-color: #7e4a35;
+  background: rgba(92, 61, 46, 0.2);
+  border-color: var(--primary-color);
   color: rgba(255, 255, 255, 0.95);
 }
 
@@ -244,12 +244,12 @@
 }
 
 .btn-confirm {
-  background: #7e4a35;
+  background: var(--primary-color);
   color: white;
 }
 
 .btn-confirm:hover:not(:disabled) {
-  background: rgba(126, 74, 53, 0.9);
+  background: rgba(92, 61, 46, 0.9);
   transform: translateY(-1px);
 }
 

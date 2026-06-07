@@ -13,8 +13,11 @@
   --primary-color: #7E4A35;
   --secondary-color: #504641;
   --text-color: #FFFFFF;
+  --text-muted: rgba(255, 255, 255, 0.7);
   --background-overlay: rgba(80, 70, 65, 0.9);
   --background-dark: #202020;
+  --bg-section: #1a1a1a;
+  --primary-dark: #5C3D2E;
   
   /* Variables de tipografía */
   --font-family-primary: 'Times New Roman', Times, serif;

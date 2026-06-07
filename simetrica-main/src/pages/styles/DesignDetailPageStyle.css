@@ -10,7 +10,7 @@
 .back-button {
   position: absolute;
   padding: 0.5rem 1.5rem;
-  background: rgba(126, 74, 53, 0.9);
+  background: rgba(92, 61, 46, 0.9);
   border: none;
   border-radius: 4px;
   color: var(--text-color);
@@ -173,11 +173,11 @@
 }
 
 .design-detail__stats .likes.active {
-  background: #4CAF50;
+  background: var(--success-color);
 }
 
 .design-detail__stats .dislikes.active {
-  background: #f44336;
+  background: var(--error-color);
 }
 
 .comments-section {
@@ -284,7 +284,7 @@
   outline: none;
   border-color: var(--primary-color);
   background: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0 2px rgba(126, 74, 53, 0.2);
+  box-shadow: 0 0 0 2px rgba(92, 61, 46, 0.2);
 }
 
 .modal-actions {
@@ -305,7 +305,7 @@
 }
 
 .submit-button {
-  background: rgba(126, 74, 53, 0.9);
+  background: rgba(92, 61, 46, 0.9);
   color: var(--text-color);
 }
 
@@ -455,7 +455,7 @@
 
 .comment-card:hover {
   background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(126, 74, 53, 0.3);
+  border-color: rgba(92, 61, 46, 0.3);
 }
 
 .comment-header {
@@ -485,7 +485,7 @@
 .comment-delete-btn {
   background: rgba(255, 71, 87, 0.15);
   border: 1px solid rgba(255, 71, 87, 0.3);
-  color: #ff4757;
+  color: var(--error-color);
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
@@ -527,13 +527,13 @@
 }
 
 .comment-reaction:hover:not(:disabled) {
-  background: rgba(126, 74, 53, 0.2);
+  background: rgba(92, 61, 46, 0.2);
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
 
 .comment-reaction.active {
-  background: rgba(126, 74, 53, 0.3);
+  background: rgba(92, 61, 46, 0.3);
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
@@ -583,7 +583,7 @@
   outline: none;
   border-color: var(--primary-color);
   background: rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 0 2px rgba(126, 74, 53, 0.2);
+  box-shadow: 0 0 0 2px rgba(92, 61, 46, 0.2);
 }
 
 .char-count {

@@ -8,7 +8,7 @@
   padding-top: 140px; /* Espacio suficiente para header fijo (70px altura + margen) */
   
   /* Background oscuro según imagen */
-  background: #2b2b2b;
+  background: var(--bg-section);
   color: var(--text-color);
 }
 
@@ -111,7 +111,7 @@
 
 .contact-page__info-item:hover .contact-page__info-title {
   color: var(--primary-color);
-  text-shadow: 0 0 8px rgba(126, 74, 53, 0.3);
+  text-shadow: 0 0 8px rgba(92, 61, 46, 0.3);
 }
 
 .contact-page__info-icon {
@@ -491,7 +491,7 @@
 /* Modo de contraste alto */
 @media (prefers-contrast: high) {
   .contact-page {
-    background: #1a1a1a;
+    background: var(--bg-section);
   }
   
   .contact-page__info {
