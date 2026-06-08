@@ -18,6 +18,7 @@ const ProjectsSectionComponents = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
+    const [totalProjects, setTotalProjects] = useState(0);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [activeCard, setActiveCard] = useState(0);
 
@@ -27,6 +28,7 @@ const ProjectsSectionComponents = () => {
             try {
                 const response = await projectService.getAll(1, 3);
                 setProjects(response.projects);
+                setTotalProjects(response.total);
             } catch (error) {
                 console.error('Error al cargar proyectos:', error);
             } finally {
@@ -114,7 +116,7 @@ const ProjectsSectionComponents = () => {
                     </p>
                     <div className="projects-section__stats">
                         <div className="projects-section__stat">
-                            <span className="projects-section__stat-number">120+</span>
+                            <span className="projects-section__stat-number">{totalProjects}+</span>
                             <span className="projects-section__stat-label">Proyectos</span>
                         </div>
                         <div className="projects-section__stat-divider"></div>

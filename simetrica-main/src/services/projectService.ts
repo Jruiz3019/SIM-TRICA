@@ -27,6 +27,11 @@ class ProjectService {
     return response.data;
   }
 
+  async getCount(): Promise<{ success: boolean; total: number }> {
+    const response = await axios.get(`${API_URL}/projects/count`);
+    return response.data;
+  }
+
   async react(projectId: string, type: 'like' | 'dislike'): Promise<{ success: boolean; project: Project }> {
     const response = await axios.post(
       `${API_URL}/projects/${projectId}/react`,

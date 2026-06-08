@@ -150,6 +150,18 @@ class ProjectController {
   }
 
   /**
+   * Obtener conteo de proyectos (público)
+   */
+  async getCount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const total = await projectService.getProjectCount();
+      res.json({ success: true, total });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * Buscar proyectos (público)
    */
   async search(req: Request, res: Response, next: NextFunction) {

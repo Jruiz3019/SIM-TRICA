@@ -3,10 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import './styles/NosotrosSectionStyles.css';
 import ImagenConstruccion from '../assets/PARED.jpg';
 import Button from './Button';
+import projectService from '../services/projectService';
 
 const NosotrosSection = () => {
     const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState(false);
+    const [totalProjects, setTotalProjects] = useState(0);
+
+    useEffect(() => {
+        const fetchCount = async () => {
+            try {
+                const response = await projectService.getCount();
+                setTotalProjects(response.total);
+            } catch (error) {
+                console.error('Error al obtener conteo de proyectos:', error);
+            }
+        };
+        fetchCount();
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -86,7 +100,7 @@ const NosotrosSection = () => {
                 </div>
                 <div className="nosotros-section__stat-sep"></div>
                 <div className="nosotros-section__stat">
-                    <span className="nosotros-section__stat-value">120+</span>
+                    <span className="nosotros-section__stat-value">{totalProjects}+</span>
                     <span className="nosotros-section__stat-label">Proyectos</span>
                 </div>
                 <div className="nosotros-section__stat-sep"></div>

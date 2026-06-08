@@ -6,6 +6,7 @@ const router = Router();
 
 // Rutas públicas (cualquiera puede ver proyectos)
 router.get('/', optionalAuth, projectController.getAll);
+router.get('/count', optionalAuth, projectController.getCount);
 router.get('/search', optionalAuth, projectController.search);
 router.get('/:id', optionalAuth, projectController.getById);
 

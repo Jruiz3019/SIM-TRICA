@@ -181,6 +181,13 @@ class ProjectService {
   }
 
   /**
+   * Obtener el conteo total de proyectos
+   */
+  async getProjectCount(): Promise<number> {
+    return Project.countDocuments();
+  }
+
+  /**
    * Buscar proyectos por texto
    */
   async searchProjects(query: string): Promise<IProject[]> {
