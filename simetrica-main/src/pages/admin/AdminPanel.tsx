@@ -10,6 +10,7 @@ import ProjectsSection from './ProjectsSection';
 import DesignsSection from './DesignsSection';
 import ImagesSection from './ImagesSection';
 import CommentsSection from './CommentsSection';
+import ProvidersSection from './ProvidersSection';
 import LogoSimetrica from '../../assets/logo-simetrica-blanco.png';
 import './AdminPanelStyles.css';
 
@@ -98,6 +99,21 @@ export default function AdminPanel() {
         </svg>
       ),
       content: <CommentsSection />,
+    },
+    {
+      id: 'providers',
+      label: 'Proveedores',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="8.5" cy="7" r="4"/>
+          <rect x="15" y="3" width="3" height="3" rx="0.5"/>
+          <rect x="20" y="3" width="3" height="3" rx="0.5"/>
+          <rect x="15" y="8" width="3" height="3" rx="0.5"/>
+          <rect x="20" y="8" width="3" height="3" rx="0.5"/>
+        </svg>
+      ),
+      content: <ProvidersSection />,
     },
   ];
 
@@ -333,6 +349,37 @@ function DashboardSection({ onNavigate }: DashboardSectionProps) {
         <button 
           className="admin-panel__card-button"
           onClick={() => onNavigate('comments')}
+        >
+          Administrar
+        </button>
+      </section>
+
+      {/* Proveedores */}
+      <section className="admin-panel__card">
+        <div className="admin-panel__card-icon">
+          <svg 
+            width="32" 
+            height="32" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2"
+          >
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="8.5" cy="7" r="4"/>
+            <rect x="15" y="3" width="3" height="3" rx="0.5"/>
+            <rect x="20" y="3" width="3" height="3" rx="0.5"/>
+            <rect x="15" y="8" width="3" height="3" rx="0.5"/>
+            <rect x="20" y="8" width="3" height="3" rx="0.5"/>
+          </svg>
+        </div>
+        <h2 className="admin-panel__card-title">Proveedores</h2>
+        <p className="admin-panel__card-description">
+          Gestiona la red de proveedores
+        </p>
+        <button 
+          className="admin-panel__card-button"
+          onClick={() => onNavigate('providers')}
         >
           Administrar
         </button>

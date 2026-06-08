@@ -1,9 +1,12 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import HeaderLayout from '../layouts/HeaderLayout';
 import Footer from '../layouts/Footer/Footer';
 import Button from '../components/Button';
 import LogoSimetrica from '../assets/logo-simetrica-blanco.png';
 import HeroBackground from '../assets/asociados.png';
+import { submitProviderRegistration } from '../services/providerService';
+import type { Provider as BackendProvider, ProviderCategory } from '../types/provider.types';
+import { ProviderCategoryEnum } from '../types/provider.types';
 import './styles/AsociadosPageStyle.css';
 
 type JobStatus = 'priority' | 'open' | 'closed';
@@ -21,7 +24,7 @@ interface Job {
 }
 
 interface Provider {
-  id: number;
+  _id: string;
   nombre: string;
   categoria: string;
   descripcion: string;
@@ -114,110 +117,27 @@ const empleosMock: Job[] = [
   },
 ];
 
-const proveedoresMock: Provider[] = [
-  {
-    id: 1,
-    nombre: 'Se Carpintería',
-    categoria: 'Carpintería y Madera',
-    descripcion: 'Especialistas en soluciones de carpintería a medida, combinando diseño, precisión y funcionalidad para proyectos arquitectónicos y comerciales con acabados de alta calidad.',
-    rating: 5,
-    verificado: true,
-    fundacion: '2010',
-    proyectos: 340,
-    ciudad: 'Medellín',
-  },
-  {
-    id: 2,
-    nombre: 'Acústica Panamericana',
-    categoria: 'Materiales Acústicos',
-    descripcion: 'Distribuidores mayoristas de paneles acústicos, espumas fonoabsorbentes, láminas insonorizantes y barreras acústicas con certificación internacional.',
-    rating: 4,
-    verificado: true,
-    fundacion: '2015',
-    proyectos: 180,
-    ciudad: 'Bogotá',
-  },
-  {
-    id: 3,
-    nombre: 'Estructuras del Norte',
-    categoria: 'Estructuras Metálicas',
-    descripcion: 'Fabricación y montaje de estructuras de acero para proyectos industriales y comerciales. Certificados en normas técnicas de soldadura estructural.',
-    rating: 4,
-    verificado: true,
-    fundacion: '2008',
-    proyectos: 520,
-    ciudad: 'Barranquilla',
-  },
-  {
-    id: 4,
-    nombre: 'Eléctricos del Valle',
-    categoria: 'Electricidad',
-    descripcion: 'Instalaciones eléctricas certificadas para proyectos residenciales, comerciales e industriales con más de 12 años de trayectoria.',
-    rating: 5,
-    verificado: false,
-    fundacion: '2012',
-    proyectos: 270,
-    ciudad: 'Cali',
-  },
-  {
-    id: 5,
-    nombre: 'Pisos y Acabados S.A.S.',
-    categoria: 'Acabados y Terminaciones',
-    descripcion: 'Instalación de pisos vinílicos, laminados, porcelanatos y enchapes con altos estándares de calidad y atención al detalle.',
-    rating: 3,
-    verificado: false,
-    fundacion: '2018',
-    proyectos: 95,
-    ciudad: 'Medellín',
-  },
-];
+const CATEGORY_LABELS: Record<ProviderCategory, string> = {
+  [ProviderCategoryEnum.CARPINTERIA]: 'Carpintería y Madera',
+  [ProviderCategoryEnum.MATERIALES_ACUSTICOS]: 'Materiales Acústicos',
+  [ProviderCategoryEnum.ESTRUCTURAS_METALICAS]: 'Estructuras Metálicas',
+  [ProviderCategoryEnum.ELECTRICIDAD]: 'Electricidad',
+  [ProviderCategoryEnum.ACABADOS]: 'Acabados y Terminaciones',
+  [ProviderCategoryEnum.OTRO]: 'Otra',
+};
 
-const categoriasData: Categoria[] = [
-  {
-    id: 'carpinteria',
-    nombre: 'Carpintería y Madera',
-    contador: 12,
-    icono: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M3 21h18M3 7v1m0-1h6v1m-6 6v1m6-7v1m2-1l3 5h-6l3-5z"/>
-        <path d="M15 13h4l-2 8h-2l-2-8h2z"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'materiales',
-    nombre: 'Materiales Acústicos',
-    contador: 8,
-    icono: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M2 10h20M2 14h20M6 10v10M12 10v10M18 10v10"/>
-        <rect x="4" y="4" width="16" height="6" rx="1"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'estructuras',
-    nombre: 'Estructuras Metálicas',
-    contador: 15,
-    icono: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M4 4h16v16H4z"/>
-        <path d="M4 12h16M12 4v16"/>
-        <circle cx="12" cy="12" r="2"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'electricidad',
-    nombre: 'Electricidad',
-    contador: 20,
-    icono: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-      </svg>
-    ),
-  },
-];
+function getCategoryLabel(cat: string): string {
+  return CATEGORY_LABELS[cat as ProviderCategory] || cat;
+}
+
+const CATEGORY_MAP: Record<string, ProviderCategory> = {
+  carpinteria: ProviderCategoryEnum.CARPINTERIA,
+  materiales: ProviderCategoryEnum.MATERIALES_ACUSTICOS,
+  estructuras: ProviderCategoryEnum.ESTRUCTURAS_METALICAS,
+  electricidad: ProviderCategoryEnum.ELECTRICIDAD,
+  acabados: ProviderCategoryEnum.ACABADOS,
+  otro: ProviderCategoryEnum.OTRO,
+};
 
 const statsEmpleo: Stat[] = [
   { valor: '2,800', superindice: '+', label: 'Profesionales activos' },
@@ -226,12 +146,44 @@ const statsEmpleo: Stat[] = [
   { valor: '18', label: 'Departamentos' },
 ];
 
-const statsProveedores: Stat[] = [
-  { valor: '450', superindice: '+', label: 'Proveedores registrados' },
-  { valor: '32', label: 'Categorías' },
-  { valor: '280', superindice: '+', label: 'Verificados' },
-  { valor: '1,200', superindice: '+', label: 'Proyectos conjuntos' },
-];
+const CATEGORY_ICONS: Record<ProviderCategory, React.ReactNode> = {
+  [ProviderCategoryEnum.CARPINTERIA]: (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M3 21h18M3 7v1m0-1h6v1m-6 6v1m6-7v1m2-1l3 5h-6l3-5z"/>
+      <path d="M15 13h4l-2 8h-2l-2-8h2z"/>
+    </svg>
+  ),
+  [ProviderCategoryEnum.MATERIALES_ACUSTICOS]: (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M2 10h20M2 14h20M6 10v10M12 10v10M18 10v10"/>
+      <rect x="4" y="4" width="16" height="6" rx="1"/>
+    </svg>
+  ),
+  [ProviderCategoryEnum.ESTRUCTURAS_METALICAS]: (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M4 4h16v16H4z"/>
+      <path d="M4 12h16M12 4v16"/>
+      <circle cx="12" cy="12" r="2"/>
+    </svg>
+  ),
+  [ProviderCategoryEnum.ELECTRICIDAD]: (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </svg>
+  ),
+  [ProviderCategoryEnum.ACABADOS]: (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <path d="M12 8v8M8 12h8"/>
+    </svg>
+  ),
+  [ProviderCategoryEnum.OTRO]: (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 12h8M12 8v8"/>
+    </svg>
+  ),
+};
 
 function SearchIcon() {
   return (
@@ -476,6 +428,7 @@ function PanelProveedores() {
     telefono: string;
     categoria: string;
     descripcion: string;
+    ciudad: string;
     acepto: boolean;
   }
 
@@ -486,8 +439,55 @@ function PanelProveedores() {
     telefono: '',
     categoria: '',
     descripcion: '',
+    ciudad: '',
     acepto: false,
   });
+
+  const [providers, setProviders] = useState<Provider[]>([]);
+  const [categoriesData, setCategoriesData] = useState<Categoria[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await fetch(`${API_URL}/providers`);
+        const json = await res.json();
+        const mappedProviders: Provider[] = (json.data || []).map((p: BackendProvider) => ({
+          _id: p._id,
+          nombre: p.nombre,
+          categoria: getCategoryLabel(p.categoria),
+          descripcion: p.descripcion,
+          rating: p.rating,
+          verificado: p.verificado,
+          fundacion: p.fundacion || '—',
+          proyectos: p.proyectos,
+          ciudad: p.ciudad,
+        }));
+        setProviders(mappedProviders);
+
+        const cats: Categoria[] = (json.categories || []).map(
+          (c: { _id: string; count: number }) => ({
+            id: c._id.toLowerCase(),
+            nombre: getCategoryLabel(c._id),
+            contador: c.count,
+            icono: CATEGORY_ICONS[c._id as ProviderCategory] || CATEGORY_ICONS.OTRO,
+          })
+        );
+        setCategoriesData(cats);
+      } catch {
+        setError('No se pudieron cargar los proveedores. Intenta de nuevo.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProviders();
+  }, [API_URL]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -498,12 +498,33 @@ function PanelProveedores() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Registro de proveedor:', form);
-    alert('Registro enviado correctamente. Nos pondremos en contacto contigo pronto.');
-    setForm({ empresa: '', contacto: '', email: '', telefono: '', categoria: '', descripcion: '', acepto: false });
+
+    const mappedCategoria = CATEGORY_MAP[form.categoria] || ProviderCategoryEnum.OTRO;
+
+    const result = await submitProviderRegistration({
+      empresa: form.empresa,
+      contacto: form.contacto,
+      email: form.email,
+      telefono: form.telefono,
+      categoria: mappedCategoria,
+      descripcion: form.descripcion,
+      ciudad: form.ciudad,
+      acepto: form.acepto,
+    });
+
+    if (result.success) {
+      alert(result.message);
+      setForm({ empresa: '', contacto: '', email: '', telefono: '', categoria: '', descripcion: '', ciudad: '', acepto: false });
+    } else {
+      alert(result.message);
+    }
   };
+
+  const totalProviders = providers.length;
+  const totalVerificados = providers.filter(p => p.verificado).length;
+  const totalProyectos = providers.reduce((sum, p) => sum + p.proyectos, 0);
 
   return (
     <div className="asociados-panel">
@@ -511,70 +532,93 @@ function PanelProveedores() {
         label="Alianzas estratégicas"
         title="Red de Proveedores"
         description="Conectamos a los mejores proveedores del sector construcción e insonorización con proyectos de alto impacto."
-        badgeValor={String(proveedoresMock.length * 85)}
+        badgeValor={String(totalProviders)}
         badgeTexto="proveedores activos"
       />
 
-      <StatsRow stats={statsProveedores} />
+      <StatsRow
+        stats={[
+          { valor: String(totalProviders), label: 'Proveedores registrados' },
+          { valor: String(categoriesData.length), label: 'Categorías' },
+          { valor: String(totalVerificados), superindice: '+', label: 'Verificados' },
+          { valor: String(totalProyectos), superindice: '+', label: 'Proyectos conjuntos' },
+        ]}
+      />
 
-      <div className="asociados-categorias">
-        {categoriasData.map(cat => (
-          <button key={cat.id} className="asociados-categorias__item">
-            <div className="asociados-categorias__icon">{cat.icono}</div>
-            <span className="asociados-categorias__nombre">{cat.nombre}</span>
-            <span className="asociados-categorias__contador">{cat.contador} proveedores</span>
-          </button>
-        ))}
-      </div>
+      {error && (
+        <div style={{ padding: '16px', background: 'rgba(255,71,87,0.15)', borderRadius: '8px', color: '#ff4757', textAlign: 'center', marginBottom: '16px' }}>
+          {error}
+        </div>
+      )}
 
-      <div className="asociados-proveedor-grid">
-        {proveedoresMock.map(p => (
-          <article key={p.id} className="asociados-proveedor-card">
-            <div className="asociados-proveedor-card__header">
-              <div className="asociados-proveedor-card__logo">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/>
-                  <path d="M3 9h18M9 21V9"/>
-                </svg>
-              </div>
-              <div className="asociados-proveedor-card__info">
-                <h4 className="asociados-proveedor-card__nombre">{p.nombre}</h4>
-                <span className="asociados-proveedor-card__cat">{p.categoria}</span>
-              </div>
-              {p.verificado && (
-                <span className="asociados-proveedor-card__verificado">
-                  <ShieldIcon />
-                  Verificado
-                </span>
-              )}
-            </div>
-            <p className="asociados-proveedor-card__desc">{p.descripcion}</p>
-            <div className="asociados-proveedor-card__meta">
-              <div className="asociados-proveedor-card__meta-item">
-                <span className="asociados-proveedor-card__meta-val">{p.fundacion}</span>
-                <span className="asociados-proveedor-card__meta-sub">Fundación</span>
-              </div>
-              <div className="asociados-proveedor-card__meta-item">
-                <span className="asociados-proveedor-card__meta-val">{p.proyectos}</span>
-                <span className="asociados-proveedor-card__meta-sub">Proyectos</span>
-              </div>
-              <div className="asociados-proveedor-card__meta-item">
-                <span className="asociados-proveedor-card__meta-val">{p.ciudad}</span>
-                <span className="asociados-proveedor-card__meta-sub">Sede</span>
-              </div>
-            </div>
-            <div className="asociados-proveedor-card__rating">
-              {[1, 2, 3, 4, 5].map(n => (
-                <StarIcon key={n} filled={n <= p.rating} />
+      {loading ? (
+        <p className="asociados-empty">Cargando proveedores...</p>
+      ) : (
+        <>
+          <div className="asociados-categorias">
+            {categoriesData.map(cat => (
+              <button key={cat.id} className="asociados-categorias__item">
+                <div className="asociados-categorias__icon">{cat.icono}</div>
+                <span className="asociados-categorias__nombre">{cat.nombre}</span>
+                <span className="asociados-categorias__contador">{cat.contador} proveedores</span>
+              </button>
+            ))}
+          </div>
+
+          {providers.length > 0 ? (
+            <div className="asociados-proveedor-grid">
+              {providers.map(p => (
+                <article key={p._id} className="asociados-proveedor-card">
+                  <div className="asociados-proveedor-card__header">
+                    <div className="asociados-proveedor-card__logo">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18M9 21V9"/>
+                      </svg>
+                    </div>
+                    <div className="asociados-proveedor-card__info">
+                      <h4 className="asociados-proveedor-card__nombre">{p.nombre}</h4>
+                      <span className="asociados-proveedor-card__cat">{p.categoria}</span>
+                    </div>
+                    {p.verificado && (
+                      <span className="asociados-proveedor-card__verificado">
+                        <ShieldIcon />
+                        Verificado
+                      </span>
+                    )}
+                  </div>
+                  <p className="asociados-proveedor-card__desc">{p.descripcion}</p>
+                  <div className="asociados-proveedor-card__meta">
+                    <div className="asociados-proveedor-card__meta-item">
+                      <span className="asociados-proveedor-card__meta-val">{p.fundacion}</span>
+                      <span className="asociados-proveedor-card__meta-sub">Fundación</span>
+                    </div>
+                    <div className="asociados-proveedor-card__meta-item">
+                      <span className="asociados-proveedor-card__meta-val">{p.proyectos}</span>
+                      <span className="asociados-proveedor-card__meta-sub">Proyectos</span>
+                    </div>
+                    <div className="asociados-proveedor-card__meta-item">
+                      <span className="asociados-proveedor-card__meta-val">{p.ciudad}</span>
+                      <span className="asociados-proveedor-card__meta-sub">Sede</span>
+                    </div>
+                  </div>
+                  <div className="asociados-proveedor-card__rating">
+                    {[1, 2, 3, 4, 5].map(n => (
+                      <StarIcon key={n} filled={n <= p.rating} />
+                    ))}
+                    <span className="asociados-proveedor-card__rating-num">{p.rating}.0</span>
+                  </div>
+                  <button className="asociados-proveedor-card__btn">
+                    Contactar proveedor
+                  </button>
+                </article>
               ))}
-              <span className="asociados-proveedor-card__rating-num">{p.rating}.0</span>
             </div>
-            <button className="asociados-proveedor-card__btn">
-              Contactar proveedor
-            </button>
-          </article>
-        ))}
-      </div>
+          ) : (
+            <p className="asociados-empty">Aún no hay proveedores en la red. ¡Sé el primero en registrarte!</p>
+          )}
+        </>
+      )}
 
       <div className="asociados-form">
         <h3 className="asociados-form__title">Registra tu empresa como proveedor</h3>
@@ -642,6 +686,17 @@ function PanelProveedores() {
               <option value="acabados">Acabados y Terminaciones</option>
               <option value="otro">Otra</option>
             </select>
+          </div>
+          <div className="asociados-form__field">
+            <input
+              className="asociados-form__input"
+              type="text"
+              name="ciudad"
+              placeholder="Ciudad"
+              value={form.ciudad}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="asociados-form__field asociados-form__field--full">
             <textarea

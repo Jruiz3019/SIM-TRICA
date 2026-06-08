@@ -2,9 +2,14 @@ import User, { UserRole } from '../models/user.model.js';
 
 export const createDefaultAdmin = async () => {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@simetrica.com';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
-    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    const adminUsername = process.env.ADMIN_USERNAME;
+
+    if (!adminEmail || !adminPassword || !adminUsername) {
+      console.warn('⚠️  Variables ADMIN_EMAIL, ADMIN_PASSWORD o ADMIN_USERNAME no definidas. No se creará admin por defecto.');
+      return;
+    }
 
     const existingAdmin = await User.findOne({ email: adminEmail });
 

@@ -40,6 +40,19 @@ export const SpecialtyEnum = {
 
 export type Specialty = typeof SpecialtyEnum[keyof typeof SpecialtyEnum];
 
+export const ProfessionalProfileEnum = {
+  ARQUITECTO: 'ARQUITECTO',
+  INGENIERO: 'INGENIERO',
+  ABOGADO: 'ABOGADO',
+  ADMINISTRADOR: 'ADMINISTRADOR',
+  TRABAJADOR_SOCIAL: 'TRABAJADOR_SOCIAL',
+  TECNICO: 'TECNICO',
+  CONSTRUCCION: 'CONSTRUCCION',
+  OTRO: 'OTRO',
+} as const;
+
+export type ProfessionalProfile = typeof ProfessionalProfileEnum[keyof typeof ProfessionalProfileEnum];
+
 export interface WorkWithUs {
   _id: string;
   fullName: string;
@@ -49,31 +62,19 @@ export interface WorkWithUs {
   email: string;
   department: string;
   municipality: string;
+  professionalProfile: ProfessionalProfile;
+  otherProfessionalProfileDetail?: string;
   specialties: Specialty[];
   otherSpecialtyDetail?: string;
+  skillsDescription?: string;
   experienceLevel: Experience;
   hasCertifications: boolean;
   availability: Availability;
-  completedProjectsRange: string;
-  constructionExperienceDescription?: string;
-  projectPhotos: Array<{
-    url: string;
-    filename: string;
-    mimeType: string;
-    size: number;
-    uploadedAt: string;
-  }>;
-  references: Array<{
-    name: string;
-    phone: string;
-    relationship?: string;
-  }>;
   status: ApplicationStatus;
   applicationScore?: number;
   reviewedBy?: string;
   reviewedAt?: string;
   reviewNotes?: string;
-  additionalComments?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

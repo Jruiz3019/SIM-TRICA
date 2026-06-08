@@ -1,7 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { connectDB, corsOptions, createDefaultAdmin } from './config/index.js';
+import helmet from 'helmet';
+import { connectDB, corsOptions, createDefaultAdmin, globalLimiter, authLimiter, formSubmissionLimiter } from './config/index.js';
 import { errorHandler } from './middleware/error-handler.js';
 import {
   authRoutes,
@@ -11,6 +12,7 @@ import {
   imageRoutes,
   contactRoutes,
   workWithUsRoutes,
+  providerRoutes,
 } from './routes/index.js';
 
 dotenv.config();
@@ -18,10 +20,18 @@ dotenv.config();
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
-// Middlewares
+// Middlewares de seguridad
+app.use(helmet());
+app.use(globalLimiter);
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Rate limiting específico por ruta
+app.use('/api/auth', authLimiter);
+app.use('/api/contact', formSubmissionLimiter);
+app.use('/api/providers', formSubmissionLimiter);
+app.use('/api/work-with-us', formSubmissionLimiter);
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -31,6 +41,7 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/images', imageRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/work-with-us', workWithUsRoutes);
+app.use('/api/providers', providerRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

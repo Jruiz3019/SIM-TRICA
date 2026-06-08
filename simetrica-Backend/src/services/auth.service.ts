@@ -2,7 +2,12 @@ import UserModel from '../models/user.model.js';
 import type { IUser } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tu_secreto_super_seguro_cambialo_en_produccion';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno');
+}
+
+const SECRET: string = JWT_SECRET;
 
 // Lista negra de tokens (en producción usar Redis)
 const tokenBlacklist = new Set<string>();
@@ -59,7 +64,7 @@ export class AuthService {
         throw new Error('Token inválido o expirado');
       }
 
-      return jwt.verify(token, JWT_SECRET);
+      return jwt.verify(token, SECRET);
     } catch (error) {
       throw new Error('Token inválido');
     }
@@ -84,7 +89,7 @@ export class AuthService {
         username: user.username,
         role: user.role,
       },
-      JWT_SECRET,
+      SECRET,
       { expiresIn: '7d' }
     );
   }

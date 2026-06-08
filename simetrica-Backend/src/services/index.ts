@@ -5,3 +5,4 @@ export { default as designService } from './design.service.js';
 export { default as imageService } from './image.service.js';
 export { default as projectService } from './project.service.js';
 export { default as workWithUsService } from './work-with-us.service.js';
+export { default as providerService } from './provider.service.js';

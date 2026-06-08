@@ -1,6 +1,5 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-// Enums
 export enum SpecialtyEnum {
   OBRA_NEGRA = 'OBRA_NEGRA',
   OBRA_BLANCA = 'OBRA_BLANCA',
@@ -26,13 +25,15 @@ export enum AvailabilityEnum {
   CONTRACT = 'CONTRACT',
 }
 
-export enum ProjectsRangeEnum {
-  ZERO_FIVE = '0_5',
-  FIVE_TEN = '5_10',
-  TEN_TWENTY = '10_20',
-  TWENTY_THIRTY = '20_30',
-  THIRTY_THIRTYFIVE = '30_35',
-  MORE_THAN_THIRTYFIVE = 'MORE_THAN_35',
+export enum ProfessionalProfileEnum {
+  ARQUITECTO = 'ARQUITECTO',
+  INGENIERO = 'INGENIERO',
+  ABOGADO = 'ABOGADO',
+  ADMINISTRADOR = 'ADMINISTRADOR',
+  TRABAJADOR_SOCIAL = 'TRABAJADOR_SOCIAL',
+  TECNICO = 'TECNICO',
+  CONSTRUCCION = 'CONSTRUCCION',
+  OTRO = 'OTRO',
 }
 
 export enum ApplicationStatusEnum {
@@ -44,131 +45,41 @@ export enum ApplicationStatusEnum {
   ARCHIVED = 'ARCHIVED',
 }
 
-// Sub-schemas
-interface IReference {
-  name: string;
-  phone: string;
-  relationship?: string;
-}
-
-interface IProjectPhoto {
-  url: string;
-  filename: string;
-  mimeType: string;
-  size: number;
-  uploadedAt: Date;
-}
-
-// Interface principal
 export interface IWorkWithUs extends Document {
-  // Información personal
   fullName: string;
   identificationNumber: string;
   contactNumber: string;
   birthDate: Date;
   email: string;
-  
-  // Ubicación
+
   department: string;
   municipality: string;
-  
-  // Información profesional
+
+  professionalProfile: ProfessionalProfileEnum;
+  otherProfessionalProfileDetail?: string;
   specialties: SpecialtyEnum[];
   otherSpecialtyDetail?: string;
+  skillsDescription?: string;
   experienceLevel: ExperienceEnum;
   hasCertifications: boolean;
   availability: AvailabilityEnum;
-  completedProjectsRange: ProjectsRangeEnum;
-  constructionExperienceDescription?: string;
-  
-  // Archivos y referencias
-  projectPhotos: IProjectPhoto[];
-  references: IReference[];
-  
-  // Información administrativa
+
   status: ApplicationStatusEnum;
   applicationScore?: number;
   reviewedBy?: string;
   reviewedAt?: Date;
   reviewNotes?: string;
-  additionalComments?: string;
-  
-  // Metadata
+
   ipAddress?: string;
   userAgent?: string;
   isActive: boolean;
-  
-  // Timestamps
+
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Sub-schema para fotos de proyectos
-const projectPhotoSchema = new Schema<IProjectPhoto>(
-  {
-    url: {
-      type: String,
-      required: [true, 'La URL de la foto es requerida'],
-      trim: true,
-    },
-    filename: {
-      type: String,
-      required: [true, 'El nombre del archivo es requerido'],
-      trim: true,
-    },
-    mimeType: {
-      type: String,
-      required: [true, 'El tipo MIME es requerido'],
-      enum: {
-        values: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
-        message: 'Formato de imagen no válido',
-      },
-    },
-    size: {
-      type: Number,
-      required: [true, 'El tamaño del archivo es requerido'],
-      max: [5242880, 'El archivo no puede superar 5MB'], // 5MB
-    },
-    uploadedAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  { _id: false }
-);
-
-// Sub-schema para referencias
-const referenceSchema = new Schema<IReference>(
-  {
-    name: {
-      type: String,
-      required: [true, 'El nombre de la referencia es requerido'],
-      trim: true,
-      minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
-      maxlength: [100, 'El nombre no puede exceder 100 caracteres'],
-    },
-    phone: {
-      type: String,
-      required: [true, 'El teléfono de la referencia es requerido'],
-      trim: true,
-      match: [
-        /^(\+57)?[0-9]{10}$/,
-        'Por favor ingrese un número de teléfono válido',
-      ],
-    },
-    relationship: {
-      type: String,
-      trim: true,
-      maxlength: [100, 'La relación no puede exceder 100 caracteres'],
-    },
-  },
-  { _id: false }
-);
-
-// Schema principal
 const workWithUsSchema = new Schema<IWorkWithUs>(
   {
-    // Información personal
     fullName: {
       type: String,
       required: [true, 'El nombre completo es requerido'],
@@ -219,8 +130,7 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
       ],
       index: true,
     },
-    
-    // Ubicación
+
     department: {
       type: String,
       required: [true, 'El departamento es requerido'],
@@ -233,18 +143,43 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
       trim: true,
       index: true,
     },
-    
-    // Información profesional
+
+    professionalProfile: {
+      type: String,
+      enum: {
+        values: Object.values(ProfessionalProfileEnum),
+        message: 'Perfil profesional inválido',
+      },
+      required: [true, 'El perfil profesional es requerido'],
+      index: true,
+    },
+    otherProfessionalProfileDetail: {
+      type: String,
+      trim: true,
+      maxlength: [100, 'El detalle no puede exceder 100 caracteres'],
+      validate: {
+        validator: function (this: IWorkWithUs, value: string) {
+          if (this.professionalProfile === ProfessionalProfileEnum.OTRO) {
+            return !!value && value.length > 0;
+          }
+          return true;
+        },
+        message: 'Debe especificar el otro perfil profesional',
+      },
+    },
     specialties: {
       type: [String],
       enum: {
         values: Object.values(SpecialtyEnum),
         message: 'Especialidad inválida',
       },
-      required: [true, 'Debe seleccionar al menos una especialidad'],
+      default: [],
       validate: {
-        validator: function (value: string[]) {
-          return value.length > 0 && value.length <= 7;
+        validator: function (this: IWorkWithUs, value: string[]) {
+          if (this.professionalProfile === ProfessionalProfileEnum.CONSTRUCCION) {
+            return value.length > 0 && value.length <= 7;
+          }
+          return true;
         },
         message: 'Debe seleccionar entre 1 y 7 especialidades',
       },
@@ -255,7 +190,6 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
       maxlength: [200, 'El detalle no puede exceder 200 caracteres'],
       validate: {
         validator: function (this: IWorkWithUs, value: string) {
-          // Required if "OTRO" is selected
           if (this.specialties.includes(SpecialtyEnum.OTRO)) {
             return !!value && value.length > 0;
           }
@@ -263,6 +197,11 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
         },
         message: 'Debe especificar la otra especialidad',
       },
+    },
+    skillsDescription: {
+      type: String,
+      trim: true,
+      maxlength: [150, 'La descripción no puede exceder 150 caracteres'],
     },
     experienceLevel: {
       type: String,
@@ -287,41 +226,7 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
       required: [true, 'La disponibilidad es requerida'],
       index: true,
     },
-    completedProjectsRange: {
-      type: String,
-      enum: {
-        values: Object.values(ProjectsRangeEnum),
-        message: 'Rango de proyectos inválido',
-      },
-      required: [true, 'El rango de proyectos completados es requerido'],
-    },
-    constructionExperienceDescription: {
-      type: String,
-      trim: true,
-      maxlength: [200, 'La descripción no puede exceder 200 caracteres'],
-    },
-    
-    // Archivos y referencias
-    projectPhotos: {
-      type: [projectPhotoSchema],
-      validate: {
-        validator: function (value: IProjectPhoto[]) {
-          return value.length <= 10;
-        },
-        message: 'No puede subir más de 10 fotos',
-      },
-    },
-    references: {
-      type: [referenceSchema],
-      validate: {
-        validator: function (value: IReference[]) {
-          return value.length >= 1 && value.length <= 5;
-        },
-        message: 'Debe proporcionar entre 1 y 5 referencias',
-      },
-    },
-    
-    // Información administrativa
+
     status: {
       type: String,
       enum: {
@@ -348,13 +253,7 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
       trim: true,
       maxlength: [1000, 'Las notas no pueden exceder 1000 caracteres'],
     },
-    additionalComments: {
-      type: String,
-      trim: true,
-      maxlength: [200, 'Los comentarios no pueden exceder 200 caracteres'],
-    },
-    
-    // Metadata
+
     ipAddress: {
       type: String,
       trim: true,
@@ -375,7 +274,6 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
     toJSON: {
       virtuals: true,
       transform: function (_doc, ret) {
-        // Desestructurar para excluir campos sensibles
         const { __v, ipAddress, userAgent, ...rest } = ret;
         return rest;
       },
@@ -386,13 +284,11 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
   }
 );
 
-// Índices compuestos para optimizar consultas
 workWithUsSchema.index({ status: 1, createdAt: -1 });
-workWithUsSchema.index({ experienceLevel: 1, availability: 1 });
+workWithUsSchema.index({ professionalProfile: 1, experienceLevel: 1 });
 workWithUsSchema.index({ department: 1, municipality: 1 });
 workWithUsSchema.index({ specialties: 1, experienceLevel: 1 });
 
-// Virtual para calcular edad
 workWithUsSchema.virtual('age').get(function (this: IWorkWithUs) {
   const today = new Date();
   const birthDate = new Date(this.birthDate);
@@ -404,24 +300,20 @@ workWithUsSchema.virtual('age').get(function (this: IWorkWithUs) {
   return age;
 });
 
-// Virtual para calcular tiempo desde aplicación
 workWithUsSchema.virtual('daysSinceApplication').get(function (this: IWorkWithUs) {
   const now = new Date();
   const diff = now.getTime() - this.createdAt.getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 });
 
-// Middleware pre-save para validaciones adicionales
 workWithUsSchema.pre('save', function (next) {
-  // Actualizar reviewedAt cuando cambia el estado
   if (this.isModified('status') && this.status !== ApplicationStatusEnum.PENDING && !this.reviewedAt) {
     this.reviewedAt = new Date();
   }
-  
+
   next();
 });
 
-// Método estático para obtener estadísticas
 workWithUsSchema.statics.getStats = async function () {
   return await this.aggregate([
     {
@@ -442,12 +334,14 @@ workWithUsSchema.statics.getStats = async function () {
           { $group: { _id: '$specialties', count: { $sum: 1 } } },
           { $sort: { count: -1 } },
         ],
+        byProfessionalProfile: [
+          { $group: { _id: '$professionalProfile', count: { $sum: 1 } } },
+        ],
       },
     },
   ]);
 };
 
-// Método de instancia para cambiar estado
 workWithUsSchema.methods.updateStatus = function (
   newStatus: ApplicationStatusEnum,
   reviewedBy?: string,
@@ -459,15 +353,6 @@ workWithUsSchema.methods.updateStatus = function (
   if (notes) {
     this.reviewNotes = notes;
   }
-  return this.save();
-};
-
-// Método de instancia para agregar foto
-workWithUsSchema.methods.addProjectPhoto = function (photoData: IProjectPhoto) {
-  if (this.projectPhotos.length >= 10) {
-    throw new Error('No puede subir más de 10 fotos');
-  }
-  this.projectPhotos.push(photoData);
   return this.save();
 };
 

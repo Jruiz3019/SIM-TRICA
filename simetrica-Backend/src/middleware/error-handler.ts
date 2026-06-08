@@ -12,10 +12,11 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
     const fieldNames: Record<string, string> = {
       email: 'correo electrónico',
       identificationNumber: 'número de identificación',
+      nombre: 'nombre de empresa',
     };
     const fieldName = field ? (fieldNames[field] || field) : 'este campo';
     return res.status(409).json({ 
-      message: `Ya existe una aplicación con ${fieldName}` 
+      message: `Ya existe un registro con ${fieldName}`
     });
   }
 

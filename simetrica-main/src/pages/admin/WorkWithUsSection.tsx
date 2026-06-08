@@ -3,7 +3,7 @@ import Table from '../../components/admin/Table';
 import Badge from '../../components/admin/Badge';
 import Modal from '../../components/admin/Modal';
 import type { TableColumn } from '../../components/admin/Table';
-import type { WorkWithUs, ApplicationStatus, Experience, Availability, Specialty } from '../../types/work-with-us.types';
+import type { WorkWithUs, ApplicationStatus, Experience, Availability, Specialty, ProfessionalProfile } from '../../types/work-with-us.types';
 import { ApplicationStatusEnum } from '../../types/work-with-us.types';
 import adminWorkWithUsService from '../../services/adminWorkWithUsService';
 import './WorkWithUsSection.css';
@@ -13,10 +13,10 @@ export default function WorkWithUsSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedApplication, setSelectedApplication] = useState<WorkWithUs | null>(null);
-  
-  // Estados para los filtros
+
   const [searchText, setSearchText] = useState('');
   const [filterSpecialty, setFilterSpecialty] = useState<Specialty | 'ALL'>('ALL');
+  const [filterProfessionalProfile, setFilterProfessionalProfile] = useState<ProfessionalProfile | 'ALL'>('ALL');
   const [filterExperience, setFilterExperience] = useState<Experience | 'ALL'>('ALL');
   const [filterAvailability, setFilterAvailability] = useState<Availability | 'ALL'>('ALL');
   const [filterLocation, setFilterLocation] = useState('');
@@ -129,18 +129,30 @@ export default function WorkWithUsSection() {
     return labels[specialty] || specialty;
   };
 
-  // Función para limpiar todos los filtros
+  const getProfessionalProfileLabel = (profile: ProfessionalProfile): string => {
+    const labels: Record<ProfessionalProfile, string> = {
+      ARQUITECTO: 'Arquitecto',
+      INGENIERO: 'Ingeniero',
+      ABOGADO: 'Abogado',
+      ADMINISTRADOR: 'Administrador',
+      TRABAJADOR_SOCIAL: 'Trabajador social',
+      TECNICO: 'Técnico',
+      CONSTRUCCION: 'Construcción',
+      OTRO: 'Otro',
+    };
+    return labels[profile] || profile;
+  };
+
   const clearFilters = () => {
     setSearchText('');
     setFilterSpecialty('ALL');
+    setFilterProfessionalProfile('ALL');
     setFilterExperience('ALL');
     setFilterAvailability('ALL');
     setFilterLocation('');
   };
 
-  // Función de filtrado inteligente
   const filteredApplications = applications.filter((app) => {
-    // Filtro por texto de búsqueda (nombre, email)
     if (searchText) {
       const searchLower = searchText.toLowerCase();
       const matchesName = app.fullName.toLowerCase().includes(searchLower);
@@ -148,23 +160,23 @@ export default function WorkWithUsSection() {
       if (!matchesName && !matchesEmail) return false;
     }
 
-    // Filtro por especialidad
     if (filterSpecialty !== 'ALL') {
       const hasSpecialty = app.specialties.includes(filterSpecialty);
       if (!hasSpecialty) return false;
     }
 
-    // Filtro por experiencia
+    if (filterProfessionalProfile !== 'ALL' && app.professionalProfile !== filterProfessionalProfile) {
+      return false;
+    }
+
     if (filterExperience !== 'ALL' && app.experienceLevel !== filterExperience) {
       return false;
     }
 
-    // Filtro por disponibilidad
     if (filterAvailability !== 'ALL' && app.availability !== filterAvailability) {
       return false;
     }
 
-    // Filtro por ubicación (departamento o municipio)
     if (filterLocation) {
       const locationLower = filterLocation.toLowerCase();
       const matchesDepartment = app.department.toLowerCase().includes(locationLower);
@@ -179,29 +191,35 @@ export default function WorkWithUsSection() {
     {
       key: 'fullName',
       label: 'Nombre',
-      width: '20%',
+      width: '16%',
     },
     {
       key: 'email',
       label: 'Email',
-      width: '20%',
+      width: '18%',
+    },
+    {
+      key: 'professionalProfile',
+      label: 'Perfil',
+      width: '12%',
+      render: (value: unknown) => getProfessionalProfileLabel(value as ProfessionalProfile),
     },
     {
       key: 'experienceLevel',
       label: 'Experiencia',
-      width: '15%',
+      width: '10%',
       render: (value: unknown) => getExperienceLabel(value as Experience),
     },
     {
       key: 'availability',
       label: 'Disponibilidad',
-      width: '15%',
+      width: '12%',
       render: (value: unknown) => getAvailabilityLabel(value as Availability),
     },
     {
       key: 'applicationScore',
-      label: 'Puntuación',
-      width: '10%',
+      label: 'Punt.',
+      width: '8%',
       render: (value: unknown) => {
         const score = value as number;
         return score ? `${score}/100` : 'N/A';
@@ -219,7 +237,7 @@ export default function WorkWithUsSection() {
     {
       key: 'createdAt',
       label: 'Fecha',
-      width: '8%',
+      width: '12%',
       render: (value: unknown) => new Date(value as string).toLocaleDateString('es-ES'),
     },
   ];
@@ -229,14 +247,14 @@ export default function WorkWithUsSection() {
       <div className="section-header">
         <h2>Aplicaciones de Empleo</h2>
         <button className="btn-refresh" onClick={loadApplications} disabled={loading}>
-          <svg 
-            width="16" 
-            height="16" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
             strokeLinejoin="round"
             style={{ marginRight: '8px' }}
           >
@@ -250,17 +268,16 @@ export default function WorkWithUsSection() {
 
       {error && <div className="error-message">{error}</div>}
 
-      {/* Buscador Inteligente con Filtros */}
       <div className="filters-section">
         <div className="filters-header">
           <h3>Filtros de Búsqueda</h3>
           <button className="btn-clear-filters" onClick={clearFilters}>
-            <svg 
-              width="14" 
-              height="14" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
               strokeWidth="2"
               style={{ marginRight: '6px' }}
             >
@@ -271,15 +288,14 @@ export default function WorkWithUsSection() {
         </div>
 
         <div className="filters-grid">
-          {/* Búsqueda por texto */}
           <div className="filter-item">
             <label htmlFor="search-text">
-              <svg 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
               >
                 <circle cx="11" cy="11" r="8"/>
@@ -297,15 +313,47 @@ export default function WorkWithUsSection() {
             />
           </div>
 
-          {/* Filtro por Especialidad */}
+          <div className="filter-item">
+            <label htmlFor="filter-profile">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              Perfil Profesional
+            </label>
+            <select
+              id="filter-profile"
+              value={filterProfessionalProfile}
+              onChange={(e) => setFilterProfessionalProfile(e.target.value as ProfessionalProfile | 'ALL')}
+              className="filter-select"
+            >
+              <option value="ALL">Todos los Perfiles</option>
+              <option value="ARQUITECTO">Arquitecto</option>
+              <option value="INGENIERO">Ingeniero</option>
+              <option value="ABOGADO">Abogado</option>
+              <option value="ADMINISTRADOR">Administrador</option>
+              <option value="TRABAJADOR_SOCIAL">Trabajador social</option>
+              <option value="TECNICO">Técnico</option>
+              <option value="CONSTRUCCION">Construcción</option>
+              <option value="OTRO">Otro</option>
+            </select>
+          </div>
+
           <div className="filter-item">
             <label htmlFor="filter-specialty">
-              <svg 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
               >
                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
@@ -329,15 +377,14 @@ export default function WorkWithUsSection() {
             </select>
           </div>
 
-          {/* Filtro por Experiencia */}
           <div className="filter-item">
             <label htmlFor="filter-experience">
-              <svg 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
               >
                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
@@ -360,15 +407,14 @@ export default function WorkWithUsSection() {
             </select>
           </div>
 
-          {/* Filtro por Disponibilidad */}
           <div className="filter-item">
             <label htmlFor="filter-availability">
-              <svg 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
               >
                 <circle cx="12" cy="12" r="10"/>
@@ -390,15 +436,14 @@ export default function WorkWithUsSection() {
             </select>
           </div>
 
-          {/* Filtro por Ubicación */}
           <div className="filter-item">
             <label htmlFor="filter-location">
-              <svg 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
               >
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -417,7 +462,6 @@ export default function WorkWithUsSection() {
           </div>
         </div>
 
-        {/* Contador de resultados */}
         <div className="filter-results">
           <span className="results-count">
             Mostrando {filteredApplications.length} de {applications.length} aplicaciones
@@ -435,7 +479,6 @@ export default function WorkWithUsSection() {
         />
       </div>
 
-      {/* Modal para mostrar detalles */}
       <Modal
         isOpen={!!selectedApplication}
         onClose={() => setSelectedApplication(null)}
@@ -477,20 +520,14 @@ export default function WorkWithUsSection() {
             <div className="detail-section">
               <h4>Información Profesional</h4>
               <div className="detail-grid">
-                <div className="detail-field full-width">
-                  <label>Especialidades:</label>
-                  <div className="specialty-badges">
-                    {selectedApplication.specialties.map((specialty) => (
-                      <Badge key={specialty} variant="info" size="sm">
-                        {getSpecialtyLabel(specialty)}
-                      </Badge>
-                    ))}
-                  </div>
+                <div className="detail-field">
+                  <label>Perfil Profesional:</label>
+                  <span>{getProfessionalProfileLabel(selectedApplication.professionalProfile)}</span>
                 </div>
-                {selectedApplication.otherSpecialtyDetail && (
-                  <div className="detail-field full-width">
-                    <label>Otra Especialidad:</label>
-                    <span>{selectedApplication.otherSpecialtyDetail}</span>
+                {selectedApplication.otherProfessionalProfileDetail && (
+                  <div className="detail-field">
+                    <label>Otro Perfil:</label>
+                    <span>{selectedApplication.otherProfessionalProfileDetail}</span>
                   </div>
                 )}
                 <div className="detail-field">
@@ -505,31 +542,30 @@ export default function WorkWithUsSection() {
                   <label>Disponibilidad:</label>
                   <span>{getAvailabilityLabel(selectedApplication.availability)}</span>
                 </div>
-                <div className="detail-field">
-                  <label>Proyectos Completados:</label>
-                  <span>{selectedApplication.completedProjectsRange}</span>
-                </div>
-                {selectedApplication.constructionExperienceDescription && (
+                {selectedApplication.specialties.length > 0 && (
                   <div className="detail-field full-width">
-                    <label>Descripción de Experiencia:</label>
-                    <p className="description-content">
-                      {selectedApplication.constructionExperienceDescription}
-                    </p>
+                    <label>Especialidades:</label>
+                    <div className="specialty-badges">
+                      {selectedApplication.specialties.map((specialty) => (
+                        <Badge key={specialty} variant="info" size="sm">
+                          {getSpecialtyLabel(specialty)}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 )}
-              </div>
-            </div>
-
-            <div className="detail-section">
-              <h4>Referencias</h4>
-              <div className="references-list">
-                {selectedApplication.references.map((ref, index) => (
-                  <div key={index} className="reference-card">
-                    <strong>{ref.name}</strong>
-                    <span>{ref.phone}</span>
-                    {ref.relationship && <em>{ref.relationship}</em>}
+                {selectedApplication.otherSpecialtyDetail && (
+                  <div className="detail-field full-width">
+                    <label>Otra Especialidad:</label>
+                    <span>{selectedApplication.otherSpecialtyDetail}</span>
                   </div>
-                ))}
+                )}
+                {selectedApplication.skillsDescription && (
+                  <div className="detail-field full-width">
+                    <label>Habilidades:</label>
+                    <p className="description-content">{selectedApplication.skillsDescription}</p>
+                  </div>
+                )}
               </div>
             </div>
 

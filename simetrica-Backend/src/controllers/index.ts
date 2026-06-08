@@ -5,3 +5,4 @@ export { default as designController } from './design.controller.js';
 export { default as imageController } from './image.controller.js';
 export { default as projectController } from './project.controller.js';
 export { default as workWithUsController } from './work-with-us.controller.js';
+export { default as providerController } from './provider.controller.js';
