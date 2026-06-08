@@ -28,8 +28,8 @@ class ProjectService {
   }
 
   async getCount(): Promise<{ success: boolean; total: number }> {
-    const response = await axios.get(`${API_URL}/projects/count`);
-    return response.data;
+    const response = await this.getAll(1, 1);
+    return { success: true, total: response.total };
   }
 
   async react(projectId: string, type: 'like' | 'dislike'): Promise<{ success: boolean; project: Project }> {

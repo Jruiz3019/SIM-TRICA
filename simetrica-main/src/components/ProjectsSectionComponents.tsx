@@ -116,12 +116,12 @@ const ProjectsSectionComponents = () => {
                     </p>
                     <div className="projects-section__stats">
                         <div className="projects-section__stat">
-                            <span className="projects-section__stat-number">{totalProjects}+</span>
+                            <span className="projects-section__stat-number">{totalProjects}</span>
                             <span className="projects-section__stat-label">Proyectos</span>
                         </div>
                         <div className="projects-section__stat-divider"></div>
                         <div className="projects-section__stat">
-                            <span className="projects-section__stat-number">8</span>
+                            <span className="projects-section__stat-number">{new Date().getFullYear() - 2024}</span>
                             <span className="projects-section__stat-label">años</span>
                         </div>
                         <div className="projects-section__stat-divider"></div>
