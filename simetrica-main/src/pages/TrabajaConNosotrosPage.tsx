@@ -693,20 +693,20 @@ const TrabajaConNosotrosPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="trabajo-page__field">
+                <div className="trabajo-page__field trabajo-page__field--date">
                   <input
-                    type="text"
+                    type="date"
                     name="fechaNacimiento"
-                    placeholder="Fecha de nacimiento"
                     value={formData.fechaNacimiento}
                     onChange={handleInputChange}
-                    onFocus={(e) => e.target.type = 'date'}
-                    onBlur={(e) => {
-                      if (!e.target.value) e.target.type = 'text';
-                    }}
                     className="trabajo-page__input"
                     required
                   />
+                  {!formData.fechaNacimiento && (
+                    <span className="trabajo-page__date-placeholder" aria-hidden="true">
+                      Fecha de nacimiento
+                    </span>
+                  )}
                 </div>
 
                 <div className="trabajo-page__field">

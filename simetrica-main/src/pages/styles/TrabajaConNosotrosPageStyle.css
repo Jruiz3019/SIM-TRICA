@@ -152,6 +152,21 @@
   color-scheme: dark;
 }
 
+.trabajo-page__field--date {
+  position: relative;
+}
+
+.trabajo-page__date-placeholder {
+  position: absolute;
+  left: var(--spacing-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 1);
+  pointer-events: none;
+  font-size: 1rem;
+  z-index: 1;
+}
+
 .trabajo-page__input--error {
   border-color: var(--error-color);
 }
