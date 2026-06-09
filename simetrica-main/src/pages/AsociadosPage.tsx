@@ -791,17 +791,90 @@ function PanelAlianza() {
         </p>
         <div className="alianza-categorias-grid">
           {[
-            { label: 'Material eléctrico', icon: '⚡' },
-            { label: 'Ferretería', icon: '🔧' },
-            { label: 'Carpintería en Madera', icon: '🪵' },
-            { label: 'Enchapes y acabados', icon: '🏗️' },
-            { label: 'Carpintería en Aluminio', icon: '🪟' },
-            { label: 'Herrería', icon: '🔩' },
-            { label: 'Audiovisuales', icon: '🔊' },
-            { label: 'Insumos varios', icon: '📦' },
+            {
+              label: 'Material eléctrico',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Ferretería',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L4.8 22.2a2 2 0 01-2.83-2.83l9.4-9.4a6 6 0 018.5-8.5l-3.77 3.77"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Carpintería en Madera',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 21h18"/>
+                  <path d="M3 7v1m0-1h6v1m-6 6v1m6-7v1"/>
+                  <path d="M9 13h6l-2 8H11z"/>
+                  <path d="M8 4a1 1 0 011-1h6a1 1 0 011 1v3H8z"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Enchapes y acabados',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1"/>
+                  <rect x="14" y="3" width="7" height="7" rx="1"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1"/>
+                  <rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Carpintería en Aluminio',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="3" y1="15" x2="21" y2="15"/>
+                  <line x1="12" y1="9" x2="12" y2="3"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Herrería',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 2h4v4"/>
+                  <path d="M16 2l5 5"/>
+                  <path d="M6 22l-2-2"/>
+                  <path d="M4 22l2-2"/>
+                  <path d="M14 12l-2 2-2-2 2-2z"/>
+                  <line x1="10" y1="14" x2="8" y2="16"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Audiovisuales',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                  <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+                </svg>
+              ),
+            },
+            {
+              label: 'Insumos varios',
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              ),
+            },
           ].map(cat => (
             <div key={cat.label} className="alianza-categorias-grid__item">
-              <span className="alianza-categorias-grid__icon">{cat.icon}</span>
+              <div className="alianza-categorias-grid__icon">{cat.icon}</div>
               <span className="alianza-categorias-grid__label">{cat.label}</span>
             </div>
           ))}

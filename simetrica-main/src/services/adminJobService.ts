@@ -2,6 +2,12 @@ import type { Job, JobAdminListResponse } from '../types/job.types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
+async function handleError(response: Response): Promise<never> {
+  const body = await response.json().catch(() => ({}));
+  const message = body.message || body.errors?.join(', ') || `Error ${response.status}`;
+  throw new Error(message);
+}
+
 class AdminJobService {
   async getAll(page: number = 1, limit: number = 20): Promise<JobAdminListResponse> {
     const token = localStorage.getItem('token');
@@ -11,9 +17,7 @@ class AdminJobService {
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Error al obtener vacantes');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
@@ -26,9 +30,7 @@ class AdminJobService {
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Error al obtener la vacante');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
@@ -44,9 +46,7 @@ class AdminJobService {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error('Error al crear la vacante');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
@@ -62,9 +62,7 @@ class AdminJobService {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error('Error al actualizar la vacante');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
@@ -78,9 +76,7 @@ class AdminJobService {
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Error al eliminar la vacante');
-    }
+    if (!response.ok) await handleError(response);
   }
 }
 

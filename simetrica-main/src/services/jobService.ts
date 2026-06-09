@@ -2,6 +2,12 @@ import type { Job, JobListResponse, JobStatsResponse } from '../types/job.types'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
+async function handleError(response: Response): Promise<never> {
+  const body = await response.json().catch(() => ({}));
+  const message = body.message || body.errors?.join(', ') || `Error ${response.status}`;
+  throw new Error(message);
+}
+
 class JobService {
   async getAll(filters?: {
     search?: string;
@@ -17,9 +23,7 @@ class JobService {
 
     const response = await fetch(`${API_URL}/jobs?${params.toString()}`);
 
-    if (!response.ok) {
-      throw new Error('Error al obtener vacantes');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
@@ -27,9 +31,7 @@ class JobService {
   async getById(id: string): Promise<Job> {
     const response = await fetch(`${API_URL}/jobs/${id}`);
 
-    if (!response.ok) {
-      throw new Error('Error al obtener la vacante');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
@@ -37,9 +39,7 @@ class JobService {
   async getStats(): Promise<JobStatsResponse> {
     const response = await fetch(`${API_URL}/jobs/stats`);
 
-    if (!response.ok) {
-      throw new Error('Error al obtener estadísticas');
-    }
+    if (!response.ok) await handleError(response);
 
     return await response.json();
   }
