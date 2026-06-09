@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderLayout from "../layouts/HeaderLayout";
 import Footer from "../layouts/Footer";
 import LogoSimetrica from "../assets/logo-simetrica-blanco.png";
-import PlaceholderImage from "../assets/project1.png";
 import projectService, { type Project } from '../services/projectService';
+import ProjectCard from '../components/ProjectCard/ProjectCard';
 import "./styles/ProjectsPageStyle.css";
 
 const ProjectsPage = () => {
@@ -16,6 +16,8 @@ const ProjectsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [gridVisible, setGridVisible] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const loadProjects = useCallback(async () => {
     try {
@@ -50,9 +52,53 @@ const ProjectsPage = () => {
     }
   }, [searchQuery, projects]);
 
+  const { featuredProject, remainingProjects } = useMemo(() => {
+    if (filteredProjects.length === 0) return { featuredProject: null, remainingProjects: [] };
+
+    let maxLikes = -1;
+    let featuredIdx = 0;
+    filteredProjects.forEach((p, i) => {
+      if (p.likes > maxLikes) {
+        maxLikes = p.likes;
+        featuredIdx = i;
+      }
+    });
+
+    const remaining = filteredProjects.filter((_, i) => i !== featuredIdx);
+    return {
+      featuredProject: filteredProjects[featuredIdx],
+      remainingProjects: remaining,
+    };
+  }, [filteredProjects]);
+
+  useEffect(() => {
+    if (!gridRef.current || loading || filteredProjects.length === 0) return;
+
+    setGridVisible(false);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setGridVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(gridRef.current);
+    return () => observer.disconnect();
+  }, [filteredProjects, loading]);
+
   const handleProjectClick = (projectId: string) => {
     navigate(`/proyecto/${projectId}`);
   };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+  };
+
+  const isSearching = searchQuery.trim().length > 0;
 
   const footerColumns = [
     {
@@ -114,40 +160,67 @@ const ProjectsPage = () => {
             <div className="error-container">{error}</div>
           ) : filteredProjects.length === 0 ? (
             <div className="empty-state">
-              <p>No se encontraron proyectos</p>
+              <div className="empty-state__icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </div>
+              <h3 className="empty-state__title">No encontramos proyectos para tu búsqueda</h3>
+              <p className="empty-state__text">Intentá con otros términos o limpiá el filtro.</p>
+              {isSearching && (
+                <button className="empty-state__btn" onClick={handleClearSearch}>
+                  Ver todos los proyectos
+                </button>
+              )}
             </div>
           ) : (
             <>
-              <div className="projects-grid">
-                {filteredProjects.map((project) => (
-                  <div
-                    key={project._id}
-                    className="project-card"
-                    onClick={() => handleProjectClick(project._id)}
-                  >
-                    <div className="project-image">
-                      <img
-                        src={project.imagenes[0]?.url || PlaceholderImage}
-                        alt={project.nombre}
-                      />
-                      <div className="project-overlay">
-                        <button className="view-more-btn">Ver más</button>
-                      </div>
-                    </div>
-                    <div className="project-info">
-                      <h3>{project.nombre}</h3>
-                      <p className="project-client">{project.cliente}</p>
-                      <p className="project-description">
-                        {project.descripcion.substring(0, 100)}
-                        {project.descripcion.length > 100 ? '...' : ''}
-                      </p>
-                      <div className="project-stats">
-                        <span>♥ {project.likes}</span>
-                        <span>× {project.dislikes}</span>
-                      </div>
-                    </div>
+              <div ref={gridRef}>
+                {featuredProject && remainingProjects.length >= 2 ? (
+                  <div className={`projects-grid projects-grid--featured ${gridVisible ? 'grid--visible' : ''}`}>
+                    <ProjectCard
+                      project={featuredProject}
+                      isFeatured
+                      index={0}
+                      onClick={() => handleProjectClick(featuredProject._id)}
+                    />
+                    <ProjectCard
+                      project={remainingProjects[0]}
+                      index={1}
+                      onClick={() => handleProjectClick(remainingProjects[0]._id)}
+                    />
+                    <ProjectCard
+                      project={remainingProjects[1]}
+                      index={2}
+                      onClick={() => handleProjectClick(remainingProjects[1]._id)}
+                    />
                   </div>
-                ))}
+                ) : (
+                  <div className={`projects-grid projects-grid--normal ${gridVisible ? 'grid--visible' : ''}`}>
+                    {filteredProjects.map((project, i) => (
+                      <ProjectCard
+                        key={project._id}
+                        project={project}
+                        index={i}
+                        onClick={() => handleProjectClick(project._id)}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {featuredProject && remainingProjects.length > 2 && (
+                  <div className={`projects-grid projects-grid--normal ${gridVisible ? 'grid--visible' : ''}`}>
+                    {remainingProjects.slice(2).map((project, i) => (
+                      <ProjectCard
+                        key={project._id}
+                        project={project}
+                        index={i + 3}
+                        onClick={() => handleProjectClick(project._id)}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {totalPages > 1 && (
