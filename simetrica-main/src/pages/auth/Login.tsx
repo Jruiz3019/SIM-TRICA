@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
 import * as authService from '../../services/authService';
 import Button from '../../components/Button';
+import LogoSimetrica from '../../assets/logo-simetrica-blanco.png';
 import './AuthStyles.css';
 
 export default function Login() {
@@ -22,18 +23,17 @@ export default function Login() {
   }>({});
   
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'El email es requerido';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Email inválido';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'La contraseña es requerida';
     }
@@ -56,10 +56,8 @@ export default function Login() {
         password: formData.password,
       });
 
-      // Guardar en contexto y localStorage
       login(response.token, response.user);
 
-      // Redirigir según el rol
       if (response.user.role === 'ADMIN') {
         navigate('/admin');
       } else {
@@ -77,7 +75,10 @@ export default function Login() {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        {/* Botón de regreso al inicio */}
+        <div className="auth-logo">
+          <img src={LogoSimetrica} alt="Simétrica" />
+        </div>
+
         <Link to="/" className="auth-back-link" aria-label="Volver al inicio">
           <svg 
             width="20" 
@@ -136,18 +137,39 @@ export default function Login() {
               <label htmlFor="password" className="auth-label">
                 Contraseña
               </label>
-              <input
-                type="password"
-                id="password"
-                className={`auth-input ${errors.password ? 'auth-input--error' : ''}`}
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                placeholder="••••••••"
-                disabled={isLoading}
-                autoComplete="current-password"
-                aria-invalid={!!errors.password}
-                aria-describedby={errors.password ? 'password-error' : undefined}
-              />
+              <div className="auth-input-wrapper">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  className={`auth-input ${errors.password ? 'auth-input--error' : ''}`}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  placeholder="••••••••"
+                  disabled={isLoading}
+                  autoComplete="current-password"
+                  aria-invalid={!!errors.password}
+                  aria-describedby={errors.password ? 'password-error' : undefined}
+                />
+                <button
+                  type="button"
+                  className="auth-password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
               {errors.password && (
                 <span id="password-error" className="auth-error" role="alert">
                   {errors.password}

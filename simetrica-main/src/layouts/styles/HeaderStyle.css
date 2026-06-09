@@ -415,7 +415,7 @@
     }
 }
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 1079px) {
     .header {
         backdrop-filter: none;
         background: rgba(18, 18, 18, 0.96);

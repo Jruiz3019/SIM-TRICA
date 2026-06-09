@@ -5,6 +5,8 @@
   color: var(--text-color);
   padding-top: 140px;
   padding-bottom: var(--spacing-xxl);
+  position: relative;
+  overflow-x: hidden;
 }
 
 .job-page__container {
@@ -12,6 +14,38 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 var(--spacing-xl);
+}
+
+.job-page::before {
+  content: 'T';
+  position: absolute;
+  right: -5%;
+  bottom: -10%;
+  font-size: 38rem;
+  font-weight: 800;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: rgba(255, 255, 255, 1);
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+  user-select: none;
+}
+
+.job-page::after {
+  content: 'T';
+  position: absolute;
+  left: -5%;
+  top: -10%;
+  font-size: 32rem;
+  font-weight: 800;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: rgba(255, 255, 255, 1);
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+  user-select: none;
 }
 
 /* --- Hero --- */
@@ -551,6 +585,14 @@
 @media (max-width: 768px) {
   .job-page {
     padding-top: 110px;
+  }
+
+  .job-page::before {
+    display: none;
+  }
+
+  .job-page::after {
+    display: none;
   }
 
   .job-page__container {
