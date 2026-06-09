@@ -211,8 +211,8 @@ function PanelEmpleo() {
       setJobs(result.data);
       const jobStats = await jobService.getStats();
       setStats(jobStats);
-    } catch {
-      setFetchError('Error al cargar vacantes');
+    } catch (err) {
+      setFetchError(err instanceof Error ? err.message : 'Error al cargar vacantes');
     } finally {
       setLoading(false);
     }

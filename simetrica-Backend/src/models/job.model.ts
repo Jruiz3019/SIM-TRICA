@@ -68,7 +68,7 @@ const jobSchema = new Schema<IJob>(
       type: String,
       required: [true, 'La descripción es requerida'],
       trim: true,
-      minlength: [20, 'La descripción debe tener al menos 20 caracteres'],
+      minlength: [10, 'La descripción debe tener al menos 10 caracteres'],
       maxlength: [2000, 'La descripción no puede exceder 2000 caracteres'],
     },
     skills: {

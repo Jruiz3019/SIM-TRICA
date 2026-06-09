@@ -62,8 +62,8 @@ export default function JobsSection() {
       setError(null);
       const result = await adminJobService.getAll(1, 50);
       setJobs(result.data);
-    } catch {
-      setError('Error al cargar vacantes');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al cargar vacantes');
     } finally {
       setLoading(false);
     }
@@ -130,8 +130,8 @@ export default function JobsSection() {
       setSelectedJob(null);
       setShowCreateModal(false);
       resetForm();
-    } catch {
-      setSaveError('Error al guardar la vacante');
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Error al guardar la vacante');
     } finally {
       setSaving(false);
     }
@@ -150,8 +150,8 @@ export default function JobsSection() {
       setJobs((prev) =>
         prev.map((j) => (j._id === id ? { ...j, status: nextStatus } : j))
       );
-    } catch {
-      alert('Error al cambiar estado');
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al cambiar estado');
     }
   };
 
@@ -161,8 +161,8 @@ export default function JobsSection() {
     try {
       await adminJobService.delete(id);
       setJobs((prev) => prev.filter((j) => j._id !== id));
-    } catch {
-      alert('Error al eliminar la vacante');
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al eliminar la vacante');
     }
   };
 
