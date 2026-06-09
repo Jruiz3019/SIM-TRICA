@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import HeaderLayout from '../layouts/HeaderLayout';
 import Footer from '../layouts/Footer/Footer';
 import { submitWorkApplication } from '../services/workWithUsService';
 import jobService from '../services/jobService';
 import './styles/TrabajaConNosotrosPageStyle.css';
-
 import LogoSimetrica from '../assets/logo-simetrica-blanco.png';
 
 const departamentosYMunicipios: { [key: string]: string[] } = {
-  "Amazonas": [
-    "Leticia",
-    "Puerto Nariño"
-  ],
-
+  "Amazonas": ["Leticia", "Puerto Nariño"],
   "Antioquia": [
     "Abejorral","Abriaquí","Alejandría","Amagá","Amalfi","Andes","Angelópolis",
     "Angostura","Anorí","Anzá","Apartadó","Arboletes","Argelia","Armenia",
@@ -37,18 +32,13 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Toledo","Turbo","Uramita","Urrao","Valdivia","Valparaíso","Vegachí",
     "Venecia","Vigía del Fuerte","Yalí","Yarumal","Yolombó","Yondó","Zaragoza"
   ],
-
-  "Arauca": [
-    "Arauca","Arauquita","Cravo Norte","Fortul","Puerto Rondón","Saravena","Tame"
-  ],
-
+  "Arauca": ["Arauca","Arauquita","Cravo Norte","Fortul","Puerto Rondón","Saravena","Tame"],
   "Atlántico": [
     "Barranquilla","Baranoa","Campo de la Cruz","Candelaria","Galapa",
     "Juan de Acosta","Luruaco","Malambo","Manatí","Palmar de Varela",
     "Piojó","Polonuevo","Ponedera","Puerto Colombia","Repelón",
     "Sabanagrande","Sabanalarga","Santa Lucía","Santo Tomás","Soledad","Suan","Tubará","Usiacurí"
   ],
-
   "Bolívar": [
     "Achí","Altos del Rosario","Arenal","Arjona","Arroyohondo","Barranco de Loba",
     "Calamar","Cantagallo","Cartagena","Cicuco","Clemencia","Córdoba",
@@ -60,7 +50,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Pablo","Santa Catalina","Santa Rosa","Santa Rosa del Sur",
     "Simití","Soplaviento","Talaigua Nuevo","Tiquisio","Turbaco","Turbaná","Villanueva","Zambrano"
   ],
-
   "Boyacá": [
     "Almeida","Aquitania","Arcabuco","Belén","Berbeo","Betéitiva","Boavita",
     "Boyacá","Briceño","Buenavista","Busbanzá","Caldas","Campohermoso",
@@ -85,7 +74,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Tununguá","Turmequé","Tuta","Tutazá","Úmbita","Ventaquemada",
     "Villa de Leyva","Viracachá","Zetaquira"
   ],
-
   "Caldas": [
     "Aguadas","Anserma","Aranzazu","Belalcázar","Chinchiná","Filadelfia",
     "La Dorada","La Merced","Manizales","Manzanares","Marmato",
@@ -93,19 +81,16 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Pensilvania","Riosucio","Risaralda","Salamina","Samaná",
     "San José","Supía","Victoria","Villamaría","Viterbo"
   ],
-
   "Caquetá": [
     "Albania","Belén de los Andaquíes","Cartagena del Chairá","Curillo",
     "El Doncello","El Paujil","Florencia","La Montañita","Milán",
     "Morelia","Puerto Rico","San José del Fragua","San Vicente del Caguán","Solano","Solita","Valparaíso"
   ],
-
   "Casanare": [
     "Aguazul","Chámeza","Hato Corozal","La Salina","Maní","Monterrey",
     "Nunchía","Orocué","Paz de Ariporo","Pore","Recetor","Sabanalarga",
     "Sácama","San Luis de Palenque","Támara","Tauramena","Trinidad","Villanueva","Yopal"
   ],
-
   "Cauca": [
     "Almaguer","Argelia","Balboa","Bolívar","Buenos Aires","Cajibío",
     "Caldono","Caloto","Corinto","El Tambo","Florencia","Guachené",
@@ -116,7 +101,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Silvia","Sotará","Suárez","Sucre","Timbío","Timbiquí","Toribío",
     "Totoró","Villa Rica"
   ],
-
   "Cesar": [
     "Aguachica","Agustín Codazzi","Astrea","Becerril","Bosconia",
     "Chimichagua","Chiriguaná","Curumaní","El Copey","El Paso",
@@ -125,7 +109,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Río de Oro","San Alberto","San Diego","San Martín",
     "Tamalameque","Valledupar"
   ],
-
   "Chocó": [
     "Acandí","Alto Baudó","Atrato","Bagadó","Bahía Solano","Bajo Baudó",
     "Belén de Bajirá","Bojayá","Cértegui","Condoto","El Cantón del San Pablo",
@@ -134,7 +117,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Nuquí","Quibdó","Río Iro","Río Quito","Riosucio","San José del Palmar",
     "Sipí","Tadó","Unguía","Unión Panamericana"
   ],
-
   "Córdoba": [
     "Ayapel","Buenavista","Canalete","Cereté","Chimá","Chinú",
     "Ciénaga de Oro","Cotorra","La Apartada","Lorica","Los Córdobas",
@@ -144,7 +126,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Bernardo del Viento","San Carlos","San José de Uré",
     "San Pelayo","Tierralta","Tuchín","Valencia"
   ],
-
   "Cundinamarca": [
     "Agua de Dios","Albán","Anapoima","Anolaima","Apulo","Arbeláez",
     "Beltrán","Bituima","Bojacá","Cabrera","Cachipay","Cajicá",
@@ -168,13 +149,8 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Útica","Venecia","Vergara","Vianí","Villagómez","Villapinzón",
     "Villeta","Viotá","Yacopí","Zipacón","Zipaquirá"
   ],
-
   "Guainía": ["Inírida"],
-
-  "Guaviare": [
-    "Calamar","El Retorno","Miraflores","San José del Guaviare"
-  ],
-
+  "Guaviare": ["Calamar","El Retorno","Miraflores","San José del Guaviare"],
   "Huila": [
     "Acevedo","Agrado","Aipe","Algeciras","Altamira","Baraya",
     "Campoalegre","Colombia","Elías","Garzón","Gigante","Guadalupe",
@@ -184,13 +160,11 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Suaza","Tarqui","Tello","Teruel","Tesalia","Timaná",
     "Villavieja","Yaguará"
   ],
-
   "La Guajira": [
     "Albania","Barrancas","Dibulla","Distracción","El Molino",
     "Fonseca","Hatonuevo","La Jagua del Pilar","Maicao",
     "Manaure","Riohacha","San Juan del Cesar","Uribia","Urumita","Villanueva"
   ],
-
   "Magdalena": [
     "Algarrobo","Aracataca","Ariguaní","Cerro de San Antonio",
     "Chibolo","Ciénaga","Concordia","El Banco","El Piñón",
@@ -200,7 +174,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Zenón","Santa Ana","Santa Bárbara de Pinto","Santa Marta",
     "Sitionuevo","Tenerife","Zapayán","Zona Bananera"
   ],
-
   "Meta": [
     "Acacías","Barranca de Upía","Cabuyaro","Castilla la Nueva",
     "Cubarral","Cumaral","El Calvario","El Castillo","El Dorado",
@@ -210,7 +183,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Carlos de Guaroa","San Juan de Arama","San Juanito",
     "San Martín","Villavicencio","Vista Hermosa"
   ],
-
   "Nariño": [
     "Albán","Aldana","Ancuyá","Arboleda","Barbacoas","Belén",
     "Buesaco","Chachagüí","Colón","Consacá","Contadero","Córdoba",
@@ -225,7 +197,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Santa Bárbara","Santacruz","Sapuyes","Taminango","Tangua",
     "Tumaco","Túquerres","Yacuanquer"
   ],
-
   "Norte de Santander": [
     "Abrego","Arboledas","Bochalema","Bucarasica","Cáchira","Cácota",
     "Chinácota","Chitagá","Convención","Cúcuta","Cucutilla",
@@ -236,28 +207,21 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Calixto","San Cayetano","Santiago","Sardinata",
     "Silos","Teorama","Tibú","Toledo","Villa Caro","Villa del Rosario"
   ],
-
   "Putumayo": [
     "Colón","Mocoa","Orito","Puerto Asís","Puerto Caicedo",
     "Puerto Guzmán","Puerto Leguízamo","San Francisco",
     "San Miguel","Santiago","Sibundoy","Valle del Guamuez","Villagarzón"
   ],
-
   "Quindío": [
     "Armenia","Buenavista","Calarcá","Circasia","Córdoba",
     "Filandia","Génova","La Tebaida","Montenegro","Pijao","Quimbaya","Salento"
   ],
-
   "Risaralda": [
     "Apía","Balboa","Belén de Umbría","Dosquebradas","Guática",
     "La Celia","La Virginia","Marsella","Mistrató","Pereira",
     "Pueblo Rico","Quinchía","Santa Rosa de Cabal","Santuario"
   ],
-
-  "San Andrés y Providencia": [
-    "Providencia","San Andrés"
-  ],
-
+  "San Andrés y Providencia": ["Providencia","San Andrés"],
   "Santander": [
     "Aguada","Albania","Aratoca","Barbosa","Barichara","Barrancabermeja",
     "Betulia","Bolívar","Bucaramanga","Cabrera","California","Capitanejo",
@@ -278,7 +242,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Sucre","Suratá","Tona","Valle de San José","Vélez",
     "Vetas","Villanueva","Zapatoca"
   ],
-
   "Sucre": [
     "Buenavista","Caimito","Chalán","Colosó","Corozal","Coveñas",
     "El Roble","Galeras","Guaranda","La Unión","Los Palmitos",
@@ -286,7 +249,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Benito Abad","San Juan de Betulia","San Marcos",
     "San Onofre","San Pedro","Sincé","Sincelejo","Sucre","Tolú","Tolú Viejo"
   ],
-
   "Tolima": [
     "Alpujarra","Alvarado","Ambalema","Anzoátegui","Armero",
     "Ataco","Cajamarca","Carmen de Apicalá","Casabianca",
@@ -298,7 +260,6 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "Roncesvalles","Rovira","Saldaña","San Antonio",
     "San Luis","Santa Isabel","Suárez","Valle de San Juan","Venadillo","Villahermosa","Villarrica"
   ],
-
   "Valle del Cauca": [
     "Alcalá","Andalucía","Ansermanuevo","Argelia","Bolívar",
     "Buenaventura","Buga","Bugalagrande","Caicedonia",
@@ -310,21 +271,21 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
     "San Pedro","Sevilla","Toro","Trujillo","Tuluá",
     "Ulloa","Versalles","Vijes","Yotoco","Yumbo","Zarzal"
   ],
-
-  "Vaupés": [
-    "Carurú","Mitú","Taraira"
-  ],
-
-  "Vichada": [
-    "Cumaribo","La Primavera","Puerto Carreño","Santa Rosalía"
-  ]
-
+  "Vaupés": ["Carurú","Mitú","Taraira"],
+  "Vichada": ["Cumaribo","La Primavera","Puerto Carreño","Santa Rosalía"]
 };
 
-const TrabajaConNosotrosPage: React.FC = () => {
+interface Notification {
+  type: 'success' | 'error';
+  message: string;
+}
+
+const TrabajaConNosotrosPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [jobId, setJobId] = useState<string | null>(null);
   const [jobName, setJobName] = useState<string | null>(null);
+  const [notification, setNotification] = useState<Notification | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     nombreCompleto: '',
     numeroIdentificacion: '',
@@ -333,7 +294,6 @@ const TrabajaConNosotrosPage: React.FC = () => {
     correoElectronico: '',
     departamento: '',
     municipio: '',
-
     perfilProfesional: '',
     otroPerfilProfesional: '',
     especialidades: [] as string[],
@@ -398,6 +358,15 @@ const TrabajaConNosotrosPage: React.FC = () => {
     { label: "Pinterest", href: "https://co.pinterest.com/insonorizacion_acustica7/?invite_code=dd12bf69cdd14ac8aecd84e3f084a435&sender=595601256878326965", external: true },
     { label: "WhatsApp", href: "https://wa.me/573103858223", external: true }
   ];
+
+  const clearNotification = () => setNotification(null);
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ type, message });
+    if (type === 'success') {
+      setTimeout(() => setNotification(null), 6000);
+    }
+  };
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -478,29 +447,31 @@ const TrabajaConNosotrosPage: React.FC = () => {
   };
 
   const handleContinuar = () => {
+    clearNotification();
+
     if (currentStep === 1) {
       if (!formData.nombreCompleto.trim()) {
-        alert('Por favor ingrese su nombre completo');
+        showNotification('error', 'Por favor ingresá tu nombre completo');
         return;
       }
       if (!validateIdentificacion(formData.numeroIdentificacion)) {
-        alert('Número de identificación debe contener entre 7 y 10 dígitos');
+        showNotification('error', 'El número de identificación debe tener entre 7 y 10 dígitos');
         return;
       }
       if (!validateNumeroContacto(formData.numeroContacto)) {
-        alert('Número de contacto debe contener exactamente 10 dígitos');
+        showNotification('error', 'El número de contacto debe tener exactamente 10 dígitos');
         return;
       }
       if (!formData.fechaNacimiento) {
-        alert('Por favor ingrese su fecha de nacimiento');
+        showNotification('error', 'Por favor ingresá tu fecha de nacimiento');
         return;
       }
       if (!validateEmail(formData.correoElectronico)) {
-        alert('Por favor ingrese un correo electrónico válido');
+        showNotification('error', 'Por favor ingresá un correo electrónico válido');
         return;
       }
       if (!formData.departamento || !formData.municipio) {
-        alert('Por favor seleccione departamento y municipio');
+        showNotification('error', 'Por favor seleccioná departamento y municipio');
         return;
       }
     }
@@ -512,6 +483,7 @@ const TrabajaConNosotrosPage: React.FC = () => {
   };
 
   const handleAnterior = () => {
+    clearNotification();
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -580,19 +552,23 @@ const TrabajaConNosotrosPage: React.FC = () => {
   const isConstruccion = formData.perfilProfesional === 'Construcción';
 
   const handleEnviar = async () => {
+    clearNotification();
+
     try {
       if (!formData.nombreCompleto || !formData.numeroIdentificacion || !formData.numeroContacto ||
           !formData.fechaNacimiento || !formData.correoElectronico || !formData.departamento ||
           !formData.municipio || !formData.perfilProfesional ||
           !formData.anosExperiencia || !formData.tieneCertificaciones || !formData.disponibilidad) {
-        alert('Por favor completa todos los campos requeridos');
+        showNotification('error', 'Por favor completá todos los campos requeridos');
         return;
       }
 
       if (isConstruccion && formData.especialidades.length === 0) {
-        alert('Por favor seleccione al menos una especialidad de construcción');
+        showNotification('error', 'Por favor seleccioná al menos una especialidad de construcción');
         return;
       }
+
+      setSubmitting(true);
 
       const dataToSend = {
         fullName: formData.nombreCompleto.trim(),
@@ -615,170 +591,251 @@ const TrabajaConNosotrosPage: React.FC = () => {
 
       const response = await submitWorkApplication(dataToSend);
 
-      alert(response.message || 'Aplicación enviada correctamente. Nos pondremos en contacto contigo pronto.');
-
-      setFormData({
-        nombreCompleto: '',
-        numeroIdentificacion: '',
-        numeroContacto: '',
-        fechaNacimiento: '',
-        correoElectronico: '',
-        departamento: '',
-        municipio: '',
-        perfilProfesional: '',
-        otroPerfilProfesional: '',
-        especialidades: [],
-        otroEspecialidad: '',
-        descripcionHabilidades: '',
-        anosExperiencia: '',
-        tieneCertificaciones: '',
-        disponibilidad: '',
-      });
-      setCurrentStep(1);
+      if (response.success) {
+        showNotification('success', response.message || '¡Aplicación enviada con éxito! Nos pondremos en contacto pronto.');
+        setFormData({
+          nombreCompleto: '',
+          numeroIdentificacion: '',
+          numeroContacto: '',
+          fechaNacimiento: '',
+          correoElectronico: '',
+          departamento: '',
+          municipio: '',
+          perfilProfesional: '',
+          otroPerfilProfesional: '',
+          especialidades: [],
+          otroEspecialidad: '',
+          descripcionHabilidades: '',
+          anosExperiencia: '',
+          tieneCertificaciones: '',
+          disponibilidad: '',
+        });
+        setCurrentStep(1);
+      } else {
+        showNotification('error', response.message);
+      }
     } catch (error) {
       console.error('Error al enviar:', error);
-      alert(error instanceof Error ? error.message : 'Error al enviar la aplicación');
+      showNotification('error', error instanceof Error ? error.message : 'Error inesperado al enviar la aplicación');
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  const beneficios = [
+    {
+      title: 'Proyectos que transforman',
+      desc: 'Participá en obras que marcan la diferencia en comunidades y espacios de toda Colombia.',
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
+          <line x1="12" y1="22" x2="12" y2="15.5" />
+          <polyline points="22 8.5 12 15.5 2 8.5" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Equipo colaborativo',
+      desc: 'Trabajá junto a profesionales apasionados por el diseño, la arquitectura y la construcción.',
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Crecimiento continuo',
+      desc: 'Accedé a oportunidades de desarrollo profesional y capacitate en nuevas tecnologías y metodologías.',
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+      ),
+    },
+  ];
 
   return (
     <>
       <HeaderLayout />
 
-      <main className="trabajo-page">
-        <div className="trabajo-page__container">
-
-          <div className="trabajo-page__hero">
-            <h1 className="trabajo-page__title">Comienza a trabajar con nosotros</h1>
+      <main className="job-page">
+        <div className="job-page__container">
+          <div className="job-page__hero">
+            <h1 className="job-page__title">Trabajá con nosotros</h1>
+            <p className="job-page__subtitle">Sumate a un equipo que construye el futuro</p>
             {jobName && (
-              <p className="trabajo-page__vacante-badge">
+              <span className="job-page__vacancy-badge">
                 Postulándote a: <strong>{jobName}</strong>
-              </p>
+              </span>
             )}
           </div>
 
-          <div className="trabajo-page__steps">
-            <div className={`trabajo-page__step ${currentStep === 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
-              <div className="trabajo-page__step-circle">Datos personales</div>
+          <section className="job-page__benefits">
+            {beneficios.map((b, i) => (
+              <div key={i} className="job-page__benefit-card">
+                <div className="job-page__benefit-icon">{b.icon}</div>
+                <h3 className="job-page__benefit-title">{b.title}</h3>
+                <p className="job-page__benefit-desc">{b.desc}</p>
+              </div>
+            ))}
+          </section>
+
+          <div className="job-page__steps">
+            <div className={`job-page__step ${currentStep >= 1 ? 'job-page__step--active' : ''} ${currentStep > 1 ? 'job-page__step--completed' : ''}`}>
+              <span className="job-page__step-num">1</span>
+              <span className="job-page__step-label">Datos personales</span>
             </div>
-            <div className="trabajo-page__step-line"></div>
-            <div className={`trabajo-page__step ${currentStep === 2 ? 'active' : ''}`}>
-              <div className="trabajo-page__step-circle">Perfil profesional</div>
+            <div className={`job-page__step-line ${currentStep > 1 ? 'job-page__step-line--filled' : ''}`} />
+            <div className={`job-page__step ${currentStep === 2 ? 'job-page__step--active' : ''} ${currentStep > 2 ? 'job-page__step--completed' : ''}`}>
+              <span className="job-page__step-num">2</span>
+              <span className="job-page__step-label">Perfil profesional</span>
             </div>
           </div>
 
-          <div className="trabajo-page__form-container">
+          <div className="job-page__form-wrapper">
+            {notification && (
+              <div
+                className={`job-page__notification ${notification.type === 'success' ? 'job-page__notification--success' : 'job-page__notification--error'}`}
+                role="alert"
+              >
+                <span className="job-page__notification-icon">
+                  {notification.type === 'success' ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="15" y1="9" x2="9" y2="15" />
+                      <line x1="9" y1="9" x2="15" y2="15" />
+                    </svg>
+                  )}
+                </span>
+                <span className="job-page__notification-text">{notification.message}</span>
+                <button className="job-page__notification-close" onClick={clearNotification} aria-label="Cerrar notificación">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+            )}
 
             {currentStep === 1 && (
-              <div className="trabajo-page__form-step">
-                <div className="trabajo-page__field">
-                  <input
-                    type="text"
-                    name="nombreCompleto"
-                    placeholder="Nombre completo"
-                    value={formData.nombreCompleto}
-                    onChange={handleInputChange}
-                    className="trabajo-page__input"
-                    required
-                  />
+              <div className="job-page__form-step">
+                <div className="job-page__row">
+                  <div className="job-page__field">
+                    <label className="job-page__label">Nombre completo</label>
+                    <input
+                      type="text"
+                      name="nombreCompleto"
+                      value={formData.nombreCompleto}
+                      onChange={handleInputChange}
+                      className="job-page__input"
+                      required
+                    />
+                  </div>
+                  <div className="job-page__field">
+                    <label className="job-page__label">N° de identificación</label>
+                    <input
+                      type="text"
+                      name="numeroIdentificacion"
+                      value={formData.numeroIdentificacion}
+                      onChange={handleInputChange}
+                      className={`job-page__input ${errors.numeroIdentificacion ? 'job-page__input--error' : ''}`}
+                      maxLength={10}
+                      required
+                    />
+                    {errors.numeroIdentificacion && (
+                      <span className="job-page__field-error">{errors.numeroIdentificacion}</span>
+                    )}
+                  </div>
                 </div>
 
-                <div className="trabajo-page__field">
-                  <input
-                    type="text"
-                    name="numeroIdentificacion"
-                    placeholder="Número de identificación (7-10 dígitos)"
-                    value={formData.numeroIdentificacion}
-                    onChange={handleInputChange}
-                    className={`trabajo-page__input ${errors.numeroIdentificacion ? 'trabajo-page__input--error' : ''}`}
-                    maxLength={10}
-                    required
-                  />
-                  {errors.numeroIdentificacion && (
-                    <span className="trabajo-page__error">{errors.numeroIdentificacion}</span>
-                  )}
+                <div className="job-page__row">
+                  <div className="job-page__field">
+                    <label className="job-page__label">N° de contacto</label>
+                    <input
+                      type="tel"
+                      name="numeroContacto"
+                      value={formData.numeroContacto}
+                      onChange={handleInputChange}
+                      className={`job-page__input ${errors.numeroContacto ? 'job-page__input--error' : ''}`}
+                      maxLength={10}
+                      required
+                    />
+                    {errors.numeroContacto && (
+                      <span className="job-page__field-error">{errors.numeroContacto}</span>
+                    )}
+                  </div>
+                  <div className="job-page__field">
+                    <label className="job-page__label">Fecha de nacimiento</label>
+                    <input
+                      type="date"
+                      name="fechaNacimiento"
+                      value={formData.fechaNacimiento}
+                      onChange={handleInputChange}
+                      className="job-page__input"
+                      required
+                    />
+                  </div>
                 </div>
 
-                <div className="trabajo-page__field">
-                  <input
-                    type="tel"
-                    name="numeroContacto"
-                    placeholder="Número de contacto (10 dígitos)"
-                    value={formData.numeroContacto}
-                    onChange={handleInputChange}
-                    className={`trabajo-page__input ${errors.numeroContacto ? 'trabajo-page__input--error' : ''}`}
-                    maxLength={10}
-                    required
-                  />
-                  {errors.numeroContacto && (
-                    <span className="trabajo-page__error">{errors.numeroContacto}</span>
-                  )}
-                </div>
-
-                <div className="trabajo-page__field trabajo-page__field--date">
-                  <input
-                    type="date"
-                    name="fechaNacimiento"
-                    value={formData.fechaNacimiento}
-                    onChange={handleInputChange}
-                    className="trabajo-page__input"
-                    required
-                  />
-                  {!formData.fechaNacimiento && (
-                    <span className="trabajo-page__date-placeholder" aria-hidden="true">
-                      Fecha de nacimiento
-                    </span>
-                  )}
-                </div>
-
-                <div className="trabajo-page__field">
+                <div className="job-page__field job-page__field--full">
+                  <label className="job-page__label">Correo electrónico</label>
                   <input
                     type="email"
                     name="correoElectronico"
-                    placeholder="Correo electrónico"
                     value={formData.correoElectronico}
                     onChange={handleInputChange}
-                    className={`trabajo-page__input ${errors.correoElectronico ? 'trabajo-page__input--error' : ''}`}
+                    className={`job-page__input ${errors.correoElectronico ? 'job-page__input--error' : ''}`}
                     required
                   />
                   {errors.correoElectronico && (
-                    <span className="trabajo-page__error">{errors.correoElectronico}</span>
+                    <span className="job-page__field-error">{errors.correoElectronico}</span>
                   )}
                 </div>
 
-                <div className="trabajo-page__field">
-                  <select
-                    name="departamento"
-                    value={formData.departamento}
-                    onChange={handleInputChange}
-                    className="trabajo-page__select"
-                    required
-                  >
-                    <option value="">Seleccione un departamento</option>
-                    {Object.keys(departamentosYMunicipios).sort().map((dept) => (
-                      <option key={dept} value={dept}>{dept}</option>
-                    ))}
-                  </select>
+                <div className="job-page__row">
+                  <div className="job-page__field">
+                    <label className="job-page__label">Departamento</label>
+                    <select
+                      name="departamento"
+                      value={formData.departamento}
+                      onChange={handleInputChange}
+                      className="job-page__input job-page__select"
+                      required
+                    >
+                      <option value="">Seleccioná un departamento</option>
+                      {Object.keys(departamentosYMunicipios).sort().map((dept) => (
+                        <option key={dept} value={dept}>{dept}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="job-page__field">
+                    <label className="job-page__label">Municipio</label>
+                    <select
+                      name="municipio"
+                      value={formData.municipio}
+                      onChange={handleInputChange}
+                      className="job-page__input job-page__select"
+                      disabled={!formData.departamento}
+                      required
+                    >
+                      <option value="">Seleccioná un municipio</option>
+                      {municipiosDisponibles.map((municipio) => (
+                        <option key={municipio} value={municipio}>{municipio}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
-                <div className="trabajo-page__field">
-                  <select
-                    name="municipio"
-                    value={formData.municipio}
-                    onChange={handleInputChange}
-                    className="trabajo-page__select"
-                    disabled={!formData.departamento}
-                    required
-                  >
-                    <option value="">Seleccione un municipio</option>
-                    {municipiosDisponibles.map((municipio) => (
-                      <option key={municipio} value={municipio}>{municipio}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="trabajo-page__actions">
-                  <button onClick={handleContinuar} className="trabajo-page__btn">
+                <div className="job-page__actions">
+                  <button type="button" onClick={handleContinuar} className="job-page__btn">
                     Continuar
                   </button>
                 </div>
@@ -786,16 +843,17 @@ const TrabajaConNosotrosPage: React.FC = () => {
             )}
 
             {currentStep === 2 && (
-              <div className="trabajo-page__form-step">
-                <div className="trabajo-page__field">
+              <div className="job-page__form-step">
+                <div className="job-page__field job-page__field--full">
+                  <label className="job-page__label">Perfil profesional</label>
                   <select
                     name="perfilProfesional"
                     value={formData.perfilProfesional}
                     onChange={handleInputChange}
-                    className="trabajo-page__select"
+                    className="job-page__input job-page__select"
                     required
                   >
-                    <option value="">Seleccione su perfil profesional</option>
+                    <option value="">Seleccioná tu perfil profesional</option>
                     <option value="Arquitecto">Arquitecto</option>
                     <option value="Ingeniero">Ingeniero</option>
                     <option value="Abogado">Abogado</option>
@@ -808,14 +866,14 @@ const TrabajaConNosotrosPage: React.FC = () => {
                 </div>
 
                 {formData.perfilProfesional === 'Otro' && (
-                  <div className="trabajo-page__field">
+                  <div className="job-page__field job-page__field--full">
+                    <label className="job-page__label">Especificá tu perfil</label>
                     <input
                       type="text"
                       name="otroPerfilProfesional"
-                      placeholder="Especifique su perfil profesional"
                       value={formData.otroPerfilProfesional}
                       onChange={handleInputChange}
-                      className="trabajo-page__input"
+                      className="job-page__input"
                       maxLength={100}
                       required
                     />
@@ -823,9 +881,9 @@ const TrabajaConNosotrosPage: React.FC = () => {
                 )}
 
                 {formData.perfilProfesional === 'Construcción' && (
-                  <div className="trabajo-page__field-full">
-                    <label className="trabajo-page__label">Especialidad</label>
-                    <div className="trabajo-page__checkboxes">
+                  <div className="job-page__section-card">
+                    <label className="job-page__label">Especialidades</label>
+                    <div className="job-page__checkboxes">
                       {[
                         'Constructor de obra negra (Construcción y reparación de estructuras con ladrillos, cemento y otros materiales)',
                         'Constructor de obra blanca (Terminaciones como instalación de pisos, enchapes, cielo raso, y acabados finales)',
@@ -833,25 +891,27 @@ const TrabajaConNosotrosPage: React.FC = () => {
                         'Electricidad (Instalaciones y mantenimiento de sistemas eléctricos)',
                         'Plomería (Instalación y reparación de tuberías y sistemas de agua)',
                         'Estructuras metálicas (Fabricación e instalación de estructuras en acero y otros metales)'
-                      ].map((esp, index) => (
-                        <label key={index} className="trabajo-page__checkbox-label">
+                      ].map((esp) => (
+                        <label key={esp} className="job-page__checkbox-card">
                           <input
                             type="checkbox"
                             checked={formData.especialidades.includes(esp)}
                             onChange={() => handleCheckboxChange(esp)}
-                            className="trabajo-page__checkbox"
+                            className="job-page__checkbox-input"
                           />
-                          <span>{esp}</span>
+                          <span className="job-page__checkbox-indicator" />
+                          <span className="job-page__checkbox-text">{esp}</span>
                         </label>
                       ))}
-                      <label className="trabajo-page__checkbox-label">
+                      <label className="job-page__checkbox-card">
                         <input
                           type="checkbox"
                           checked={formData.especialidades.includes('Otro')}
                           onChange={() => handleCheckboxChange('Otro')}
-                          className="trabajo-page__checkbox"
+                          className="job-page__checkbox-input"
                         />
-                        <span>Otro:</span>
+                        <span className="job-page__checkbox-indicator" />
+                        <span className="job-page__checkbox-text">Otro</span>
                       </label>
                       {formData.especialidades.includes('Otro') && (
                         <input
@@ -859,7 +919,8 @@ const TrabajaConNosotrosPage: React.FC = () => {
                           name="otroEspecialidad"
                           value={formData.otroEspecialidad}
                           onChange={handleInputChange}
-                          className="trabajo-page__input trabajo-page__input--inline"
+                          className="job-page__input job-page__input--inline"
+                          placeholder="Especificá tu especialidad"
                         />
                       )}
                     </div>
@@ -867,89 +928,79 @@ const TrabajaConNosotrosPage: React.FC = () => {
                 )}
 
                 {formData.perfilProfesional && formData.perfilProfesional !== 'Construcción' && (
-                  <div className="trabajo-page__field-full">
-                    <label className="trabajo-page__label">Describa brevemente sus habilidades y experiencia (opcional)</label>
+                  <div className="job-page__section-card">
+                    <label className="job-page__label">Describí brevemente tus habilidades y experiencia</label>
                     <textarea
                       name="descripcionHabilidades"
                       placeholder="Ej: Manejo de herramientas administrativas, atención al cliente, gestión de proyectos..."
                       value={formData.descripcionHabilidades}
                       onChange={handleInputChange}
-                      className="trabajo-page__textarea"
+                      className="job-page__textarea"
                       rows={3}
                       maxLength={150}
                     />
-                    <span className="trabajo-page__char-count">{formData.descripcionHabilidades.length}/150</span>
+                    <span className="job-page__char-count">{formData.descripcionHabilidades.length}/150</span>
                   </div>
                 )}
 
-                <div className="trabajo-page__field-full">
-                  <label className="trabajo-page__label">Años de experiencia</label>
-                  <div className="trabajo-page__radios">
+                <div className="job-page__section-card">
+                  <label className="job-page__label">Años de experiencia</label>
+                  <div className="job-page__card-options">
                     {['Menos de un año', '1 a 3 años', '3 a 5 años', '5 a 10 años', 'Más de 10 años'].map((option) => (
-                      <label key={option} className="trabajo-page__radio-label">
-                        <input
-                          type="radio"
-                          name="anosExperiencia"
-                          value={option}
-                          checked={formData.anosExperiencia === option}
-                          onChange={() => handleRadioChange('anosExperiencia', option)}
-                          className="trabajo-page__radio"
-                        />
-                        <span>{option}</span>
-                      </label>
+                      <button
+                        type="button"
+                        key={option}
+                        className={`job-page__card-option ${formData.anosExperiencia === option ? 'job-page__card-option--selected' : ''}`}
+                        onClick={() => handleRadioChange('anosExperiencia', option)}
+                      >
+                        {option}
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="trabajo-page__field-full">
-                  <label className="trabajo-page__label">¿Cuenta con certificaciones o estudios en su área?</label>
-                  <div className="trabajo-page__radios">
+                <div className="job-page__section-card">
+                  <label className="job-page__label">¿Tenés certificaciones o estudios en tu área?</label>
+                  <div className="job-page__card-options">
                     {['Sí', 'No'].map((option) => (
-                      <label key={option} className="trabajo-page__radio-label">
-                        <input
-                          type="radio"
-                          name="tieneCertificaciones"
-                          value={option}
-                          checked={formData.tieneCertificaciones === option}
-                          onChange={() => handleRadioChange('tieneCertificaciones', option)}
-                          className="trabajo-page__radio"
-                        />
-                        <span>{option}</span>
-                      </label>
+                      <button
+                        type="button"
+                        key={option}
+                        className={`job-page__card-option ${formData.tieneCertificaciones === option ? 'job-page__card-option--selected' : ''}`}
+                        onClick={() => handleRadioChange('tieneCertificaciones', option)}
+                      >
+                        {option}
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="trabajo-page__field-full">
-                  <label className="trabajo-page__label">Disponibilidad de Trabajo</label>
-                  <div className="trabajo-page__radios">
+                <div className="job-page__section-card">
+                  <label className="job-page__label">Disponibilidad</label>
+                  <div className="job-page__card-options">
                     {['Tiempo completo', 'Medio tiempo', 'Solo fines de semana', 'Por contrato específico'].map((option) => (
-                      <label key={option} className="trabajo-page__radio-label">
-                        <input
-                          type="radio"
-                          name="disponibilidad"
-                          value={option}
-                          checked={formData.disponibilidad === option}
-                          onChange={() => handleRadioChange('disponibilidad', option)}
-                          className="trabajo-page__radio"
-                        />
-                        <span>{option}</span>
-                      </label>
+                      <button
+                        type="button"
+                        key={option}
+                        className={`job-page__card-option ${formData.disponibilidad === option ? 'job-page__card-option--selected' : ''}`}
+                        onClick={() => handleRadioChange('disponibilidad', option)}
+                      >
+                        {option}
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="trabajo-page__actions">
-                  <button onClick={handleAnterior} className="trabajo-page__btn trabajo-page__btn--secondary">
+                <div className="job-page__actions job-page__actions--dual">
+                  <button type="button" onClick={handleAnterior} className="job-page__btn job-page__btn--outline">
                     Anterior
                   </button>
-                  <button onClick={handleEnviar} className="trabajo-page__btn">
-                    Enviar
+                  <button type="button" onClick={handleEnviar} className="job-page__btn" disabled={submitting}>
+                    {submitting ? 'Enviando...' : 'Enviar solicitud'}
                   </button>
                 </div>
               </div>
             )}
-
           </div>
         </div>
       </main>
