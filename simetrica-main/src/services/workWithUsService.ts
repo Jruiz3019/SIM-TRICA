@@ -20,6 +20,7 @@ export interface WorkWithUsFormData {
   experienceLevel: string;
   hasCertifications: boolean;
   availability: string;
+  jobId?: string;
 }
 
 export const submitWorkApplication = async (data: WorkWithUsFormData): Promise<{ success: boolean; message: string }> => {

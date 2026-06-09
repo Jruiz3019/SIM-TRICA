@@ -1,27 +1,18 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import HeaderLayout from '../layouts/HeaderLayout';
 import Footer from '../layouts/Footer/Footer';
 import Button from '../components/Button';
 import LogoSimetrica from '../assets/logo-simetrica-blanco.png';
 import HeroBackground from '../assets/asociados.png';
 import { submitProviderRegistration } from '../services/providerService';
+import jobService from '../services/jobService';
 import type { Provider as BackendProvider, ProviderCategory } from '../types/provider.types';
-import { ProviderCategoryEnum } from '../types/provider.types';
+import {
+  ProviderCategoryEnum,
+} from '../types/provider.types';
+import type { Job as BackendJob } from '../types/job.types';
+import { JobStatusEnum, JobModalityEnum, JobTypeEnum } from '../types/job.types';
 import './styles/AsociadosPageStyle.css';
-
-type JobStatus = 'priority' | 'open' | 'closed';
-
-interface Job {
-  id: number;
-  cargo: string;
-  empresa: string;
-  ciudad: string;
-  modalidad: string;
-  tipo: string;
-  descripcion: string;
-  skills: string[];
-  status: JobStatus;
-}
 
 interface Provider {
   _id: string;
@@ -48,75 +39,6 @@ interface Stat {
   label: string;
 }
 
-const empleosMock: Job[] = [
-  {
-    id: 1,
-    cargo: 'Técnico en Insonorización',
-    empresa: 'Simétrica',
-    ciudad: 'Medellín',
-    modalidad: 'Presencial',
-    tipo: 'Tiempo completo',
-    descripcion: 'Buscamos técnico especializado en instalación de paneles acústicos y sistemas de aislamiento sonoro para proyectos comerciales y residenciales.',
-    skills: ['Aislamiento acústico', 'Instalación', 'Lectura de planos'],
-    status: 'priority',
-  },
-  {
-    id: 2,
-    cargo: 'Supervisor de Obra Civil',
-    empresa: 'Simétrica',
-    ciudad: 'Bogotá',
-    modalidad: 'Presencial',
-    tipo: 'Tiempo completo',
-    descripcion: 'Supervisa y coordina equipos de construcción en proyectos de insonorización industrial, asegurando cumplimiento de normas técnicas y plazos de entrega.',
-    skills: ['Supervisión', 'Normas técnicas', 'Gestión de equipos'],
-    status: 'open',
-  },
-  {
-    id: 3,
-    cargo: 'Diseñador Acústico Senior',
-    empresa: 'Simétrica',
-    ciudad: 'Remoto',
-    modalidad: 'Remoto',
-    tipo: 'Tiempo completo',
-    descripcion: 'Diseña soluciones acústicas integrales para teatros, estudios de grabación y espacios corporativos usando software de simulación.',
-    skills: ['Acústica', 'AutoCAD', 'Simulación', 'Diseño'],
-    status: 'priority',
-  },
-  {
-    id: 4,
-    cargo: 'Electricista Certificado',
-    empresa: 'Simétrica',
-    ciudad: 'Cali',
-    modalidad: 'Presencial',
-    tipo: 'Contrato',
-    descripcion: 'Electricista con experiencia en instalaciones eléctricas para proyectos de construcción y adecuación de espacios acústicos.',
-    skills: ['Electricidad', 'Certificación RETIE', 'Montaje'],
-    status: 'open',
-  },
-  {
-    id: 5,
-    cargo: 'Carpintero de Acabados',
-    empresa: 'Simétrica',
-    ciudad: 'Medellín',
-    modalidad: 'Presencial',
-    tipo: 'Contrato',
-    descripcion: 'Carpintero especializado en fabricación e instalación de paneles acústicos de madera, puertas insonorizadas y cielos rasos.',
-    skills: ['Carpintería', 'Acabados', 'Madera'],
-    status: 'open',
-  },
-  {
-    id: 6,
-    cargo: 'Coordinador de Proyectos',
-    empresa: 'Simétrica',
-    ciudad: 'Barranquilla',
-    modalidad: 'Híbrido',
-    tipo: 'Cerrado',
-    descripcion: 'Coordina proyectos de insonorización desde cotización hasta entrega final. Experiencia comprobable en gestión de proyectos de construcción.',
-    skills: ['Gestión', 'Presupuestos', 'Coordinación'],
-    status: 'closed',
-  },
-];
-
 const CATEGORY_LABELS: Record<ProviderCategory, string> = {
   [ProviderCategoryEnum.CARPINTERIA]: 'Carpintería y Madera',
   [ProviderCategoryEnum.MATERIALES_ACUSTICOS]: 'Materiales Acústicos',
@@ -138,13 +60,6 @@ const CATEGORY_MAP: Record<string, ProviderCategory> = {
   acabados: ProviderCategoryEnum.ACABADOS,
   otro: ProviderCategoryEnum.OTRO,
 };
-
-const statsEmpleo: Stat[] = [
-  { valor: '2,800', superindice: '+', label: 'Profesionales activos' },
-  { valor: '350', superindice: '+', label: 'Proyectos en ejecución' },
-  { valor: '24', label: 'Vacantes abiertas' },
-  { valor: '18', label: 'Departamentos' },
-];
 
 const CATEGORY_ICONS: Record<ProviderCategory, React.ReactNode> = {
   [ProviderCategoryEnum.CARPINTERIA]: (
@@ -279,9 +194,33 @@ function CtaBanner() {
 const FILTROS = ['Tiempo completo', 'Contrato', 'Presencial', 'Remoto', 'Híbrido'];
 
 function PanelEmpleo() {
+  const [jobs, setJobs] = useState<BackendJob[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [stats, setStats] = useState({ totalOpen: 0, totalPriority: 0, totalClosed: 0, ciudades: 0 });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [ubicacion, setUbicacion] = useState('');
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+
+  const fetchJobs = useCallback(async () => {
+    try {
+      setLoading(true);
+      setFetchError(null);
+      const result = await jobService.getAll();
+      setJobs(result.data);
+      const jobStats = await jobService.getStats();
+      setStats(jobStats);
+    } catch {
+      setFetchError('Error al cargar vacantes');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchJobs();
+  }, [fetchJobs]);
 
   const toggleFilter = (f: string) => {
     setActiveFilters(prev =>
@@ -289,28 +228,49 @@ function PanelEmpleo() {
     );
   };
 
+  const MODALITY_LABEL_PUBLIC: Record<string, string> = {
+    [JobModalityEnum.PRESENCIAL]: 'Presencial',
+    [JobModalityEnum.REMOTO]: 'Remoto',
+    [JobModalityEnum.HIBRIDO]: 'Híbrido',
+  };
+
+  const TYPE_LABEL_PUBLIC: Record<string, string> = {
+    [JobTypeEnum.TIEMPO_COMPLETO]: 'Tiempo completo',
+    [JobTypeEnum.CONTRATO]: 'Contrato',
+  };
+
   const empleosFiltrados = useMemo(() => {
-    return empleosMock.filter(j => {
-      if (searchTerm && !j.cargo.toLowerCase().includes(searchTerm.toLowerCase()) && !j.empresa.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    return jobs.filter(j => {
+      const searchLower = searchTerm.toLowerCase();
+      if (searchTerm && !j.cargo.toLowerCase().includes(searchLower) && !j.descripcion.toLowerCase().includes(searchLower)) return false;
       if (ubicacion && !j.ciudad.toLowerCase().includes(ubicacion.toLowerCase())) return false;
       if (activeFilters.length > 0) {
+        const tipoLabel = TYPE_LABEL_PUBLIC[j.tipo] || j.tipo;
+        const modalidadLabel = MODALITY_LABEL_PUBLIC[j.modalidad] || j.modalidad;
         const match = activeFilters.some(f =>
-          j.tipo.toLowerCase().includes(f.toLowerCase()) ||
-          j.modalidad.toLowerCase().includes(f.toLowerCase())
+          tipoLabel.toLowerCase().includes(f.toLowerCase()) ||
+          modalidadLabel.toLowerCase().includes(f.toLowerCase())
         );
         if (!match) return false;
       }
       return true;
     });
-  }, [searchTerm, ubicacion, activeFilters]);
+  }, [jobs, searchTerm, ubicacion, activeFilters]);
 
-  const statusLabel: Record<JobStatus, string> = {
-    priority: 'Prioritario',
-    open: 'Disponible',
-    closed: 'Cerrado',
+  const statusLabel: Record<string, string> = {
+    [JobStatusEnum.PRIORITY]: 'Prioritario',
+    [JobStatusEnum.OPEN]: 'Disponible',
+    [JobStatusEnum.CLOSED]: 'Cerrado',
   };
 
-  const openCount = empleosMock.filter(j => j.status !== 'closed').length;
+  const openCount = stats.totalOpen + stats.totalPriority;
+
+  const statsEmpleo: Stat[] = [
+    { valor: String(stats.totalOpen + stats.totalPriority), label: 'Vacantes activas' },
+    { valor: String(stats.totalClosed), label: 'Cerradas' },
+    { valor: String(stats.ciudades), label: 'Ubicaciones' },
+    { valor: String(jobs.reduce((acc, j) => acc + j.skills.length, 0)), label: 'Habilidades' },
+  ];
 
   return (
     <div className="asociados-panel">
@@ -331,10 +291,10 @@ function PanelEmpleo() {
             <input
               className="asociados-search__input"
               type="text"
-              placeholder="Buscar por cargo o empresa..."
+              placeholder="Buscar por cargo..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              aria-label="Buscar cargo o empresa"
+              aria-label="Buscar cargo"
             />
           </div>
           <div className="asociados-search__input-wrap">
@@ -351,7 +311,7 @@ function PanelEmpleo() {
               aria-label="Buscar por ubicación"
             />
           </div>
-          <Button variant="primary" size="md" className="asociados-search__btn">
+          <Button variant="primary" size="md" className="asociados-search__btn" onClick={fetchJobs}>
             Buscar
           </Button>
         </div>
@@ -369,50 +329,62 @@ function PanelEmpleo() {
         </div>
       </div>
 
-      <div className="asociados-empleo-grid">
-        {empleosFiltrados.map(j => (
-          <article key={j.id} className="asociados-empleo-card">
-            <div className="asociados-empleo-card__accent" />
-            <div className="asociados-empleo-card__header">
-              <div className="asociados-empleo-card__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M20 7h-4a2 2 0 00-2 2v10a2 2 0 002 2h4a2 2 0 002-2V9a2 2 0 00-2-2z"/>
-                  <path d="M8 3H4a2 2 0 00-2 2v14a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2z"/>
-                </svg>
-              </div>
-              <span className={`asociados-empleo-card__tag asociados-empleo-card__tag--${j.status}`}>
-                {statusLabel[j.status]}
-              </span>
-            </div>
-            <h4 className="asociados-empleo-card__title">{j.cargo}</h4>
-            <div className="asociados-empleo-card__meta">
-              <span>{j.ciudad}</span>
-              <span className="asociados-empleo-card__meta-sep">·</span>
-              <span>{j.modalidad}</span>
-              <span className="asociados-empleo-card__meta-sep">·</span>
-              <span>{j.tipo}</span>
-            </div>
-            <p className="asociados-empleo-card__desc">{j.descripcion}</p>
-            <div className="asociados-empleo-card__skills">
-              {j.skills.map(s => (
-                <span key={s} className="asociados-empleo-card__skill">{s}</span>
-              ))}
-            </div>
-            <Button
-              variant="primary"
-              fullWidth
-              size="md"
-              disabled={j.status === 'closed'}
-              onClick={() => window.location.href = '/trabaja-con-nosotros'}
-            >
-              {j.status === 'closed' ? 'Convocatoria cerrada' : 'Postularme'}
-            </Button>
-          </article>
-        ))}
-      </div>
+      {loading && (
+        <p className="asociados-empty">Cargando vacantes...</p>
+      )}
 
-      {empleosFiltrados.length === 0 && (
-        <p className="asociados-empty">No se encontraron vacantes con esos criterios.</p>
+      {fetchError && (
+        <div className="asociados-error">{fetchError}</div>
+      )}
+
+      {!loading && !fetchError && (
+        <>
+          <div className="asociados-empleo-grid">
+            {empleosFiltrados.map(j => (
+              <article key={j._id} className="asociados-empleo-card">
+                <div className="asociados-empleo-card__accent" />
+                <div className="asociados-empleo-card__header">
+                  <div className="asociados-empleo-card__icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M20 7h-4a2 2 0 00-2 2v10a2 2 0 002 2h4a2 2 0 002-2V9a2 2 0 00-2-2z"/>
+                      <path d="M8 3H4a2 2 0 00-2 2v14a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+                    </svg>
+                  </div>
+                  <span className={`asociados-empleo-card__tag asociados-empleo-card__tag--${j.status === JobStatusEnum.PRIORITY ? 'priority' : j.status === JobStatusEnum.OPEN ? 'open' : 'closed'}`}>
+                    {statusLabel[j.status]}
+                  </span>
+                </div>
+                <h4 className="asociados-empleo-card__title">{j.cargo}</h4>
+                <div className="asociados-empleo-card__meta">
+                  <span>{j.ciudad}</span>
+                  <span className="asociados-empleo-card__meta-sep">·</span>
+                  <span>{MODALITY_LABEL_PUBLIC[j.modalidad]}</span>
+                  <span className="asociados-empleo-card__meta-sep">·</span>
+                  <span>{TYPE_LABEL_PUBLIC[j.tipo]}</span>
+                </div>
+                <p className="asociados-empleo-card__desc">{j.descripcion}</p>
+                <div className="asociados-empleo-card__skills">
+                  {j.skills.map(s => (
+                    <span key={s} className="asociados-empleo-card__skill">{s}</span>
+                  ))}
+                </div>
+                <Button
+                  variant="primary"
+                  fullWidth
+                  size="md"
+                  disabled={j.status === JobStatusEnum.CLOSED}
+                  onClick={() => window.location.href = `/trabaja-con-nosotros?vacante=${j._id}`}
+                >
+                  {j.status === JobStatusEnum.CLOSED ? 'Convocatoria cerrada' : 'Postularme'}
+                </Button>
+              </article>
+            ))}
+          </div>
+
+          {empleosFiltrados.length === 0 && (
+            <p className="asociados-empty">No se encontraron vacantes con esos criterios.</p>
+          )}
+        </>
       )}
 
       <CtaBanner />
@@ -733,8 +705,210 @@ function PanelProveedores() {
   );
 }
 
+function PanelAlianza() {
+  return (
+    <div className="asociados-panel">
+      <SectionHeader
+        label="Alianza Estratégica"
+        title="Simétrica & IPUC"
+        description="Modelo de colaboración para proyectos de construcción, fundamentado en la confianza, el acompañamiento técnico y el beneficio mutuo."
+        badgeValor="5%"
+        badgeTexto="retribución"
+      />
+
+      <section className="alianza-section">
+        <h3 className="alianza-section__title">Introducción</h3>
+        <p className="alianza-section__text">
+          El sostenido crecimiento de la Iglesia Pentecostal Unida de Colombia (IPUC), reflejado en su expansión
+          a nivel nacional, ha generado una creciente demanda de soluciones integrales en materia de infraestructura.
+          Cada nuevo proyecto implica la necesidad de desarrollar obras civiles que respondan a criterios de
+          funcionalidad, seguridad, calidad y sostenibilidad.
+        </p>
+        <p className="alianza-section__text">
+          SIMÉTRICA propone a la IPUC la consolidación de una alianza estratégica fundamentada en la experiencia
+          técnica, la calidad constructiva, la transparencia en los procesos y el cumplimiento oportuno de los
+          proyectos requeridos. Más que una relación contractual, esta propuesta se fundamenta en la construcción
+          de un vínculo estratégico de largo plazo.
+        </p>
+      </section>
+
+      <section className="alianza-section">
+        <h3 className="alianza-section__title">
+          <span className="alianza-section__num">1.</span> Retribución Económica para la IPUC
+        </h3>
+        <p className="alianza-section__text">
+          Como reconocimiento por la adjudicación de proyectos a SIMÉTRICA, la IPUC recibirá una participación
+          directa sobre el valor de cada proyecto ejecutado.
+        </p>
+        <div className="alianza-highlight">
+          <div className="alianza-highlight__value">5%</div>
+          <div className="alianza-highlight__label">del valor total del contrato</div>
+        </div>
+        <p className="alianza-section__text">
+          La retribución económica a favor de la IPUC será calculada sobre el último pago del contrato,
+          correspondiente al 30% del valor total acordado, y se efectuará al momento del cierre formal del proyecto.
+        </p>
+        <div className="alianza-ejemplo">
+          <strong>Ejemplo:</strong> Para un proyecto con un valor total contratado de $100.000.000, la retribución
+          económica del 5% se calculará sobre el último pago ($30.000.000), correspondiendo a un valor de $1.500.000
+          a favor de la IPUC.
+        </div>
+        <p className="alianza-section__text">
+          <strong>Condición de aplicación:</strong> La retribución aplicará exclusivamente sobre contratos adjudicados
+          como resultado de la participación directa de la IPUC. Los contratos obtenidos por SIMÉTRICA a través de sus
+          propios canales comerciales no generarán este beneficio.
+        </p>
+      </section>
+
+      <section className="alianza-section">
+        <h3 className="alianza-section__title">
+          <span className="alianza-section__num">2.</span> Bolsa de Empleo para Miembros de la IPUC
+        </h3>
+        <p className="alianza-section__text">
+          SIMÉTRICA habilita un apartado exclusivo dentro de su plataforma web destinado a priorizar la vinculación
+          laboral de los miembros de la IPUC, facilitando el acceso a oportunidades reales de empleo en los diferentes
+          perfiles requeridos por la empresa.
+        </p>
+        <div className="alianza-perfiles">
+          {['Arquitectos', 'Ingenieros', 'Abogados', 'Administradores', 'Trabajadores sociales', 'Maestros de obra', 'Técnicos', 'Personal de apoyo'].map(p => (
+            <span key={p} className="alianza-perfiles__tag">{p}</span>
+          ))}
+        </div>
+        <p className="alianza-section__text">
+          <strong>Beneficio para la comunidad:</strong> Los miembros de la IPUC contarán con acceso prioritario a
+          oportunidades laborales dentro de SIMÉTRICA, mientras que la empresa fortalece sus procesos de selección
+          mediante la vinculación de personal comprometido e identificado con los valores de la comunidad.
+        </p>
+      </section>
+
+      <section className="alianza-section">
+        <h3 className="alianza-section__title">
+          <span className="alianza-section__num">3.</span> Red de Proveedores Asociados
+        </h3>
+        <p className="alianza-section__text">
+          Los miembros de la IPUC que sean propietarios de negocios relacionados con materiales e insumos de
+          construcción podrán registrarse y participar como proveedores oficiales de SIMÉTRICA.
+        </p>
+        <div className="alianza-categorias-grid">
+          {[
+            { label: 'Material eléctrico', icon: '⚡' },
+            { label: 'Ferretería', icon: '🔧' },
+            { label: 'Carpintería en Madera', icon: '🪵' },
+            { label: 'Enchapes y acabados', icon: '🏗️' },
+            { label: 'Carpintería en Aluminio', icon: '🪟' },
+            { label: 'Herrería', icon: '🔩' },
+            { label: 'Audiovisuales', icon: '🔊' },
+            { label: 'Insumos varios', icon: '📦' },
+          ].map(cat => (
+            <div key={cat.label} className="alianza-categorias-grid__item">
+              <span className="alianza-categorias-grid__icon">{cat.icon}</span>
+              <span className="alianza-categorias-grid__label">{cat.label}</span>
+            </div>
+          ))}
+        </div>
+        <p className="alianza-section__text">
+          <strong>Rol de la IPUC como promotor:</strong> La iglesia actuará como canal de difusión y promoción de
+          esta red, facilitando que los miembros con negocios propios conozcan y aprovechen el espacio.
+        </p>
+      </section>
+
+      <section className="alianza-section">
+        <h3 className="alianza-section__title">
+          <span className="alianza-section__num">4.</span> Ventajas y Garantías
+        </h3>
+        <div className="alianza-garantias">
+          <div className="alianza-garantias__card">
+            <div className="alianza-garantias__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <h4>Entrega a tiempo</h4>
+            <p>Historial comprobado de proyectos finalizados dentro de los plazos acordados, sin retrasos ni contratiempos.</p>
+          </div>
+          <div className="alianza-garantias__card">
+            <div className="alianza-garantias__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h4>Responsabilidad total</h4>
+            <p>Gestión íntegra del proyecto: materiales, personal, licencias y coordinación técnica bajo responsabilidad directa de SIMÉTRICA.</p>
+          </div>
+          <div className="alianza-garantias__card">
+            <div className="alianza-garantias__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <h4>Transparencia total</h4>
+            <p>Cada obra finalizada refuerza la reputación de SIMÉTRICA como aliado estratégico de las comunidades con las que trabaja.</p>
+          </div>
+          <div className="alianza-garantias__card">
+            <div className="alianza-garantias__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            </div>
+            <h4>Soporte técnico especializado</h4>
+            <p>Informes periódicos con datos verificables del avance de obra, presupuesto ejecutado y estado general del proyecto.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="alianza-section">
+        <h3 className="alianza-section__title">
+          <span className="alianza-section__num">5.</span> Servicio de Supervisión Técnica de Obra
+        </h3>
+        <p className="alianza-section__text">
+          Una de las propuestas más diferenciadoras de este modelo de alianza es la oferta de un servicio profesional
+          de supervisión de obra provisto por SIMÉTRICA, aportando personal calificado que pueda generar mayor
+          confiabilidad en esta labor donde sea requerido.
+        </p>
+        <div className="alianza-funciones">
+          <h4>Funciones del supervisor técnico:</h4>
+          <ul>
+            <li>Verificación del cumplimiento del cronograma de obra según lo pactado contractualmente.</li>
+            <li>Identificación y registro de imprevistos técnicos, con propuesta de solución documentada.</li>
+            <li>Monitoreo del uso del presupuesto y de los materiales empleados en obra.</li>
+            <li>Emisión de informe técnico cada 15 días dirigido a la junta local de la iglesia correspondiente.</li>
+            <li>Balance general del avance del proyecto.</li>
+          </ul>
+        </div>
+        <div className="alianza-reporte">
+          <div className="alianza-reporte__badge">
+            <span className="alianza-reporte__frecuencia">Cada 15 días</span>
+            <span className="alianza-reporte__label">Informe técnico formal</span>
+          </div>
+          <p className="alianza-reporte__detalle">
+            El informe incluye: porcentaje de avance, estado del presupuesto, novedades técnicas registradas
+            y proyección actualizada de la fecha de entrega.
+          </p>
+        </div>
+      </section>
+
+      <div className="alianza-emblema">
+        <div className="alianza-emblema__content">
+          <div className="alianza-emblema__decorator" />
+          <p className="alianza-emblema__text">
+            Esta propuesta representa una alianza de doble beneficio: crecimiento económico para la IPUC
+            y proyectos ejecutados con excelencia, transparencia y compromiso comunitario.
+          </p>
+          <div className="alianza-emblema__divider" />
+          <p className="alianza-emblema__slogan">Cada detalle cuenta</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const AsociadosPage = () => {
-  const [activeTab, setActiveTab] = useState<'empleo' | 'proveedores'>('empleo');
+  const [activeTab, setActiveTab] = useState<'empleo' | 'proveedores' | 'alianza'>('empleo');
 
   const footerColumns = [
     {
@@ -813,10 +987,19 @@ const AsociadosPage = () => {
                 <span className="asociados-tabs__num">02</span>
                 <span className="asociados-tabs__label">Red de Proveedores</span>
               </button>
+              <button
+                role="tab"
+                aria-selected={activeTab === 'alianza'}
+                className={`asociados-tabs__btn${activeTab === 'alianza' ? ' asociados-tabs__btn--active' : ''}`}
+                onClick={() => setActiveTab('alianza')}
+              >
+                <span className="asociados-tabs__num">03</span>
+                <span className="asociados-tabs__label">Alianza IPUC</span>
+              </button>
             </div>
 
             <div className="asociados-tabs__content" role="tabpanel">
-              {activeTab === 'empleo' ? <PanelEmpleo /> : <PanelProveedores />}
+              {activeTab === 'empleo' ? <PanelEmpleo /> : activeTab === 'alianza' ? <PanelAlianza /> : <PanelProveedores />}
             </div>
           </div>
         </section>

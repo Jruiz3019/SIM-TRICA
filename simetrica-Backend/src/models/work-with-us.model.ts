@@ -70,6 +70,8 @@ export interface IWorkWithUs extends Document {
   reviewedAt?: Date;
   reviewNotes?: string;
 
+  jobId?: Types.ObjectId;
+
   ipAddress?: string;
   userAgent?: string;
   isActive: boolean;
@@ -252,6 +254,13 @@ const workWithUsSchema = new Schema<IWorkWithUs>(
       type: String,
       trim: true,
       maxlength: [1000, 'Las notas no pueden exceder 1000 caracteres'],
+    },
+
+    jobId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Job',
+      default: null,
+      index: true,
     },
 
     ipAddress: {

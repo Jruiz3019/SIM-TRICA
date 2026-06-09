@@ -899,6 +899,17 @@
   font-size: 1rem;
 }
 
+.asociados-error {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--error-color);
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.2);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin: var(--spacing-lg) 0;
+}
+
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
@@ -1096,4 +1107,363 @@
 .asociados-form__input:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
+}
+
+/* ==========================================================================
+   ALIANZA IPUC
+   ========================================================================== */
+
+.alianza-section {
+  margin-bottom: var(--spacing-xxl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.alianza-section:last-child {
+  border-bottom: none;
+}
+
+.alianza-section__title {
+  font-family: var(--font-family-primary);
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-lg) 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+}
+
+.alianza-section__num {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.alianza-section__text {
+  font-family: var(--font-family-primary);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.alianza-section__text strong {
+  color: var(--text-color);
+}
+
+/* Highlight box (5% value) */
+.alianza-highlight {
+  background: linear-gradient(135deg, rgba(92, 61, 46, 0.2) 0%, rgba(92, 61, 46, 0.08) 100%);
+  border: 1px solid rgba(92, 61, 46, 0.3);
+  border-radius: 14px;
+  padding: var(--spacing-xl);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.alianza-highlight__value {
+  font-family: var(--font-family-primary);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.alianza-highlight__label {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: var(--spacing-xs);
+}
+
+/* Ejemplo box */
+.alianza-ejemplo {
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 3px solid var(--primary-color);
+  border-radius: 8px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+.alianza-ejemplo strong {
+  color: var(--primary-color);
+}
+
+/* Perfiles tags */
+.alianza-perfiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.alianza-perfiles__tag {
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: rgba(92, 61, 46, 0.15);
+  border: 1px solid rgba(92, 61, 46, 0.25);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Categorías grid */
+.alianza-categorias-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.alianza-categorias-grid__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.alianza-categorias-grid__item:hover {
+  background: rgba(92, 61, 46, 0.1);
+  border-color: rgba(92, 61, 46, 0.25);
+}
+
+.alianza-categorias-grid__icon {
+  font-size: 1.5rem;
+}
+
+.alianza-categorias-grid__label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  font-weight: var(--font-weight-bold);
+}
+
+/* Garantías grid */
+.alianza-garantias {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.alianza-garantias__card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: var(--spacing-xl);
+  transition: all 0.3s ease;
+}
+
+.alianza-garantias__card:hover {
+  background: rgba(92, 61, 46, 0.08);
+  border-color: rgba(92, 61, 46, 0.25);
+  transform: translateY(-2px);
+}
+
+.alianza-garantias__icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(92, 61, 46, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.alianza-garantias__card h4 {
+  font-family: var(--font-family-primary);
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.alianza-garantias__card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Funciones list */
+.alianza-funciones {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.alianza-funciones h4 {
+  font-family: var(--font-family-primary);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin: 0 0 var(--spacing-md) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alianza-funciones ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.alianza-funciones li {
+  position: relative;
+  padding-left: var(--spacing-xl);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.alianza-funciones li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 50%;
+}
+
+/* Reporte box */
+.alianza-reporte {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xl);
+  background: rgba(92, 61, 46, 0.08);
+  border: 1px solid rgba(92, 61, 46, 0.2);
+  border-radius: 12px;
+  padding: var(--spacing-xl);
+}
+
+.alianza-reporte__badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--background-dark);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.alianza-reporte__frecuencia {
+  font-family: var(--font-family-primary);
+  font-size: 1.3rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.alianza-reporte__label {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+.alianza-reporte__detalle {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* Emblema final */
+.alianza-emblema {
+  background: linear-gradient(135deg, rgba(30, 30, 28, 0.95) 0%, rgba(74, 69, 67, 0.9) 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  padding: var(--spacing-xxl) var(--spacing-xxl);
+  text-align: center;
+  margin-top: var(--spacing-xxl);
+  position: relative;
+  overflow: hidden;
+}
+
+.alianza-emblema::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(92, 61, 46, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.alianza-emblema__content {
+  position: relative;
+  z-index: 1;
+}
+
+.alianza-emblema__decorator {
+  width: 60px;
+  height: 4px;
+  background: var(--primary-color);
+  margin: 0 auto var(--spacing-xl) auto;
+  border-radius: 2px;
+}
+
+.alianza-emblema__text {
+  font-family: var(--font-family-primary);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 auto var(--spacing-xl) auto;
+  max-width: 600px;
+}
+
+.alianza-emblema__divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(92, 61, 46, 0.5);
+  margin: 0 auto var(--spacing-lg) auto;
+}
+
+.alianza-emblema__slogan {
+  font-family: var(--font-family-primary);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 768px) {
+  .alianza-garantias {
+    grid-template-columns: 1fr;
+  }
+
+  .alianza-categorias-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .alianza-reporte {
+    flex-direction: column;
+  }
+
+  .alianza-emblema {
+    padding: var(--spacing-xl);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .alianza-categorias-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }

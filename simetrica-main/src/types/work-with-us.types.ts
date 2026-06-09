@@ -75,6 +75,7 @@ export interface WorkWithUs {
   reviewedBy?: string;
   reviewedAt?: string;
   reviewNotes?: string;
+  jobId?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

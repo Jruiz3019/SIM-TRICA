@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HeaderLayout from '../layouts/HeaderLayout';
 import Footer from '../layouts/Footer/Footer';
 import { submitWorkApplication } from '../services/workWithUsService';
+import jobService from '../services/jobService';
 import './styles/TrabajaConNosotrosPageStyle.css';
 
 import LogoSimetrica from '../assets/logo-simetrica-blanco.png';
@@ -322,6 +323,8 @@ const departamentosYMunicipios: { [key: string]: string[] } = {
 
 const TrabajaConNosotrosPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [jobName, setJobName] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     nombreCompleto: '',
     numeroIdentificacion: '',
@@ -346,6 +349,19 @@ const TrabajaConNosotrosPage: React.FC = () => {
     numeroContacto: '',
     correoElectronico: ''
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const vacanteId = params.get('vacante');
+    if (vacanteId) {
+      setJobId(vacanteId);
+      jobService.getById(vacanteId).then(job => {
+        setJobName(job.cargo);
+      }).catch(() => {
+        setJobId(null);
+      });
+    }
+  }, []);
 
   const [municipiosDisponibles, setMunicipiosDisponibles] = useState<string[]>([]);
 
@@ -594,6 +610,7 @@ const TrabajaConNosotrosPage: React.FC = () => {
         experienceLevel: mapExperienceLevel(formData.anosExperiencia),
         hasCertifications: formData.tieneCertificaciones === 'Sí',
         availability: mapAvailability(formData.disponibilidad),
+        jobId: jobId || undefined,
       };
 
       const response = await submitWorkApplication(dataToSend);
@@ -633,6 +650,11 @@ const TrabajaConNosotrosPage: React.FC = () => {
 
           <div className="trabajo-page__hero">
             <h1 className="trabajo-page__title">Comienza a trabajar con nosotros</h1>
+            {jobName && (
+              <p className="trabajo-page__vacante-badge">
+                Postulándote a: <strong>{jobName}</strong>
+              </p>
+            )}
           </div>
 
           <div className="trabajo-page__steps">

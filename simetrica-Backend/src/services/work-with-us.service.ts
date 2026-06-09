@@ -21,6 +21,7 @@ export class WorkWithUsService {
 
     const application = await WorkWithUsModel.create({
       ...data,
+      jobId: data.jobId || null,
       status: ApplicationStatusEnum.PENDING,
       applicationScore,
       isActive: true,

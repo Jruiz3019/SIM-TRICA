@@ -13,6 +13,7 @@ import {
   contactRoutes,
   workWithUsRoutes,
   providerRoutes,
+  jobRoutes,
 } from './routes/index.js';
 
 dotenv.config();
@@ -42,6 +43,7 @@ app.use('/api/images', imageRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/work-with-us', workWithUsRoutes);
 app.use('/api/providers', providerRoutes);
+app.use('/api/jobs', jobRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
