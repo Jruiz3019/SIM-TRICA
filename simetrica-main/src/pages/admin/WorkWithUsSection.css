@@ -223,10 +223,17 @@
   gap: var(--spacing-md);
 }
 
+/* Último campo non-full-width impar: ocupa ancho completo */
+.detail-field:not(.full-width):nth-last-child(1 of :not(.full-width)):nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .detail-field {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
 }
 
 .detail-field.full-width {
@@ -239,11 +246,19 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.detail-field.full-width label {
+  min-width: 140px;
 }
 
 .detail-field span {
   color: var(--text-color);
   font-size: 0.95rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .detail-field .score {
@@ -260,6 +275,7 @@
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
+  flex-basis: 100%;
 }
 
 .status-select {
@@ -271,6 +287,8 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  flex: 1;
+  max-width: 220px;
 }
 
 .status-select:hover {
@@ -288,6 +306,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
 }
 
 /* References List */
@@ -407,6 +427,10 @@
     grid-template-columns: 1fr;
   }
 
+  .detail-field:not(.full-width):nth-last-child(1 of :not(.full-width)):nth-child(odd) {
+    grid-column: 1;
+  }
+
   .detail-actions {
     flex-direction: column;
   }
@@ -450,5 +474,22 @@
 
   .results-count {
     font-size: 0.85rem;
+  }
+
+  .detail-field {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .detail-field label {
+    min-width: unset;
+  }
+
+  .detail-field span {
+    flex: unset;
+  }
+
+  .status-select {
+    max-width: 100%;
   }
 }
