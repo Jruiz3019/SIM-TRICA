@@ -143,7 +143,11 @@
 .designs-section__category-name {
     font-size: 0.95rem;
     font-weight: 500;
-    color: inherit;
+    color: var(--text-color);
+}
+
+.designs-section__category:hover .designs-section__category-name {
+    color: var(--primary-color);
 }
 
 /* ==========================================================================

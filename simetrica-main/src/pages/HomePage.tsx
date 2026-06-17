@@ -10,6 +10,7 @@ import LogoSimetrica from "../assets/logo-simetrica-blanco.png"
 import ProjectsSectionComponents from "../components/ProjectsSectionComponents.tsx";
 import SimetricaSectionComponents from "../components/SimetricaSectionComponents.tsx";
 import NosotrosSection from "../components/NosotrosSectionComponents.tsx";
+import ServiciosSection from "../components/ServiciosSectionComponents.tsx";
 import DisenosSection from "../components/DiseñosSectionComponents.tsx";
  
 const Home = () => {
@@ -145,6 +146,9 @@ const Home = () => {
       </main>
       <main className="home-section-whyUs">
         <NosotrosSection />
+      </main>
+      <main className="home-section-servicios">
+        <ServiciosSection />
       </main>
       <main>
         <DisenosSection />
